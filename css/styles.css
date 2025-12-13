@@ -10969,4 +10969,83 @@ section.resume-section .resume-section-content {
     padding-top: 5rem;
     padding-bottom: 5rem;
   }
+}/* ===== Mobile Fixes ===== */
+@media (max-width: 768px) {
+
+  /* Hide side nav image spacing issues */
+  #sideNav {
+    position: relative;
+    height: auto;
+  }
+
+  /* Center profile image on mobile */
+  .img-profile {
+    max-width: 140px;
+    margin: 0 auto 1rem auto;
+  }
+
+  /* Center text in About section */
+  .resume-section-content {
+    text-align: center;
+  }
+
+  /* Fix heading size on mobile */
+  h1.mb-0 {
+    font-size: 2.2rem;
+  }
+
+  /* Make video full width */
+  .ratio {
+    width: 100%;
+  }
+
+  /* Reduce padding */
+  .resume-section {
+    padding: 2rem 1rem;
+  }
+
+  /* Social icons spacing */
+  .social-icons {
+    justify-content: center;
+  }
+}
+/* ===== Mobile Fixes ===== */
+@media (max-width: 768px) {
+
+  /* Hide side nav image spacing issues */
+  #sideNav {
+    position: relative;
+    height: auto;
+  }
+
+  /* Center profile image on mobile */
+  .img-profile {
+    max-width: 140px;
+    margin: 0 auto 1rem auto;
+  }
+
+  /* Center text in About section */
+  .resume-section-content {
+    text-align: center;
+  }
+
+  /* Fix heading size on mobile */
+  h1.mb-0 {
+    font-size: 2.2rem;
+  }
+
+  /* Make video full width */
+  .ratio {
+    width: 100%;
+  }
+
+  /* Reduce padding */
+  .resume-section {
+    padding: 2rem 1rem;
+  }
+
+  /* Social icons spacing */
+  .social-icons {
+    justify-content: center;
+  }
 }
