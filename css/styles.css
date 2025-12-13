@@ -11049,3 +11049,38 @@ section.resume-section .resume-section-content {
     justify-content: center;
   }
 }
+/* ===== Mobile Improvements ===== */
+@media (max-width: 768px) {
+  /* Make About section cleaner on mobile */
+  .resume-section-content {
+    text-align: center;
+  }
+
+  /* Mobile profile photo sizing */
+  #about img.rounded-circle {
+    max-width: 160px;
+    height: auto;
+  }
+
+  /* Better spacing on mobile */
+  section.resume-section {
+    padding: 2rem 1rem !important;
+  }
+
+  /* Slightly smaller subtitle line */
+  .subheading {
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+
+  /* Body text size */
+  .lead {
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+
+  /* Center social icons */
+  .social-icons {
+    justify-content: center;
+  }
+}
