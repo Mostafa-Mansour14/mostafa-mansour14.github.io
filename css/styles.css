@@ -11084,3 +11084,7 @@ section.resume-section .resume-section-content {
     justify-content: center;
   }
 }
+/* 9:16 ratio for Shorts */
+.ratio-9x16 {
+  --bs-aspect-ratio: 177.7778%; /* (16 / 9) * 100 */
+}
