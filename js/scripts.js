@@ -1,15 +1,9 @@
 /*!
-* Start Bootstrap - Resume v7.0.6 (https://startbootstrap.com/theme/resume)
-* Copyright 2013-2023 Start Bootstrap
-* Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-resume/blob/master/LICENSE)
+* Start Bootstrap - Resume v7.0.6
 */
-//
-// Scripts
-//
+window.addEventListener('DOMContentLoaded', () => {
 
-window.addEventListener('DOMContentLoaded', event => {
-
-  // Activate Bootstrap scrollspy on the main nav element
+  // ScrollSpy
   const sideNav = document.body.querySelector('#sideNav');
   if (sideNav) {
     new bootstrap.ScrollSpy(document.body, {
@@ -18,15 +12,15 @@ window.addEventListener('DOMContentLoaded', event => {
     });
   }
 
-  // Collapse responsive navbar when toggler is visible
+  // Collapse navbar on mobile when a link is clicked
   const navbarToggler = document.body.querySelector('.navbar-toggler');
   const responsiveNavItems = [].slice.call(
     document.querySelectorAll('#navbarResponsive .nav-link')
   );
 
   if (navbarToggler) {
-    responsiveNavItems.map(function (responsiveNavItem) {
-      responsiveNavItem.addEventListener('click', () => {
+    responsiveNavItems.forEach(item => {
+      item.addEventListener('click', () => {
         if (window.getComputedStyle(navbarToggler).display !== 'none') {
           navbarToggler.click();
         }
@@ -34,23 +28,54 @@ window.addEventListener('DOMContentLoaded', event => {
     });
   }
 
-  // Reveal animations (smooth + light)
-  const animated = document.querySelectorAll('[data-animate]');
-
   // Respect reduced motion
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (prefersReducedMotion) {
-    animated.forEach(el => el.classList.add('is-visible'));
+    document.querySelectorAll('[data-animate], .js-auto-animate').forEach(el => el.classList.add('is-visible'));
     return;
   }
 
+  // AUTO-ADD animations to common elements (no HTML editing needed)
+  const sections = document.querySelectorAll('.resume-section');
+
+  sections.forEach(section => {
+    const targets = section.querySelectorAll(`
+      .resume-section-content > h1,
+      .resume-section-content > h2,
+      .resume-section-content > h3,
+      .resume-section-content > p,
+      .resume-section-content > .subheading,
+      .resume-section-content > ul,
+      .resume-section-content li,
+      .resume-section-content .row > div,
+      .resume-section-content .border,
+      .resume-section-content .ratio,
+      .resume-section-content .track-card,
+      .resume-section-content .hero-badge,
+      .resume-section-content .social-icons
+    `);
+
+    let delay = 0;
+    targets.forEach(el => {
+      // Don't override elements you already tagged
+      if (!el.hasAttribute('data-animate')) {
+        el.setAttribute('data-animate', 'lift');
+        el.classList.add('js-auto-animate');
+      }
+      // Stagger delays for nicer flow
+      el.style.setProperty('--d', `${Math.min(delay, 520)}ms`);
+      delay += 60;
+    });
+  });
+
+  // Intersection Observer: reveal on view
   const io = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
       entry.target.classList.add('is-visible');
       io.unobserve(entry.target);
     });
-  }, { threshold: 0.12 });
+  }, { threshold: 0.14 });
 
-  animated.forEach(el => io.observe(el));
+  document.querySelectorAll('[data-animate], .js-auto-animate').forEach(el => io.observe(el));
 });
