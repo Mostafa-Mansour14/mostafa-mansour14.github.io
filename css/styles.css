@@ -624,3 +624,27 @@ hr.m-0{ border-top: 1px solid rgba(0,0,0,0.08); }
     transition: none !important;
   }
 }
+/* ===== HOTFIX: Mobile hamburger menu covering content ===== */
+@media (max-width: 991.98px){
+
+  /* force hide when not expanded */
+  #navbarResponsive.collapse:not(.show){
+    display: none !important;
+  }
+
+  /* make it a proper drawer when expanded */
+  #navbarResponsive{
+    position: fixed;
+    top: 64px;              /* under the navbar */
+    left: 0;
+    right: 0;
+    z-index: 2000;
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
+  }
+
+  /* keep navbar itself above */
+  #sideNav{
+    z-index: 2100;
+  }
+}
