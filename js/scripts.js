@@ -1,51 +1,28 @@
-/*!
-* Enhanced scripts:
-* - Fix mobile collapse stuck open
-* - ScrollSpy
-* - Reveal animations
-* - Portfolio filters
-* - Shorts thumbnails => Modal player
-*/
-
 window.addEventListener('DOMContentLoaded', () => {
-  // =========================
-  // Bootstrap ScrollSpy
-  // =========================
-  const sideNav = document.body.querySelector('#sideNav');
-  if (sideNav && window.bootstrap) {
-    new bootstrap.ScrollSpy(document.body, {
-      target: '#sideNav',
-      rootMargin: '0px 0px -40%',
-    });
-  }
-
-  // =========================
-  // HARD FIX: mobile menu stuck open
-  // =========================
   const navCollapseEl = document.getElementById('navbarResponsive');
   const navToggler = document.querySelector('.navbar-toggler');
 
-  let navCollapse = null;
+  // create collapse instance and force it closed
+  let collapse = null;
   if (navCollapseEl && window.bootstrap) {
-    navCollapse = bootstrap.Collapse.getInstance(navCollapseEl) || new bootstrap.Collapse(navCollapseEl, { toggle: false });
-    navCollapse.hide(); // force closed on load
+    collapse = bootstrap.Collapse.getInstance(navCollapseEl) || new bootstrap.Collapse(navCollapseEl, { toggle: false });
+    collapse.hide();
+    navCollapseEl.classList.remove('show');
+    navToggler?.setAttribute('aria-expanded', 'false');
   }
 
-  // Close when clicking a nav link (mobile)
-  const responsiveNavItems = [].slice.call(document.querySelectorAll('#navbarResponsive .nav-link'));
-  responsiveNavItems.forEach((item) => {
-    item.addEventListener('click', () => {
-      if (!navCollapseEl) return;
-      if (window.getComputedStyle(navToggler).display !== 'none') {
-        navCollapse?.hide();
-      }
+  // close menu when clicking a nav link (mobile)
+  document.querySelectorAll('#navbarResponsive .nav-link').forEach((link) => {
+    link.addEventListener('click', () => {
+      if (!navToggler) return;
+      const isMobile = window.getComputedStyle(navToggler).display !== 'none';
+      if (isMobile) collapse?.hide();
     });
   });
 
-  // Close when clicking outside the drawer
+  // close when clicking outside
   document.addEventListener('click', (e) => {
     if (!navCollapseEl || !navToggler) return;
-
     const isMobile = window.getComputedStyle(navToggler).display !== 'none';
     if (!isMobile) return;
 
@@ -53,68 +30,19 @@ window.addEventListener('DOMContentLoaded', () => {
     const clickedToggler = navToggler.contains(e.target);
 
     if (!clickedInsideMenu && !clickedToggler) {
-      navCollapse?.hide();
+      collapse?.hide();
     }
   });
 
-  // Close on resize to desktop
+  // close on resize to desktop
   window.addEventListener('resize', () => {
     if (!navToggler) return;
     const isMobile = window.getComputedStyle(navToggler).display !== 'none';
-    if (!isMobile) navCollapse?.hide();
+    if (!isMobile) collapse?.hide();
   });
 
-  // =========================
-  // Reduced motion support
-  // =========================
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (prefersReducedMotion) {
-    document.querySelectorAll('[data-animate]').forEach((el) => el.classList.add('is-visible'));
-  } else {
-    // Auto-tag elements for animation
-    document.querySelectorAll('.resume-section').forEach((section) => {
-      const targets = section.querySelectorAll(`
-        .resume-section-content > h1,
-        .resume-section-content > h2,
-        .resume-section-content > h3,
-        .resume-section-content > p,
-        .resume-section-content > .subheading,
-        .resume-section-content > .hero-badges,
-        .resume-section-content > .track-grid,
-        .resume-section-content > .social-icons,
-        .resume-section-content .row > div,
-        .resume-section-content .smart-card,
-        .resume-section-content ul,
-        .resume-section-content li,
-        .resume-section-content .nav
-      `);
-
-      let delay = 0;
-      targets.forEach((el) => {
-        if (!el.hasAttribute('data-animate')) el.setAttribute('data-animate', 'lift');
-        el.style.setProperty('--d', `${Math.min(delay, 540)}ms`);
-        delay += 55;
-      });
-    });
-
-    // Reveal on scroll
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add('is-visible');
-          observer.unobserve(entry.target);
-        });
-      },
-      { threshold: 0.14 }
-    );
-
-    document.querySelectorAll('[data-animate]').forEach((el) => observer.observe(el));
-  }
-
-  // =========================
-  // Portfolio Filters
-  // =========================
+  // ---- keep your existing features below (filters + modal) ----
+  // Portfolio filters
   function applyFilter(group, kind) {
     const items = document.querySelectorAll(`.portfolio-item[data-group="${group}"]`);
     items.forEach((item) => {
@@ -140,9 +68,7 @@ window.addEventListener('DOMContentLoaded', () => {
     applyFilter(group, 'all');
   });
 
-  // =========================
-  // Shorts thumbnails => Modal player
-  // =========================
+  // Shorts thumbnails => Modal
   const modalEl = document.getElementById('videoModal');
   const modalPlayer = document.getElementById('modalPlayer');
   const modal = (modalEl && window.bootstrap) ? new bootstrap.Modal(modalEl) : null;
@@ -163,16 +89,6 @@ window.addEventListener('DOMContentLoaded', () => {
     const id = thumb.getAttribute('data-video');
     thumb.style.setProperty('--thumb', `url('https://i.ytimg.com/vi/${id}/hqdefault.jpg')`);
     thumb.classList.add('has-thumb');
-
     thumb.addEventListener('click', () => openVideo(id));
-    thumb.setAttribute('role', 'button');
-    thumb.setAttribute('tabindex', '0');
-
-    thumb.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        openVideo(id);
-      }
-    });
   });
 });
