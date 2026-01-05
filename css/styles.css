@@ -624,3 +624,46 @@ hr.m-0{ border-top: 1px solid rgba(0,0,0,0.08); }
     transition: none !important;
   }
 }
+/* ===== FINAL FIX: Hamburger menu covering content ===== */
+@media (max-width: 991.98px){
+
+  /* make navbar height predictable */
+  #sideNav{
+    position: sticky !important;
+    top: 0;
+    z-index: 3000;
+  }
+
+  /* IMPORTANT: collapse should not reserve space when hidden */
+  #navbarResponsive.collapse:not(.show){
+    display: none !important;
+    height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  /* when shown, make it a drawer overlay under navbar */
+  #navbarResponsive.collapse.show{
+    display: block !important;
+    position: fixed !important;
+    top: 64px !important; /* adjust if your navbar height differs */
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 2999 !important;
+    max-height: calc(100vh - 64px) !important;
+    overflow-y: auto !important;
+
+    background: var(--accent) !important;
+    padding: 12px 14px 16px !important;
+    border-radius: 0 0 16px 16px !important;
+    box-shadow: 0 18px 44px rgba(0,0,0,0.25) !important;
+  }
+
+  /* make links look like buttons */
+  #navbarResponsive .nav-link{
+    padding: 12px 10px !important;
+    border-radius: 12px !important;
+  }
+  #navbarResponsive .nav-link:hover{
+    background: rgba(255,255,255,0.12) !important;
+  }
+}
