@@ -667,3 +667,19 @@ hr.m-0{ border-top: 1px solid rgba(0,0,0,0.08); }
     background: rgba(255,255,255,0.12) !important;
   }
 }
+/* ===== FIX: Page stuck blurred / unclickable ===== */
+body.modal-open{
+  overflow: auto !important;
+  padding-right: 0 !important;
+}
+
+.modal-backdrop{
+  opacity: .55; /* طبيعي */
+  backdrop-filter: none !important;  /* امنع البلور */
+  -webkit-backdrop-filter: none !important;
+}
+
+/* لو فيه أي بلور اتحط بالغلط على البودي */
+body{
+  filter: none !important;
+}
