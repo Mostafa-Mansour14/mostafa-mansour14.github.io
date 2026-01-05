@@ -1,7 +1,7 @@
 /*!
 * Enhanced scripts:
+* - Fix mobile collapse stuck open
 * - ScrollSpy
-* - Mobile nav auto-close + force-close on load
 * - Reveal animations
 * - Portfolio filters
 * - Shorts thumbnails => Modal player
@@ -20,25 +20,49 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   // =========================
-  // Fix: hamburger menu "always open" on mobile
+  // HARD FIX: mobile menu stuck open
   // =========================
-  const navCollapse = document.getElementById('navbarResponsive');
+  const navCollapseEl = document.getElementById('navbarResponsive');
   const navToggler = document.querySelector('.navbar-toggler');
 
-  if (navCollapse?.classList.contains('show')) navCollapse.classList.remove('show');
-  if (navToggler) navToggler.setAttribute('aria-expanded', 'false');
-
-  // Close menu after clicking a link (mobile)
-  const responsiveNavItems = [].slice.call(document.querySelectorAll('#navbarResponsive .nav-link'));
-  if (navToggler) {
-    responsiveNavItems.forEach((item) => {
-      item.addEventListener('click', () => {
-        if (window.getComputedStyle(navToggler).display !== 'none') {
-          navToggler.click();
-        }
-      });
-    });
+  let navCollapse = null;
+  if (navCollapseEl && window.bootstrap) {
+    navCollapse = bootstrap.Collapse.getInstance(navCollapseEl) || new bootstrap.Collapse(navCollapseEl, { toggle: false });
+    navCollapse.hide(); // force closed on load
   }
+
+  // Close when clicking a nav link (mobile)
+  const responsiveNavItems = [].slice.call(document.querySelectorAll('#navbarResponsive .nav-link'));
+  responsiveNavItems.forEach((item) => {
+    item.addEventListener('click', () => {
+      if (!navCollapseEl) return;
+      if (window.getComputedStyle(navToggler).display !== 'none') {
+        navCollapse?.hide();
+      }
+    });
+  });
+
+  // Close when clicking outside the drawer
+  document.addEventListener('click', (e) => {
+    if (!navCollapseEl || !navToggler) return;
+
+    const isMobile = window.getComputedStyle(navToggler).display !== 'none';
+    if (!isMobile) return;
+
+    const clickedInsideMenu = navCollapseEl.contains(e.target);
+    const clickedToggler = navToggler.contains(e.target);
+
+    if (!clickedInsideMenu && !clickedToggler) {
+      navCollapse?.hide();
+    }
+  });
+
+  // Close on resize to desktop
+  window.addEventListener('resize', () => {
+    if (!navToggler) return;
+    const isMobile = window.getComputedStyle(navToggler).display !== 'none';
+    if (!isMobile) navCollapse?.hide();
+  });
 
   // =========================
   // Reduced motion support
@@ -129,17 +153,14 @@ window.addEventListener('DOMContentLoaded', () => {
     modal.show();
   }
 
-  // stop video on close
   if (modalEl && modalPlayer) {
     modalEl.addEventListener('hidden.bs.modal', () => {
       modalPlayer.src = '';
     });
   }
 
-  // thumbnail backgrounds + click
   document.querySelectorAll('.video-thumb[data-video]').forEach((thumb) => {
     const id = thumb.getAttribute('data-video');
-    // set CSS variable for pseudo element background (styles.css should use --thumb on ::before)
     thumb.style.setProperty('--thumb', `url('https://i.ytimg.com/vi/${id}/hqdefault.jpg')`);
     thumb.classList.add('has-thumb');
 
