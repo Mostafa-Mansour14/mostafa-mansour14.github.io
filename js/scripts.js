@@ -7,19 +7,11 @@
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
 
   function isMobileNavVisible() {
-    const toggler = $('.navbar-toggler');
+    const toggler = $('#navToggler') || $('.navbar-toggler');
     if (!toggler) return false;
     return window.getComputedStyle(toggler).display !== 'none';
   }
 
-  function getCollapseInstance(el) {
-    if (!el || !window.bootstrap) return null;
-    return bootstrap.Collapse.getInstance(el) || new bootstrap.Collapse(el, { toggle: false });
-  }
-
-  // -------------------------------------------------
-  // Fix: leftover modal artifacts
-  // -------------------------------------------------
   function cleanupModalArtifacts() {
     document.body.classList.remove('modal-open');
     document.body.style.overflow = '';
@@ -27,9 +19,6 @@
     $$('.modal-backdrop').forEach(b => b.remove());
   }
 
-  // -------------------------------------------------
-  // Reveal animations (safe)
-  // -------------------------------------------------
   function initReveal() {
     const nodes = $$('[data-animate]');
     if (!nodes.length) return;
@@ -47,73 +36,105 @@
     nodes.forEach(el => io.observe(el));
   }
 
-  // -------------------------------------------------
-  // ✅ Mobile menu: Backdrop overlay to guarantee close
-  // -------------------------------------------------
+  // ✅ NAV: manual toggle (no bootstrap data attributes)
   function initMobileMenu() {
     const collapseEl = $('#navbarResponsive');
-    const toggler = $('.navbar-toggler');
+    const toggler = $('#navToggler') || $('.navbar-toggler');
+
     if (!collapseEl || !toggler || !window.bootstrap) return;
 
-    const collapse = getCollapseInstance(collapseEl);
+    const collapse = bootstrap.Collapse.getInstance(collapseEl) || new bootstrap.Collapse(collapseEl, { toggle: false });
 
-    // Create a backdrop to capture taps outside the menu (mobile)
-    const backdrop = document.createElement('div');
-    backdrop.className = 'nav-backdrop';
-    document.body.appendChild(backdrop);
+    // Create backdrop once
+    let backdrop = $('.nav-backdrop');
+    if (!backdrop) {
+      backdrop = document.createElement('div');
+      backdrop.className = 'nav-backdrop';
+      document.body.appendChild(backdrop);
+    }
+
+    function setNavHeightVar() {
+      const nav = $('#sideNav');
+      const h = nav ? Math.ceil(nav.getBoundingClientRect().height) : 64;
+      document.documentElement.style.setProperty('--nav-h', `${h}px`);
+    }
+
+    function openMenu() {
+      setNavHeightVar();
+      collapse.show();
+    }
+
+    function closeMenu() {
+      collapse.hide();
+    }
+
+    function toggleMenu() {
+      const isOpen = collapseEl.classList.contains('show');
+      if (isOpen) closeMenu();
+      else openMenu();
+    }
 
     function showBackdrop() {
       if (!isMobileNavVisible()) return;
       backdrop.classList.add('is-active');
+      toggler.setAttribute('aria-expanded', 'true');
     }
 
     function hideBackdrop() {
       backdrop.classList.remove('is-active');
+      toggler.setAttribute('aria-expanded', 'false');
     }
 
-    // Close menu helper
-    function closeMenu() {
-      collapse?.hide();
-    }
-
-    // Backdrop click closes
-    backdrop.addEventListener('click', () => {
+    // ✅ Use pointerdown + touchstart to avoid mobile click bugs
+    const closeOnPointer = (e) => {
+      e.preventDefault();
       closeMenu();
+    };
+
+    backdrop.addEventListener('pointerdown', closeOnPointer, { passive: false });
+    backdrop.addEventListener('touchstart', closeOnPointer, { passive: false });
+
+    // ✅ Toggler manual control
+    toggler.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      toggleMenu();
+    }, { passive: false });
+
+    toggler.addEventListener('click', (e) => {
+      e.preventDefault();
+      toggleMenu();
     });
 
-    // Close on any nav link click (mobile)
+    // Bootstrap events
+    collapseEl.addEventListener('shown.bs.collapse', showBackdrop);
+    collapseEl.addEventListener('hidden.bs.collapse', hideBackdrop);
+
+    // Close on nav-link click (mobile)
     $$('#navbarResponsive .nav-link').forEach((link) => {
       link.addEventListener('click', () => {
         if (isMobileNavVisible()) closeMenu();
       });
     });
 
-    // Bootstrap events to toggle backdrop
-    collapseEl.addEventListener('shown.bs.collapse', showBackdrop);
-    collapseEl.addEventListener('hidden.bs.collapse', hideBackdrop);
-
-    // Extra safety: close on resize (when leaving mobile)
+    // Extra safety: close on resize leaving mobile
     window.addEventListener('resize', () => {
+      setNavHeightVar();
       if (!isMobileNavVisible()) {
         closeMenu();
         hideBackdrop();
       }
     });
 
-    // Extra safety: close when user scrolls (mobile)
-    window.addEventListener('scroll', () => {
-      if (isMobileNavVisible() && collapseEl.classList.contains('show')) closeMenu();
-    }, { passive: true });
-
-    // Extra safety: hash change closes (clicking anchor)
+    // Extra safety: hashchange
     window.addEventListener('hashchange', () => {
       if (isMobileNavVisible()) closeMenu();
     });
+
+    // Init vars
+    setNavHeightVar();
+    hideBackdrop();
   }
 
-  // -------------------------------------------------
-  // Portfolio filters
-  // -------------------------------------------------
   function initPortfolioFilters() {
     function applyFilter(group, kind) {
       const items = $$(`.portfolio-item[data-group="${group}"]`);
@@ -141,9 +162,6 @@
     });
   }
 
-  // -------------------------------------------------
-  // Shorts thumbnails -> Modal
-  // -------------------------------------------------
   function initVideoModal() {
     const modalEl = $('#videoModal');
     const modalPlayer = $('#modalPlayer');
@@ -182,4 +200,3 @@
     initVideoModal();
   });
 })();
-
