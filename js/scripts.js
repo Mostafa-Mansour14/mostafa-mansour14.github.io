@@ -12,11 +12,14 @@
     return window.getComputedStyle(toggler).display !== 'none';
   }
 
-  function safeCollapseInstance(el) {
+  function getCollapseInstance(el) {
     if (!el || !window.bootstrap) return null;
     return bootstrap.Collapse.getInstance(el) || new bootstrap.Collapse(el, { toggle: false });
   }
 
+  // -------------------------------------------------
+  // Fix: leftover modal artifacts
+  // -------------------------------------------------
   function cleanupModalArtifacts() {
     document.body.classList.remove('modal-open');
     document.body.style.overflow = '';
@@ -24,6 +27,9 @@
     $$('.modal-backdrop').forEach(b => b.remove());
   }
 
+  // -------------------------------------------------
+  // Reveal animations (safe)
+  // -------------------------------------------------
   function initReveal() {
     const nodes = $$('[data-animate]');
     if (!nodes.length) return;
@@ -41,33 +47,73 @@
     nodes.forEach(el => io.observe(el));
   }
 
+  // -------------------------------------------------
+  // ✅ Mobile menu: Backdrop overlay to guarantee close
+  // -------------------------------------------------
   function initMobileMenu() {
     const collapseEl = $('#navbarResponsive');
     const toggler = $('.navbar-toggler');
-    if (!collapseEl || !toggler) return;
+    if (!collapseEl || !toggler || !window.bootstrap) return;
 
-    const collapse = safeCollapseInstance(collapseEl);
+    const collapse = getCollapseInstance(collapseEl);
 
-    // close when clicking a nav link (mobile)
+    // Create a backdrop to capture taps outside the menu (mobile)
+    const backdrop = document.createElement('div');
+    backdrop.className = 'nav-backdrop';
+    document.body.appendChild(backdrop);
+
+    function showBackdrop() {
+      if (!isMobileNavVisible()) return;
+      backdrop.classList.add('is-active');
+    }
+
+    function hideBackdrop() {
+      backdrop.classList.remove('is-active');
+    }
+
+    // Close menu helper
+    function closeMenu() {
+      collapse?.hide();
+    }
+
+    // Backdrop click closes
+    backdrop.addEventListener('click', () => {
+      closeMenu();
+    });
+
+    // Close on any nav link click (mobile)
     $$('#navbarResponsive .nav-link').forEach((link) => {
       link.addEventListener('click', () => {
-        if (isMobileNavVisible()) collapse?.hide();
+        if (isMobileNavVisible()) closeMenu();
       });
     });
 
-    // close on outside click (mobile)
-    document.addEventListener('click', (e) => {
-      if (!isMobileNavVisible()) return;
-      const clickedInside = collapseEl.contains(e.target) || toggler.contains(e.target);
-      if (!clickedInside) collapse?.hide();
+    // Bootstrap events to toggle backdrop
+    collapseEl.addEventListener('shown.bs.collapse', showBackdrop);
+    collapseEl.addEventListener('hidden.bs.collapse', hideBackdrop);
+
+    // Extra safety: close on resize (when leaving mobile)
+    window.addEventListener('resize', () => {
+      if (!isMobileNavVisible()) {
+        closeMenu();
+        hideBackdrop();
+      }
     });
 
-    // close when switching to desktop
-    window.addEventListener('resize', () => {
-      if (!isMobileNavVisible()) collapse?.hide();
+    // Extra safety: close when user scrolls (mobile)
+    window.addEventListener('scroll', () => {
+      if (isMobileNavVisible() && collapseEl.classList.contains('show')) closeMenu();
+    }, { passive: true });
+
+    // Extra safety: hash change closes (clicking anchor)
+    window.addEventListener('hashchange', () => {
+      if (isMobileNavVisible()) closeMenu();
     });
   }
 
+  // -------------------------------------------------
+  // Portfolio filters
+  // -------------------------------------------------
   function initPortfolioFilters() {
     function applyFilter(group, kind) {
       const items = $$(`.portfolio-item[data-group="${group}"]`);
@@ -95,6 +141,9 @@
     });
   }
 
+  // -------------------------------------------------
+  // Shorts thumbnails -> Modal
+  // -------------------------------------------------
   function initVideoModal() {
     const modalEl = $('#videoModal');
     const modalPlayer = $('#modalPlayer');
@@ -123,8 +172,6 @@
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') cleanupModalArtifacts();
     });
-
-    window.addEventListener('hashchange', cleanupModalArtifacts);
   }
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -135,4 +182,3 @@
     initVideoModal();
   });
 })();
-
