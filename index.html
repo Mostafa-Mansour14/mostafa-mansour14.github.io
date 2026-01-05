@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="Mostafa Mansour — Video Editor & Content Creator. Portfolio, experience, skills, and contact." />
     <meta name="author" content="Mostafa Mansour" />
     <title>Mostafa Mansour | Video Editor & Content Creator</title>
@@ -13,11 +13,8 @@
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 
     <!-- Google fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" />
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css" />
 
     <!-- Theme CSS -->
     <link href="css/styles.css" rel="stylesheet" />
@@ -25,6 +22,7 @@
 
   <body id="page-top">
     <!-- Navigation -->
+    <!-- ✅ مهم: شيلنا fixed-top -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary" id="sideNav">
       <a class="navbar-brand js-scroll-trigger" href="#page-top">
         <span class="d-block d-lg-none">Mostafa Mansour</span>
@@ -161,8 +159,8 @@
           </ul>
 
           <div class="tab-content" id="portfolioTabsContent">
-            <!-- TAB 1 -->
-            <div class="tab-pane fade show active" id="tab-edit" role="tabpanel">
+            <!-- TAB 1: VIDEO EDITING -->
+            <div class="tab-pane fade show active" id="tab-edit" role="tabpanel" aria-labelledby="edit-tab" tabindex="0">
               <div class="smart-card p-3 p-md-4 mb-4" data-animate>
                 <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
                   <div>
@@ -174,6 +172,7 @@
                 <p class="mb-0">Selected edits that highlight rhythm, transitions, and platform-optimized delivery.</p>
               </div>
 
+              <!-- Filters -->
               <div class="portfolio-filters mb-3" data-animate data-filter-group="edit">
                 <button class="filter-btn is-active" type="button" data-filter="all">All</button>
                 <button class="filter-btn" type="button" data-filter="short">Shorts</button>
@@ -181,6 +180,7 @@
               </div>
 
               <div class="row g-4" data-animate>
+                <!-- Shorts -->
                 <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="edit">
                   <div class="video-card">
                     <div class="video-head">
@@ -236,11 +236,13 @@
                     </div>
                   </div>
                 </div>
+
+                <!-- ✅ لو عندك YouTube Edits ضيفهم هنا data-kind="youtube" -->
               </div>
             </div>
 
-            <!-- TAB 2 -->
-            <div class="tab-pane fade" id="tab-create" role="tabpanel">
+            <!-- TAB 2: CONTENT CREATION -->
+            <div class="tab-pane fade" id="tab-create" role="tabpanel" aria-labelledby="create-tab" tabindex="0">
               <div class="smart-card p-3 p-md-4 mb-4" data-animate>
                 <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
                   <div>
@@ -252,6 +254,7 @@
                 <p class="mb-0">Projects I created from scratch—idea, filming, directing, on-camera delivery, and editing.</p>
               </div>
 
+              <!-- Filters -->
               <div class="portfolio-filters mb-3" data-animate data-filter-group="create">
                 <button class="filter-btn is-active" type="button" data-filter="all">All</button>
                 <button class="filter-btn" type="button" data-filter="short">Shorts</button>
@@ -259,6 +262,7 @@
               </div>
 
               <div class="row g-4" data-animate>
+                <!-- Shorts -->
                 <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="create">
                   <div class="video-card">
                     <div class="video-head">
@@ -315,7 +319,117 @@
                   </div>
                 </div>
 
-                <!-- YouTube items as iframes... (same as before if needed) -->
+                <!-- YouTube (16:9) -->
+                <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="youtube" data-group="create">
+                  <div class="video-card">
+                    <div class="video-head">
+                      <span class="chip chip-create">Creator</span>
+                      <span class="chip chip-ghost">YouTube</span>
+                    </div>
+                    <div class="ratio ratio-16x9 video-frame">
+                      <iframe
+                        src="https://www.youtube.com/embed/XD0AC8IM47E"
+                        title="Content Creation YouTube 1"
+                        loading="lazy"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen></iframe>
+                    </div>
+                    <div class="video-meta">
+                      <div class="video-title">YouTube Project</div>
+                      <div class="video-tags">Concept • Production • Edit</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="youtube" data-group="create">
+                  <div class="video-card">
+                    <div class="video-head">
+                      <span class="chip chip-create">Creator</span>
+                      <span class="chip chip-ghost">YouTube</span>
+                    </div>
+                    <div class="ratio ratio-16x9 video-frame">
+                      <iframe
+                        src="https://www.youtube.com/embed/0ZDJulsMbpY"
+                        title="Content Creation YouTube 2"
+                        loading="lazy"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen></iframe>
+                    </div>
+                    <div class="video-meta">
+                      <div class="video-title">YouTube Project</div>
+                      <div class="video-tags">Story • Shoot • Edit</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="youtube" data-group="create">
+                  <div class="video-card">
+                    <div class="video-head">
+                      <span class="chip chip-create">Creator</span>
+                      <span class="chip chip-ghost">YouTube</span>
+                    </div>
+                    <div class="ratio ratio-16x9 video-frame">
+                      <iframe
+                        src="https://www.youtube.com/embed/9UsZ7roRvlk"
+                        title="Content Creation YouTube 3"
+                        loading="lazy"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen></iframe>
+                    </div>
+                    <div class="video-meta">
+                      <div class="video-title">YouTube Project</div>
+                      <div class="video-tags">Direction • Editing • Delivery</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="youtube" data-group="create">
+                  <div class="video-card">
+                    <div class="video-head">
+                      <span class="chip chip-create">Creator</span>
+                      <span class="chip chip-ghost">YouTube</span>
+                    </div>
+                    <div class="ratio ratio-16x9 video-frame">
+                      <iframe
+                        src="https://www.youtube.com/embed/Mw-XSyH3xNQ"
+                        title="Content Creation YouTube 4"
+                        loading="lazy"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen></iframe>
+                    </div>
+                    <div class="video-meta">
+                      <div class="video-title">YouTube Project</div>
+                      <div class="video-tags">Production • Edit • Platform ready</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="youtube" data-group="create">
+                  <div class="video-card">
+                    <div class="video-head">
+                      <span class="chip chip-create">Creator</span>
+                      <span class="chip chip-ghost">YouTube</span>
+                    </div>
+                    <div class="ratio ratio-16x9 video-frame">
+                      <iframe
+                        src="https://www.youtube.com/embed/SnYlYmBOFgk"
+                        title="Content Creation YouTube 5"
+                        loading="lazy"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen></iframe>
+                    </div>
+                    <div class="video-meta">
+                      <div class="video-title">YouTube Project</div>
+                      <div class="video-tags">Concept • Execution • Edit</div>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
@@ -324,8 +438,127 @@
 
       <hr class="m-0" />
 
-      <!-- باقي الأقسام… (ممكن تسيبهم زي ما عندك بالضبط) -->
-      <!-- Experience / Skills / Education / Services / Certifications -->
+      <!-- Experience -->
+      <section class="resume-section" id="experience">
+        <div class="resume-section-content">
+          <h2 class="mb-5" data-animate>Experience</h2>
+
+          <div class="d-flex flex-column flex-md-row justify-content-between mb-5" data-animate>
+            <div class="flex-grow-1">
+              <h3 class="mb-0">Video Editor · Videographer · Motion Graphics</h3>
+              <div class="subheading mb-3">Freelance / Projects</div>
+              <p class="mb-0">
+                I work as a Video Editor, Videographer, and Motion Graphics Artist, collaborating with content creators, brands, companies, conferences, and live events.
+              </p>
+              <p class="mb-0 mt-3">
+                Specialized in short-form content (Shorts, Reels, Ads), YouTube videos, and branded content with strong attention to pacing, speed ramping, and dynamic transitions.
+              </p>
+              <p class="mb-0 mt-3">
+                Experience in live streaming production and direction using OBS and vMix, plus integrating AI tools into video workflows.
+              </p>
+            </div>
+            <div class="flex-shrink-0"><span class="text-primary">2020 – Present</span></div>
+          </div>
+        </div>
+      </section>
+
+      <hr class="m-0" />
+
+      <!-- Skills -->
+      <section class="resume-section" id="skills">
+        <div class="resume-section-content">
+          <h2 class="mb-5" data-animate>Skills</h2>
+
+          <div class="subheading mb-3" data-animate>Software &amp; Tools</div>
+          <ul class="fa-ul mb-4" data-animate>
+            <li><span class="fa-li"><i class="fas fa-check"></i></span>Adobe Premiere Pro</li>
+            <li><span class="fa-li"><i class="fas fa-check"></i></span>After Effects</li>
+            <li><span class="fa-li"><i class="fas fa-check"></i></span>DaVinci Resolve</li>
+            <li><span class="fa-li"><i class="fas fa-check"></i></span>Final Cut Pro</li>
+            <li><span class="fa-li"><i class="fas fa-check"></i></span>CapCut</li>
+            <li><span class="fa-li"><i class="fas fa-check"></i></span>Adobe Audition</li>
+            <li><span class="fa-li"><i class="fas fa-check"></i></span>Adobe Photoshop</li>
+            <li><span class="fa-li"><i class="fas fa-check"></i></span>Adobe Lightroom</li>
+            <li><span class="fa-li"><i class="fas fa-check"></i></span>OBS Studio &amp; vMix (Live Production)</li>
+          </ul>
+
+          <div class="subheading mb-3" data-animate>Editing &amp; Creative Skills</div>
+          <ul class="fa-ul mb-0" data-animate>
+            <li><span class="fa-li"><i class="fas fa-check"></i></span>Short-form editing (Shorts / Reels / Ads)</li>
+            <li><span class="fa-li"><i class="fas fa-check"></i></span>YouTube video editing (long-form &amp; highlights)</li>
+            <li><span class="fa-li"><i class="fas fa-check"></i></span>Speed ramping &amp; dynamic transitions</li>
+            <li><span class="fa-li"><i class="fas fa-check"></i></span>Color grading &amp; color correction</li>
+            <li><span class="fa-li"><i class="fas fa-check"></i></span>Motion graphics &amp; animated text</li>
+            <li><span class="fa-li"><i class="fas fa-check"></i></span>Sound design &amp; audio cleanup</li>
+            <li><span class="fa-li"><i class="fas fa-check"></i></span>Social media–optimized exports</li>
+            <li><span class="fa-li"><i class="fas fa-check"></i></span>AI tools in video production workflows</li>
+          </ul>
+        </div>
+      </section>
+
+      <hr class="m-0" />
+
+      <!-- Education -->
+      <section class="resume-section" id="education">
+        <div class="resume-section-content">
+          <h2 class="mb-5" data-animate>Education</h2>
+
+          <div class="d-flex flex-column flex-md-row justify-content-between mb-4" data-animate>
+            <div class="flex-grow-1">
+              <h3 class="mb-0">October Higher Institute for Engineering &amp; Technology (OHI) – Egypt</h3>
+              <div class="subheading mb-2">Bachelor’s Degree in Business Administration</div>
+              <div>Management Information Systems (MIS)</div>
+              <p class="mb-0">
+                Background combining business administration and information systems—strong foundation in digital workflows and technology-driven processes.
+              </p>
+            </div>
+            <div class="flex-shrink-0"><span class="text-primary">Graduate</span></div>
+          </div>
+        </div>
+      </section>
+
+      <hr class="m-0" />
+
+      <!-- Services -->
+      <section class="resume-section" id="services">
+        <div class="resume-section-content">
+          <h2 class="mb-5" data-animate>Services</h2>
+
+          <ul class="fa-ul mb-0" data-animate>
+            <li><span class="fa-li"><i class="fas fa-check text-primary"></i></span>Short-form video editing (Shorts, Reels, TikTok, Ads)</li>
+            <li><span class="fa-li"><i class="fas fa-check text-primary"></i></span>YouTube video editing (long-form &amp; highlights)</li>
+            <li><span class="fa-li"><i class="fas fa-check text-primary"></i></span>Videography for events, conferences, and brands</li>
+            <li><span class="fa-li"><i class="fas fa-check text-primary"></i></span>Motion graphics &amp; animated text</li>
+            <li><span class="fa-li"><i class="fas fa-check text-primary"></i></span>Color grading &amp; color correction</li>
+            <li><span class="fa-li"><i class="fas fa-check text-primary"></i></span>Sound design &amp; audio cleanup</li>
+            <li><span class="fa-li"><i class="fas fa-check text-primary"></i></span>Live streaming setup &amp; direction (OBS / vMix)</li>
+          </ul>
+        </div>
+      </section>
+
+      <hr class="m-0" />
+
+      <!-- Certifications -->
+      <section class="resume-section" id="certifications">
+        <div class="resume-section-content">
+          <h2 class="mb-5" data-animate>Certifications</h2>
+
+          <ul class="fa-ul mb-4" data-animate>
+            <li>
+              <span class="fa-li"><i class="fas fa-trophy text-warning"></i></span>
+              <strong>Cybersecurity Diplomas (3 Diplomas)</strong> — Al Bayan Higher Institute (UAE)
+            </li>
+            <li>
+              <span class="fa-li"><i class="fas fa-trophy text-warning"></i></span>
+              Completed three professional diplomas in Cybersecurity, enhancing understanding of system security and digital infrastructure.
+            </li>
+          </ul>
+
+          <p class="mb-0" data-animate>
+            Completed multiple online courses through <strong>Udemy</strong>, plus continuous self-learning via online platforms and <strong>YouTube</strong>.
+          </p>
+        </div>
+      </section>
     </div>
 
     <!-- Video Modal -->
@@ -341,9 +574,7 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-
     <!-- Theme JS -->
     <script src="js/scripts.js"></script>
   </body>
 </html>
-
