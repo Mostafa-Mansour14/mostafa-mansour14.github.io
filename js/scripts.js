@@ -1,8 +1,10 @@
 (() => {
   'use strict';
 
-  const $ = (sel, root = document) => root.querySelector(sel);
-  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+  document.documentElement.classList.add('js');
+
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
 
   function isMobileNavVisible() {
     const toggler = $('.navbar-toggler');
@@ -16,7 +18,6 @@
   }
 
   function cleanupModalArtifacts() {
-    // لو حصل glitch وفضل backdrop موجود
     document.body.classList.remove('modal-open');
     document.body.style.overflow = '';
     document.body.style.paddingRight = '';
@@ -27,17 +28,12 @@
     const nodes = $$('[data-animate]');
     if (!nodes.length) return;
 
-    // delays تلقائي بسيطة
-    nodes.forEach((el, i) => el.style.setProperty('--d', `${Math.min(i * 55, 500)}ms`));
+    nodes.forEach((el, i) => el.style.setProperty('--d', `${Math.min(i * 55, 450)}ms`));
 
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
         if (!e.isIntersecting) return;
         e.target.classList.add('is-visible');
-
-        // لو العنصر عنوان H2 ضيف underline animation
-        if (e.target.matches('h2')) e.target.classList.add('is-visible');
-
         io.unobserve(e.target);
       });
     }, { threshold: 0.15 });
@@ -51,23 +47,22 @@
     if (!collapseEl || !toggler) return;
 
     const collapse = safeCollapseInstance(collapseEl);
-    collapse?.hide();
 
-    // Close on nav link click (mobile)
+    // close when clicking a nav link (mobile)
     $$('#navbarResponsive .nav-link').forEach((link) => {
       link.addEventListener('click', () => {
         if (isMobileNavVisible()) collapse?.hide();
       });
     });
 
-    // Close on outside click (mobile)
+    // close on outside click (mobile)
     document.addEventListener('click', (e) => {
       if (!isMobileNavVisible()) return;
       const clickedInside = collapseEl.contains(e.target) || toggler.contains(e.target);
       if (!clickedInside) collapse?.hide();
     });
 
-    // Close on resize to desktop
+    // close when switching to desktop
     window.addEventListener('resize', () => {
       if (!isMobileNavVisible()) collapse?.hide();
     });
@@ -113,17 +108,11 @@
       modal.show();
     }
 
-    // thumbnails
     $$('.video-thumb[data-video]').forEach((thumb) => {
       const id = thumb.getAttribute('data-video');
       thumb.style.setProperty('--thumb', `url('https://i.ytimg.com/vi/${id}/hqdefault.jpg')`);
       thumb.classList.add('has-thumb');
       thumb.addEventListener('click', () => openVideo(id));
-      thumb.setAttribute('role', 'button');
-      thumb.setAttribute('tabindex', '0');
-      thumb.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') openVideo(id);
-      });
     });
 
     modalEl.addEventListener('hidden.bs.modal', () => {
@@ -131,12 +120,11 @@
       cleanupModalArtifacts();
     });
 
-    // ESC safety
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') cleanupModalArtifacts();
     });
 
-    window.addEventListener('hashchange', () => cleanupModalArtifacts());
+    window.addEventListener('hashchange', cleanupModalArtifacts);
   }
 
   document.addEventListener('DOMContentLoaded', () => {
