@@ -1,7 +1,12 @@
 @charset "UTF-8";
 
 /* =========================================
-   Theme Variables
+   Bootstrap CSS
+   ========================================= */
+@import url("https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css");
+
+/* =========================================
+   Base / Theme Variables
    ========================================= */
 :root{
   --accent:#bd5d38;
@@ -28,7 +33,7 @@ body{
   overflow-x: hidden;
 }
 
-h1,h2,h3,h4,h5,h6{
+h1, h2, h3, h4, h5, h6{
   font-family: "Saira Extra Condensed", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
   font-weight: 700;
   text-transform: uppercase;
@@ -42,65 +47,12 @@ a{ color: var(--accent); }
 a:hover{ color: #a34f2f; }
 
 /* =========================================
-   Side Navigation
+   Side Navigation (Resume layout)
    ========================================= */
 #sideNav{
   text-align:center;
-  padding: 0 1rem;
-}
-
-/* Desktop fixed side nav */
-@media (min-width: 992px){
-  #sideNav{
-    position: fixed;
-    top:0;
-    left:0;
-    display:flex;
-    flex-direction:column;
-    width: 17rem;
-    height: 100vh;
-    padding: 0;
-  }
-
-  #sideNav .navbar-brand{
-    margin: auto auto 0;
-    padding: 1.5rem;
-  }
-
-  #sideNav .navbar-collapse{
-    margin-bottom:auto;
-  }
-
-  .container-fluid{
-    padding-left: 17rem;
-  }
-}
-
-/* Mobile sticky top bar */
-@media (max-width: 991.98px){
-  #sideNav{
-    position: sticky;
-    top: 0;
-    z-index: 1050;
-    box-shadow: 0 18px 44px rgba(0,0,0,0.15);
-  }
-
-  /* لما المنيو تفتح، خليه جزء من الصفحة مش overlay */
-  #navbarResponsive{
-    background: var(--accent);
-    border-top: 1px solid rgba(255,255,255,0.18);
-    border-radius: 0 0 16px 16px;
-    padding: 12px 14px 16px;
-  }
-
-  #sideNav .navbar-nav .nav-link{
-    padding: 12px 10px;
-    border-radius: 12px;
-  }
-
-  #sideNav .navbar-nav .nav-link:hover{
-    background: rgba(255,255,255,0.12);
-  }
+  padding-left:1rem;
+  padding-right:1rem;
 }
 
 #sideNav .navbar-brand{
@@ -131,6 +83,7 @@ a:hover{ color: #a34f2f; }
   font-weight: 800;
   letter-spacing: .06rem;
   text-transform: uppercase;
+  padding: .65rem 0;
   opacity:.92;
 }
 
@@ -140,22 +93,93 @@ a:hover{ color: #a34f2f; }
 }
 
 .navbar-toggler{
-  border: 1px solid rgba(255,255,255,0.30);
+  border: 1px solid rgba(255,255,255,0.30) !important;
   box-shadow: 0 12px 28px rgba(0,0,0,0.18);
 }
+
 .navbar-toggler:focus{
   box-shadow: 0 12px 28px rgba(0,0,0,0.18);
 }
 
+/* Desktop fixed side nav */
+@media (min-width: 992px){
+  #sideNav{
+    position: fixed;
+    top:0;
+    left:0;
+    display:flex;
+    flex-direction:column;
+    width: 17rem;
+    height: 100vh;
+    padding: 0;
+  }
+
+  #sideNav .navbar-brand{
+    margin: auto auto 0;
+    padding: 1.5rem;
+  }
+
+  #sideNav .navbar-collapse{
+    margin-bottom:auto;
+  }
+
+  .container-fluid{
+    padding-left: 17rem;
+  }
+}
+
+/* Mobile: sticky top */
+@media (max-width: 991.98px){
+  #sideNav{
+    position: sticky;
+    top: 0;
+    z-index: 1050;
+  }
+
+  #navbarResponsive{
+    background: var(--accent);
+    border-top: 1px solid rgba(255,255,255,0.18);
+    border-radius: 0 0 16px 16px;
+    box-shadow: 0 18px 44px rgba(0,0,0,0.22);
+    padding: 12px 14px 16px;
+  }
+
+  #sideNav .navbar-nav .nav-link{
+    padding: 12px 10px;
+    border-radius: 12px;
+  }
+
+  #sideNav .navbar-nav .nav-link:hover{
+    background: rgba(255,255,255,0.12);
+  }
+}
+
+/* ✅ backdrop for mobile menu (captures taps outside menu) */
+.nav-backdrop{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.25);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .18s ease;
+  z-index: 1040; /* أقل من nav (1050) */
+}
+
+.nav-backdrop.is-active{
+  opacity: 1;
+  pointer-events: auto;
+}
+
 /* =========================================
-   Sections spacing (حل فراغ الكمبيوتر)
+   Sections spacing + divider
    ========================================= */
 .resume-section{
   padding: 4.5rem 1.2rem;
-  width: 100%;
-  max-width: 1280px;     /* أكبر من 1100 */
-  margin: 0 auto;        /* توسيط داخل المساحة */
+  max-width: 1280px;   /* ✅ حل فراغ الكمبيوتر */
+  margin: 0 auto;      /* ✅ توسيط */
 }
+
+.resume-section .resume-section-content{ width:100%; }
 
 @media (min-width: 768px){
   .resume-section{ padding: 5.5rem 2.5rem; }
@@ -280,7 +304,32 @@ hr.m-0{ border-top: 1px solid rgba(0,0,0,0.08); }
 }
 
 /* =========================================
-   Tabs / buttons
+   Section title underline
+   ========================================= */
+.resume-section-content > h2{
+  position: relative;
+  display: inline-block;
+  padding-bottom: 8px;
+}
+
+.resume-section-content > h2::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:0;
+  height:3px;
+  width: 0%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), rgba(189,93,56,0.25));
+  transition: width .8s cubic-bezier(.2,.9,.2,1);
+}
+
+.resume-section-content > h2.is-visible::after{
+  width: 100%;
+}
+
+/* =========================================
+   Tabs / Buttons
    ========================================= */
 .smart-tabs{
   gap: 10px;
@@ -313,9 +362,46 @@ hr.m-0{ border-top: 1px solid rgba(0,0,0,0.08); }
   box-shadow: var(--shadow-md);
 }
 
+/* Tab pane fade */
+.tab-pane{ animation: tabFade .35s ease; }
+@keyframes tabFade{
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 /* =========================================
-   Portfolio
+   Portfolio Cards
    ========================================= */
+.smart-card{
+  border: 1px solid rgba(0,0,0,0.09);
+  border-radius: 18px;
+  background: rgba(255,255,255,0.86);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+.type-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  border-radius: 999px;
+  padding: 7px 11px;
+  font-size: 0.86rem;
+  font-weight: 900;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(0,0,0,0.04);
+}
+
+.type-edit{
+  background: rgba(189,93,56,0.12);
+  border-color: rgba(189,93,56,0.30);
+}
+
+.type-create{
+  background: rgba(13,110,253,0.12);
+  border-color: rgba(13,110,253,0.30);
+}
+
+/* Filters */
 .portfolio-filters{
   display:flex;
   flex-wrap:wrap;
@@ -341,13 +427,81 @@ hr.m-0{ border-top: 1px solid rgba(0,0,0,0.08); }
   box-shadow: var(--shadow-md);
 }
 
+.filter-btn:active{ transform: translateY(0); }
+
 .filter-btn.is-active{
   background: rgba(189,93,56,0.16);
   border-color: rgba(189,93,56,0.55);
   box-shadow: var(--shadow-md);
 }
 
-/* thumbnails */
+/* Video card */
+.video-card{
+  border: 1px solid rgba(0,0,0,0.09);
+  border-radius: 18px;
+  background: rgba(255,255,255,0.86);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+  overflow: hidden;
+  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+}
+
+.video-card:hover{
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(189,93,56,0.30);
+}
+
+.video-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding: 12px 12px 0 12px;
+}
+
+.chip{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: .85rem;
+  font-weight: 900;
+  border: 1px solid rgba(0,0,0,0.10);
+}
+
+.chip-ghost{
+  background: rgba(0,0,0,0.04);
+  border-color: rgba(0,0,0,0.08);
+  color: rgba(0,0,0,0.65);
+}
+
+.chip-edit{
+  background: rgba(189,93,56,0.12);
+  border-color: rgba(189,93,56,0.30);
+  color: #1f1f1f;
+}
+
+.chip-create{
+  background: rgba(13,110,253,0.12);
+  border-color: rgba(13,110,253,0.30);
+  color: #1f1f1f;
+}
+
+/* 16:9 frames (YouTube) */
+.video-frame{
+  margin: 10px 12px 0 12px;
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+}
+
+.ratio iframe{
+  border: 0;
+  border-radius: 14px;
+}
+
+/* Shorts thumbs */
 .video-thumb{
   position: relative;
   margin: 10px 12px 0 12px;
@@ -357,6 +511,7 @@ hr.m-0{ border-top: 1px solid rgba(0,0,0,0.08); }
   background: rgba(0,0,0,0.04);
   aspect-ratio: 1 / 1;
   cursor: pointer;
+  transform: translateZ(0);
 }
 
 .video-thumb::before{
@@ -365,11 +520,22 @@ hr.m-0{ border-top: 1px solid rgba(0,0,0,0.08); }
   inset:0;
   background-size: cover;
   background-position: center;
+  filter: saturate(1.05) contrast(1.02);
   transform: scale(1.03);
 }
 
 .video-thumb.has-thumb::before{
   background-image: var(--thumb);
+}
+
+.video-thumb::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.00), rgba(0,0,0,0.38));
+  opacity: 0;
+  transition: opacity .22s ease;
+  pointer-events: none;
 }
 
 .video-thumb .play{
@@ -385,12 +551,36 @@ hr.m-0{ border-top: 1px solid rgba(0,0,0,0.08); }
   border: 1px solid rgba(0,0,0,0.10);
   box-shadow: 0 14px 30px rgba(0,0,0,0.22);
   font-weight: 900;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity .22s ease, transform .22s ease;
+  pointer-events: none;
 }
 
+.video-thumb:hover::after{ opacity: 1; }
+.video-thumb:hover .play{ opacity: 1; transform: translateY(0); }
+
+.video-meta{
+  padding: 12px 14px 14px 14px;
+}
+
+.video-title{
+  font-weight: 900;
+  letter-spacing: .2px;
+  margin-bottom: 4px;
+}
+
+.video-tags{
+  color: rgba(0,0,0,0.55);
+  font-size: .92rem;
+  line-height: 1.3;
+}
+
+/* Filtering hide */
 .portfolio-item.is-hidden{ display:none !important; }
 
 /* =========================================
-   Modal
+   Modal video
    ========================================= */
 .video-modal .modal-content{
   border-radius: 18px;
@@ -411,16 +601,28 @@ hr.m-0{ border-top: 1px solid rgba(0,0,0,0.08); }
 }
 
 /* =========================================
-   Reveal animation (failsafe)
+   Subtle profile float
    ========================================= */
-/* default: no blur if JS fails */
+@keyframes floaty{
+  0% { transform: translateY(0); }
+  50%{ transform: translateY(-6px); }
+  100%{ transform: translateY(0); }
+}
+
+.img-profile{
+  animation: floaty 6s ease-in-out infinite;
+}
+
+/* =========================================
+   Reveal animation system (failsafe)
+   ========================================= */
+/* default: no blur */
 [data-animate]{
   opacity: 1;
   transform: none;
   filter: none;
 }
 
-/* only animate if JS enabled */
 .js [data-animate]{
   opacity: 0;
   transform: translateY(28px) scale(.985);
@@ -430,9 +632,10 @@ hr.m-0{ border-top: 1px solid rgba(0,0,0,0.08); }
     transform .75s cubic-bezier(.2,.9,.2,1),
     filter .75s cubic-bezier(.2,.9,.2,1);
   transition-delay: var(--d, 0ms);
+  will-change: transform, opacity, filter;
 }
 
-.js .is-visible[data-animate]{
+.is-visible[data-animate]{
   opacity: 1;
   transform: translateY(0) scale(1);
   filter: blur(0);
@@ -446,4 +649,3 @@ hr.m-0{ border-top: 1px solid rgba(0,0,0,0.08); }
     transition: none !important;
   }
 }
-
