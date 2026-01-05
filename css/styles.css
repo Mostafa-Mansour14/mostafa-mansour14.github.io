@@ -1,12 +1,7 @@
 @charset "UTF-8";
 
 /* =========================================
-   Bootstrap CSS
-   ========================================= */
-@import url("https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css");
-
-/* =========================================
-   Base / Theme Variables
+   Theme Variables
    ========================================= */
 :root{
   --accent:#bd5d38;
@@ -19,6 +14,8 @@
   --shadow-sm: 0 10px 22px rgba(0,0,0,0.10);
   --shadow-md: 0 16px 36px rgba(0,0,0,0.14);
   --shadow-lg: 0 18px 46px rgba(0,0,0,0.16);
+
+  --mobile-nav-h: 64px; /* ارتفاع الهيدر في الموبايل */
 }
 
 html{ scroll-behavior: smooth; }
@@ -30,9 +27,11 @@ body{
     radial-gradient(1200px 650px at 20% 10%, rgba(189, 93, 56, 0.14), transparent 60%),
     radial-gradient(1000px 550px at 95% 20%, rgba(189, 93, 56, 0.10), transparent 55%),
     #fff;
+  /* مهم: ما تمنعش scroll بسبب مودال */
+  overflow-x: hidden;
 }
 
-h1, h2, h3, h4, h5, h6{
+h1,h2,h3,h4,h5,h6{
   font-family: "Saira Extra Condensed", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
   font-weight: 700;
   text-transform: uppercase;
@@ -46,12 +45,27 @@ a{ color: var(--accent); }
 a:hover{ color: #a34f2f; }
 
 /* =========================================
-   Side Navigation (Resume layout)
+   Side Navigation
    ========================================= */
 #sideNav{
   text-align:center;
   padding-left:1rem;
   padding-right:1rem;
+}
+
+/* Mobile: sticky top bar (بديل fixed-top لتجنب تغطية المحتوى) */
+@media (max-width: 991.98px){
+  #sideNav{
+    position: sticky;
+    top: 0;
+    z-index: 1050;
+    min-height: var(--mobile-nav-h);
+  }
+
+  /* عشان المحتوى يبدأ تحت البار */
+  .container-fluid{
+    padding-top: 10px;
+  }
 }
 
 #sideNav .navbar-brand{
@@ -92,10 +106,9 @@ a:hover{ color: #a34f2f; }
 }
 
 .navbar-toggler{
-  border: 1px solid rgba(255,255,255,0.30) !important;
+  border: 1px solid rgba(255,255,255,0.30);
   box-shadow: 0 12px 28px rgba(0,0,0,0.18);
 }
-
 .navbar-toggler:focus{
   box-shadow: 0 12px 28px rgba(0,0,0,0.18);
 }
@@ -124,17 +137,12 @@ a:hover{ color: #a34f2f; }
 
   .container-fluid{
     padding-left: 17rem;
+    padding-top: 0;
   }
 }
 
-/* Mobile: drawer-style collapse so it doesn't cover half screen weirdly */
+/* Mobile menu drawer (بدون position:fixed للـcollapse) */
 @media (max-width: 991.98px){
-  #sideNav{
-    position: sticky;
-    top: 0;
-    z-index: 1050;
-  }
-
   #navbarResponsive{
     background: var(--accent);
     border-top: 1px solid rgba(255,255,255,0.18);
@@ -216,470 +224,4 @@ hr.m-0{ border-top: 1px solid rgba(0,0,0,0.08); }
   display:flex;
   flex-wrap:wrap;
   gap:10px;
-  margin: 14px 0 18px;
-}
-
-.hero-badge{
-  border: 1px solid var(--stroke);
-  background: rgba(255,255,255,0.74);
-  backdrop-filter: blur(7px);
-  padding: 8px 12px;
-  border-radius: 999px;
-  font-size: .92rem;
-  font-weight: 800;
-  display:inline-flex;
-  gap:8px;
-  align-items:center;
-  transition: transform .22s ease, border-color .22s ease;
-}
-
-.hero-badge:hover{
-  transform: translateY(-2px);
-  border-color: rgba(189,93,56,0.35);
-}
-
-.track-grid{
-  display:grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-  margin-top: 18px;
-}
-
-.track-card{
-  border: 1px solid var(--stroke);
-  border-radius: 18px;
-  padding: 18px;
-  background: var(--card);
-  box-shadow: 0 10px 28px rgba(0,0,0,0.07);
-  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
-}
-
-.track-card:hover{
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-md);
-  border-color: rgba(189,93,56,0.35);
-}
-
-.track-title{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin-bottom: 10px;
-}
-
-.track-icon{
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
-  display:grid;
-  place-items:center;
-  background: rgba(189,93,56,0.14);
-  color: var(--accent);
-}
-
-.track-list{ margin:0; padding-left: 18px; }
-
-@media (max-width: 768px){
-  .track-grid{ grid-template-columns: 1fr; }
-  .hero-badge{ font-size: .86rem; }
-}
-
-/* =========================================
-   Section title underline (premium)
-   ========================================= */
-.resume-section-content > h2{
-  position: relative;
-  display: inline-block;
-  padding-bottom: 8px;
-}
-
-.resume-section-content > h2::after{
-  content:"";
-  position:absolute;
-  left:0;
-  bottom:0;
-  height:3px;
-  width: 0%;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--accent), rgba(189,93,56,0.25));
-  transition: width .8s cubic-bezier(.2,.9,.2,1);
-}
-
-.resume-section-content > h2.is-visible::after{
-  width: 100%;
-}
-
-/* =========================================
-   Tabs / Buttons (clear as buttons)
-   ========================================= */
-.smart-tabs{
-  gap: 10px;
-  border-bottom: none;
-}
-
-.smart-tabs .nav-link{
-  border: 1px solid rgba(0,0,0,0.12);
-  background: rgba(255,255,255,0.70);
-  backdrop-filter: blur(8px);
-  color: #222;
-  border-radius: 999px;
-  padding: 12px 16px;
-  font-weight: 900;
-  letter-spacing: .3px;
-  box-shadow: var(--shadow-sm);
-  transition: transform .18s ease, border-color .18s ease, background-color .18s ease, box-shadow .18s ease;
-}
-
-.smart-tabs .nav-link:hover{
-  transform: translateY(-2px);
-  border-color: rgba(189,93,56,0.35);
-  box-shadow: var(--shadow-md);
-}
-
-.smart-tabs .nav-link.active{
-  background: rgba(189,93,56,0.14);
-  border-color: rgba(189,93,56,0.55);
-  color: #111;
-  box-shadow: var(--shadow-md);
-}
-
-/* Tab pane fade */
-.tab-pane{ animation: tabFade .35s ease; }
-@keyframes tabFade{
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* =========================================
-   Portfolio Cards (video containers)
-   ========================================= */
-.smart-card{
-  border: 1px solid rgba(0,0,0,0.09);
-  border-radius: 18px;
-  background: rgba(255,255,255,0.86);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
-}
-
-.type-badge{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  border-radius: 999px;
-  padding: 7px 11px;
-  font-size: 0.86rem;
-  font-weight: 900;
-  border: 1px solid rgba(0,0,0,0.10);
-  background: rgba(0,0,0,0.04);
-}
-
-.type-edit{
-  background: rgba(189,93,56,0.12);
-  border-color: rgba(189,93,56,0.30);
-}
-
-.type-create{
-  background: rgba(13,110,253,0.12);
-  border-color: rgba(13,110,253,0.30);
-}
-
-/* Filters */
-.portfolio-filters{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-}
-
-.filter-btn{
-  border: 1px solid rgba(0,0,0,0.12);
-  background: rgba(255,255,255,0.74);
-  backdrop-filter: blur(8px);
-  border-radius: 999px;
-  padding: 10px 14px;
-  font-weight: 900;
-  font-size: .92rem;
-  box-shadow: 0 10px 18px rgba(0,0,0,0.08);
-  cursor: pointer;
-  transition: transform .18s ease, border-color .18s ease, background-color .18s ease, box-shadow .18s ease;
-}
-
-.filter-btn:hover{
-  transform: translateY(-2px);
-  border-color: rgba(189,93,56,0.35);
-  box-shadow: var(--shadow-md);
-}
-
-.filter-btn:active{ transform: translateY(0); }
-
-.filter-btn.is-active{
-  background: rgba(189,93,56,0.16);
-  border-color: rgba(189,93,56,0.55);
-  box-shadow: var(--shadow-md);
-}
-
-/* Video card */
-.video-card{
-  border: 1px solid rgba(0,0,0,0.09);
-  border-radius: 18px;
-  background: rgba(255,255,255,0.86);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
-  overflow: hidden;
-  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
-}
-
-.video-card:hover{
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-lg);
-  border-color: rgba(189,93,56,0.30);
-}
-
-.video-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  padding: 12px 12px 0 12px;
-}
-
-.chip{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  border-radius: 999px;
-  padding: 6px 10px;
-  font-size: .85rem;
-  font-weight: 900;
-  border: 1px solid rgba(0,0,0,0.10);
-}
-
-.chip-ghost{
-  background: rgba(0,0,0,0.04);
-  border-color: rgba(0,0,0,0.08);
-  color: rgba(0,0,0,0.65);
-}
-
-.chip-edit{
-  background: rgba(189,93,56,0.12);
-  border-color: rgba(189,93,56,0.30);
-  color: #1f1f1f;
-}
-
-.chip-create{
-  background: rgba(13,110,253,0.12);
-  border-color: rgba(13,110,253,0.30);
-  color: #1f1f1f;
-}
-
-/* 16:9 frames (YouTube) */
-.video-frame{
-  margin: 10px 12px 0 12px;
-  border-radius: 14px;
-  overflow: hidden;
-  position: relative;
-}
-
-.ratio iframe{
-  border: 0;
-  border-radius: 14px;
-}
-
-/* Shorts as thumbnails (square grid) */
-.video-thumb{
-  position: relative;
-  margin: 10px 12px 0 12px;
-  border-radius: 14px;
-  overflow: hidden;
-  border: 1px solid rgba(0,0,0,0.08);
-  background: rgba(0,0,0,0.04);
-  aspect-ratio: 1 / 1;
-  cursor: pointer;
-  transform: translateZ(0);
-}
-
-.video-thumb::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background-size: cover;
-  background-position: center;
-  filter: saturate(1.05) contrast(1.02);
-  transform: scale(1.03);
-}
-
-.video-thumb.has-thumb::before{
-  background-image: var(--thumb);
-}
-
-.video-thumb::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background: linear-gradient(180deg, rgba(0,0,0,0.00), rgba(0,0,0,0.38));
-  opacity: 0;
-  transition: opacity .22s ease;
-  pointer-events: none;
-}
-
-.video-thumb .play{
-  position:absolute;
-  left: 12px;
-  bottom: 12px;
-  width: 44px;
-  height: 44px;
-  border-radius: 999px;
-  display:grid;
-  place-items:center;
-  background: rgba(255,255,255,0.90);
-  border: 1px solid rgba(0,0,0,0.10);
-  box-shadow: 0 14px 30px rgba(0,0,0,0.22);
-  font-weight: 900;
-  opacity: 0;
-  transform: translateY(6px);
-  transition: opacity .22s ease, transform .22s ease;
-  pointer-events: none;
-}
-
-.video-thumb:hover::after{ opacity: 1; }
-.video-thumb:hover .play{ opacity: 1; transform: translateY(0); }
-
-.video-meta{
-  padding: 12px 14px 14px 14px;
-}
-
-.video-title{
-  font-weight: 900;
-  letter-spacing: .2px;
-  margin-bottom: 4px;
-}
-
-.video-tags{
-  color: rgba(0,0,0,0.55);
-  font-size: .92rem;
-  line-height: 1.3;
-}
-
-/* Filtering hide */
-.portfolio-item.is-hidden{ display:none !important; }
-
-/* =========================================
-   Modal video
-   ========================================= */
-.video-modal .modal-content{
-  border-radius: 18px;
-  overflow: hidden;
-  box-shadow: 0 24px 80px rgba(0,0,0,0.35);
-}
-
-.video-modal .modal-body{
-  padding: 0;
-  background: #000;
-}
-
-.video-modal iframe{
-  width: 100%;
-  height: min(72vh, 720px);
-  border: 0;
-  display:block;
-}
-
-/* =========================================
-   Subtle profile float (desktop)
-   ========================================= */
-@keyframes floaty{
-  0% { transform: translateY(0); }
-  50%{ transform: translateY(-6px); }
-  100%{ transform: translateY(0); }
-}
-
-.img-profile{
-  animation: floaty 6s ease-in-out infinite;
-}
-
-/* =========================================
-   Reveal animation system (scripts.js uses it)
-   ========================================= */
-[data-animate]{
-  opacity: 0;
-  transform: translateY(28px) scale(.985);
-  filter: blur(7px);
-  transition:
-    opacity .75s cubic-bezier(.2,.9,.2,1),
-    transform .75s cubic-bezier(.2,.9,.2,1),
-    filter .75s cubic-bezier(.2,.9,.2,1);
-  transition-delay: var(--d, 0ms);
-  will-change: transform, opacity, filter;
-}
-
-.is-visible[data-animate]{
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  filter: blur(0);
-}
-
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce){
-  [data-animate]{
-    opacity: 1 !important;
-    transform: none !important;
-    filter: none !important;
-    transition: none !important;
-  }
-}
-/* ===== FINAL FIX: Hamburger menu covering content ===== */
-@media (max-width: 991.98px){
-
-  /* make navbar height predictable */
-  #sideNav{
-    position: sticky !important;
-    top: 0;
-    z-index: 3000;
-  }
-
-  /* IMPORTANT: collapse should not reserve space when hidden */
-  #navbarResponsive.collapse:not(.show){
-    display: none !important;
-    height: 0 !important;
-    overflow: hidden !important;
-  }
-
-  /* when shown, make it a drawer overlay under navbar */
-  #navbarResponsive.collapse.show{
-    display: block !important;
-    position: fixed !important;
-    top: 64px !important; /* adjust if your navbar height differs */
-    left: 0 !important;
-    right: 0 !important;
-    z-index: 2999 !important;
-    max-height: calc(100vh - 64px) !important;
-    overflow-y: auto !important;
-
-    background: var(--accent) !important;
-    padding: 12px 14px 16px !important;
-    border-radius: 0 0 16px 16px !important;
-    box-shadow: 0 18px 44px rgba(0,0,0,0.25) !important;
-  }
-
-  /* make links look like buttons */
-  #navbarResponsive .nav-link{
-    padding: 12px 10px !important;
-    border-radius: 12px !important;
-  }
-  #navbarResponsive .nav-link:hover{
-    background: rgba(255,255,255,0.12) !important;
-  }
-}
-/* ===== FIX: Page stuck blurred / unclickable ===== */
-body.modal-open{
-  overflow: auto !important;
-  padding-right: 0 !important;
-}
-
-.modal-backdrop{
-  opacity: .55; /* طبيعي */
-  backdrop-filter: none !important;  /* امنع البلور */
-  -webkit-backdrop-filter: none !important;
-}
-
-/* لو فيه أي بلور اتحط بالغلط على البودي */
-body{
-  filter: none !important;
-}
+  margin: 14px
