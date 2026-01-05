@@ -142,363 +142,400 @@
 
       <hr class="m-0" />
 
-      <!-- Portfolio -->
-      <section class="resume-section" id="portfolio">
-        <div class="resume-section-content">
-          <h2 class="mb-4" data-animate>Portfolio</h2>
+     <!-- Portfolio -->
+<section class="resume-section" id="portfolio">
+  <div class="resume-section-content">
+    <h2 class="mb-4" data-animate>Portfolio</h2>
 
-          <p class="mb-4" data-animate>
-            قسمنا الأعمال بشكل ذكي: <strong>Video Editing</strong> لأعمال الإيديت فقط،
-            و<strong>Content Creation</strong> لأعمال أنت صانعها بالكامل (فكرة + تصوير + إخراج + ظهور + مونتاج).
+    <p class="mb-4" data-animate>
+      A focused selection of my work—organized into <strong>Video Editing</strong> and <strong>Content Creation</strong>.
+      Use the filters to quickly view <strong>Shorts</strong> or <strong>YouTube</strong> projects.
+    </p>
+
+    <!-- Tabs -->
+    <ul class="nav smart-tabs mb-4" id="portfolioTabs" role="tablist" data-animate>
+      <li class="nav-item" role="presentation">
+        <button
+          class="nav-link active"
+          id="edit-tab"
+          data-bs-toggle="tab"
+          data-bs-target="#tab-edit"
+          type="button"
+          role="tab"
+          aria-controls="tab-edit"
+          aria-selected="true">
+          <i class="fa-solid fa-scissors me-2"></i> Video Editing
+        </button>
+      </li>
+
+      <li class="nav-item" role="presentation">
+        <button
+          class="nav-link"
+          id="create-tab"
+          data-bs-toggle="tab"
+          data-bs-target="#tab-create"
+          type="button"
+          role="tab"
+          aria-controls="tab-create"
+          aria-selected="false">
+          <i class="fa-solid fa-camera me-2"></i> Content Creation
+        </button>
+      </li>
+    </ul>
+
+    <div class="tab-content" id="portfolioTabsContent">
+
+      <!-- =========================
+           TAB 1: VIDEO EDITING
+           ========================= -->
+      <div class="tab-pane fade show active" id="tab-edit" role="tabpanel" aria-labelledby="edit-tab" tabindex="0">
+        <div class="smart-card p-3 p-md-4 mb-4" data-animate>
+          <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+            <div>
+              <h3 class="h5 mb-1">Video Editing Work</h3>
+              <div class="text-muted">Pacing • Transitions • Color • Motion • Sound</div>
+            </div>
+            <span class="type-badge type-edit"><i class="fa-solid fa-scissors me-2"></i>Editing</span>
+          </div>
+          <p class="mb-0">
+            Selected edits that highlight timing, rhythm, transitions, and platform-optimized delivery.
           </p>
+        </div>
 
-          <!-- Tabs -->
-          <ul class="nav smart-tabs mb-4" id="portfolioTabs" role="tablist" data-animate>
-            <li class="nav-item" role="presentation">
-              <button
-                class="nav-link active"
-                id="edit-tab"
-                data-bs-toggle="tab"
-                data-bs-target="#tab-edit"
-                type="button"
-                role="tab"
-                aria-controls="tab-edit"
-                aria-selected="true">
-                <i class="fa-solid fa-scissors me-2"></i> Video Editing
-              </button>
-            </li>
+        <!-- Filters -->
+        <div class="portfolio-filters mb-3" data-animate data-filter-group="edit">
+          <button class="filter-btn is-active" type="button" data-filter="all">All</button>
+          <button class="filter-btn" type="button" data-filter="short">Shorts</button>
+          <button class="filter-btn" type="button" data-filter="youtube">YouTube</button>
+        </div>
 
-            <li class="nav-item" role="presentation">
-              <button
-                class="nav-link"
-                id="create-tab"
-                data-bs-toggle="tab"
-                data-bs-target="#tab-create"
-                type="button"
-                role="tab"
-                aria-controls="tab-create"
-                aria-selected="false">
-                <i class="fa-solid fa-camera me-2"></i> Content Creation
-              </button>
-            </li>
-          </ul>
-
-          <div class="tab-content" id="portfolioTabsContent">
-            <!-- =========================
-                 TAB 1: VIDEO EDITING
-                 ========================= -->
-            <div class="tab-pane fade show active" id="tab-edit" role="tabpanel" aria-labelledby="edit-tab" tabindex="0">
-              <div class="smart-card p-3 p-md-4 mb-4" data-animate>
-                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
-                  <div>
-                    <h3 class="h5 mb-1">Selected Video Editing</h3>
-                    <div class="text-muted">Editing • Pacing • Transitions • Color • Motion</div>
-                  </div>
-                  <span class="type-badge type-edit"><i class="fa-solid fa-scissors me-2"></i>Video Editing</span>
-                </div>
-                <p class="mb-0">
-                  هنا ستجد أعمال المونتاج والترانزيشن والإيقاع والإخراج الفني للمشهد (بدون شرط ظهورك داخل الفيديو).
-                </p>
+        <div class="row g-4" data-animate>
+          <!-- EDIT: Short -->
+          <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="edit">
+            <div class="video-card">
+              <div class="video-head">
+                <span class="chip chip-edit">Editing</span>
+                <span class="chip chip-ghost">Short</span>
               </div>
 
-              <div class="row g-4" data-animate>
-                <!-- Edit 1 -->
-                <div class="col-12 col-md-6 col-lg-4">
-                  <div class="smart-card p-3 h-100">
-                    <div class="card-head">
-                      <span class="type-badge type-edit">Editing</span>
-                      <span class="text-muted small">Short</span>
-                    </div>
-                    <div class="ratio ratio-9x16 mt-3">
-                      <iframe
-                        src="https://www.youtube.com/embed/GEFvzpgGZmU"
-                        title="Editing - GEFvzpgGZmU"
-                        loading="lazy"
-                        referrerpolicy="strict-origin-when-cross-origin"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen></iframe>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Edit 2 -->
-                <div class="col-12 col-md-6 col-lg-4">
-                  <div class="smart-card p-3 h-100">
-                    <div class="card-head">
-                      <span class="type-badge type-edit">Editing</span>
-                      <span class="text-muted small">Short</span>
-                    </div>
-                    <div class="ratio ratio-9x16 mt-3">
-                      <iframe
-                        src="https://www.youtube.com/embed/0shWVNJMoVo"
-                        title="Editing - 0shWVNJMoVo"
-                        loading="lazy"
-                        referrerpolicy="strict-origin-when-cross-origin"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen></iframe>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Edit 3 -->
-                <div class="col-12 col-md-6 col-lg-4">
-                  <div class="smart-card p-3 h-100">
-                    <div class="card-head">
-                      <span class="type-badge type-edit">Editing</span>
-                      <span class="text-muted small">Short</span>
-                    </div>
-                    <div class="ratio ratio-9x16 mt-3">
-                      <iframe
-                        src="https://www.youtube.com/embed/mYQBfzR22TQ"
-                        title="Editing - mYQBfzR22TQ"
-                        loading="lazy"
-                        referrerpolicy="strict-origin-when-cross-origin"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen></iframe>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Edit 4 -->
-                <div class="col-12 col-md-6 col-lg-4">
-                  <div class="smart-card p-3 h-100">
-                    <div class="card-head">
-                      <span class="type-badge type-edit">Editing</span>
-                      <span class="text-muted small">Short</span>
-                    </div>
-                    <div class="ratio ratio-9x16 mt-3">
-                      <iframe
-                        src="https://www.youtube.com/embed/Juso-cC3Xd4"
-                        title="Editing - Juso-cC3Xd4"
-                        loading="lazy"
-                        referrerpolicy="strict-origin-when-cross-origin"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen></iframe>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- =========================
-                 TAB 2: CONTENT CREATION
-                 ========================= -->
-            <div class="tab-pane fade" id="tab-create" role="tabpanel" aria-labelledby="create-tab" tabindex="0">
-              <div class="smart-card p-3 p-md-4 mb-4" data-animate>
-                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
-                  <div>
-                    <h3 class="h5 mb-1">Content Creation (End-to-End)</h3>
-                    <div class="text-muted">Concept • Shooting • Direction • On-camera • Editing</div>
-                  </div>
-                  <span class="type-badge type-create"><i class="fa-solid fa-camera me-2"></i>Content Creation</span>
-                </div>
-
-                <p class="mb-0">
-                  هذه الأعمال أنت صانعها بالكامل: من الفكرة والسكريبت للتصوير والإخراج والظهور والمونتاج.
-                </p>
+              <div class="ratio ratio-9x16 video-frame">
+                <iframe
+                  src="https://www.youtube.com/embed/GEFvzpgGZmU"
+                  title="Editing Short 1"
+                  loading="lazy"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen></iframe>
               </div>
 
-              <div class="row g-4" data-animate>
-                <!-- CC Shorts -->
-                <div class="col-12 col-md-6 col-lg-4">
-                  <div class="smart-card p-3 h-100">
-                    <div class="card-head">
-                      <span class="type-badge type-create">Creator</span>
-                      <span class="text-muted small">Short</span>
-                    </div>
-                    <div class="ratio ratio-9x16 mt-3">
-                      <iframe
-                        src="https://www.youtube.com/embed/hwqzvZyO-54"
-                        title="Content Creation - hwqzvZyO-54"
-                        loading="lazy"
-                        referrerpolicy="strict-origin-when-cross-origin"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen></iframe>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-12 col-md-6 col-lg-4">
-                  <div class="smart-card p-3 h-100">
-                    <div class="card-head">
-                      <span class="type-badge type-create">Creator</span>
-                      <span class="text-muted small">Short</span>
-                    </div>
-                    <div class="ratio ratio-9x16 mt-3">
-                      <iframe
-                        src="https://www.youtube.com/embed/qcDr3tEWJzE"
-                        title="Content Creation - qcDr3tEWJzE"
-                        loading="lazy"
-                        referrerpolicy="strict-origin-when-cross-origin"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen></iframe>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-12 col-md-6 col-lg-4">
-                  <div class="smart-card p-3 h-100">
-                    <div class="card-head">
-                      <span class="type-badge type-create">Creator</span>
-                      <span class="text-muted small">Short</span>
-                    </div>
-                    <div class="ratio ratio-9x16 mt-3">
-                      <iframe
-                        src="https://www.youtube.com/embed/5IXdCBKqc-k"
-                        title="Content Creation - 5IXdCBKqc-k"
-                        loading="lazy"
-                        referrerpolicy="strict-origin-when-cross-origin"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen></iframe>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-12 col-md-6 col-lg-4">
-                  <div class="smart-card p-3 h-100">
-                    <div class="card-head">
-                      <span class="type-badge type-create">Creator</span>
-                      <span class="text-muted small">Short</span>
-                    </div>
-                    <div class="ratio ratio-9x16 mt-3">
-                      <iframe
-                        src="https://www.youtube.com/embed/BznO4vpu6oA"
-                        title="Content Creation - BznO4vpu6oA"
-                        loading="lazy"
-                        referrerpolicy="strict-origin-when-cross-origin"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen></iframe>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- CC YouTube -->
-                <div class="col-12 col-md-6 col-lg-4">
-                  <div class="smart-card p-3 h-100">
-                    <div class="card-head">
-                      <span class="type-badge type-create">Creator</span>
-                      <span class="text-muted small">YouTube</span>
-                    </div>
-                    <div class="ratio ratio-16x9 mt-3">
-                      <iframe
-                        src="https://www.youtube.com/embed/XD0AC8IM47E"
-                        title="Content Creation - XD0AC8IM47E"
-                        loading="lazy"
-                        referrerpolicy="strict-origin-when-cross-origin"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen></iframe>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-12 col-md-6 col-lg-4">
-                  <div class="smart-card p-3 h-100">
-                    <div class="card-head">
-                      <span class="type-badge type-create">Creator</span>
-                      <span class="text-muted small">YouTube</span>
-                    </div>
-                    <div class="ratio ratio-16x9 mt-3">
-                      <iframe
-                        src="https://www.youtube.com/embed/0ZDJulsMbpY"
-                        title="Content Creation - 0ZDJulsMbpY"
-                        loading="lazy"
-                        referrerpolicy="strict-origin-when-cross-origin"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen></iframe>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-12 col-md-6 col-lg-4">
-                  <div class="smart-card p-3 h-100">
-                    <div class="card-head">
-                      <span class="type-badge type-create">Creator</span>
-                      <span class="text-muted small">YouTube</span>
-                    </div>
-                    <div class="ratio ratio-16x9 mt-3">
-                      <iframe
-                        src="https://www.youtube.com/embed/9UsZ7roRvlk"
-                        title="Content Creation - 9UsZ7roRvlk"
-                        loading="lazy"
-                        referrerpolicy="strict-origin-when-cross-origin"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen></iframe>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-12 col-md-6 col-lg-4">
-                  <div class="smart-card p-3 h-100">
-                    <div class="card-head">
-                      <span class="type-badge type-create">Creator</span>
-                      <span class="text-muted small">YouTube</span>
-                    </div>
-                    <div class="ratio ratio-16x9 mt-3">
-                      <iframe
-                        src="https://www.youtube.com/embed/Mw-XSyH3xNQ"
-                        title="Content Creation - Mw-XSyH3xNQ"
-                        loading="lazy"
-                        referrerpolicy="strict-origin-when-cross-origin"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen></iframe>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-12 col-md-6 col-lg-4">
-                  <div class="smart-card p-3 h-100">
-                    <div class="card-head">
-                      <span class="type-badge type-create">Creator</span>
-                      <span class="text-muted small">YouTube</span>
-                    </div>
-                    <div class="ratio ratio-16x9 mt-3">
-                      <iframe
-                        src="https://www.youtube.com/embed/SnYlYmBOFgk"
-                        title="Content Creation - SnYlYmBOFgk"
-                        loading="lazy"
-                        referrerpolicy="strict-origin-when-cross-origin"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen></iframe>
-                    </div>
-                  </div>
-                </div>
+              <div class="video-meta">
+                <div class="video-title">Short Edit</div>
+                <div class="video-tags">Pacing • Transitions • Visual rhythm</div>
               </div>
-
-              <p class="text-muted small mt-3" data-animate>
-                * كل فيديو هنا محسوب Content Creation كامل (Concept + Shooting + Direction + On-camera + Edit).
-              </p>
             </div>
           </div>
-        </div>
-      </section>
 
-      <hr class="m-0" />
-
-      <!-- Experience -->
-      <section class="resume-section" id="experience">
-        <div class="resume-section-content">
-          <h2 class="mb-5" data-animate>Experience</h2>
-
-          <div class="d-flex flex-column flex-md-row justify-content-between mb-5" data-animate>
-            <div class="flex-grow-1">
-              <h3 class="mb-0">Video Editor · Videographer · Motion Graphics</h3>
-              <div class="subheading mb-3">Freelance / Projects</div>
-              <p class="mb-0">
-                I work as a Video Editor, Videographer, and Motion Graphics Artist, collaborating with content creators, brands, companies, conferences, and live events.
-                My work focuses on creating engaging and professional video content tailored for digital platforms and real-world productions.
-              </p>
-              <p class="mb-0 mt-3">
-                I specialize in editing short-form content (Shorts, Reels, and Ads), YouTube videos, and branded content, with strong attention to pacing, speed ramping, and dynamic transitions.
-                I also handle videography, color grading, motion graphics, and preparing videos optimized for social media platforms.
-              </p>
-              <p class="mb-0 mt-3">
-                In addition, I have experience in live streaming production and direction using OBS and vMix, as well as integrating AI tools into the video production workflow to enhance efficiency and creativity.
-              </p>
+          <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="edit">
+            <div class="video-card">
+              <div class="video-head">
+                <span class="chip chip-edit">Editing</span>
+                <span class="chip chip-ghost">Short</span>
+              </div>
+              <div class="ratio ratio-9x16 video-frame">
+                <iframe
+                  src="https://www.youtube.com/embed/0shWVNJMoVo"
+                  title="Editing Short 2"
+                  loading="lazy"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen></iframe>
+              </div>
+              <div class="video-meta">
+                <div class="video-title">Short Edit</div>
+                <div class="video-tags">Cuts • Energy • Beat sync</div>
+              </div>
             </div>
-            <div class="flex-shrink-0"><span class="text-primary">2020 – Present</span></div>
           </div>
+
+          <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="edit">
+            <div class="video-card">
+              <div class="video-head">
+                <span class="chip chip-edit">Editing</span>
+                <span class="chip chip-ghost">Short</span>
+              </div>
+              <div class="ratio ratio-9x16 video-frame">
+                <iframe
+                  src="https://www.youtube.com/embed/mYQBfzR22TQ"
+                  title="Editing Short 3"
+                  loading="lazy"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen></iframe>
+              </div>
+              <div class="video-meta">
+                <div class="video-title">Short Edit</div>
+                <div class="video-tags">Timing • Motion • Flow</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="edit">
+            <div class="video-card">
+              <div class="video-head">
+                <span class="chip chip-edit">Editing</span>
+                <span class="chip chip-ghost">Short</span>
+              </div>
+              <div class="ratio ratio-9x16 video-frame">
+                <iframe
+                  src="https://www.youtube.com/embed/Juso-cC3Xd4"
+                  title="Editing Short 4"
+                  loading="lazy"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen></iframe>
+              </div>
+              <div class="video-meta">
+                <div class="video-title">Short Edit</div>
+                <div class="video-tags">Speed • Cuts • Punchy delivery</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- (لو عندك YouTube edits حطهم هنا data-kind="youtube") -->
         </div>
-      </section>
+      </div>
+
+      <!-- =========================
+           TAB 2: CONTENT CREATION
+           ========================= -->
+      <div class="tab-pane fade" id="tab-create" role="tabpanel" aria-labelledby="create-tab" tabindex="0">
+        <div class="smart-card p-3 p-md-4 mb-4" data-animate>
+          <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+            <div>
+              <h3 class="h5 mb-1">Content Creation (End-to-End)</h3>
+              <div class="text-muted">Concept • Shooting • Direction • On-camera • Editing</div>
+            </div>
+            <span class="type-badge type-create"><i class="fa-solid fa-camera me-2"></i>Creator</span>
+          </div>
+          <p class="mb-0">
+            Projects I created from scratch—idea, script, filming, directing, on-camera delivery, and editing.
+          </p>
+        </div>
+
+        <!-- Filters -->
+        <div class="portfolio-filters mb-3" data-animate data-filter-group="create">
+          <button class="filter-btn is-active" type="button" data-filter="all">All</button>
+          <button class="filter-btn" type="button" data-filter="short">Shorts</button>
+          <button class="filter-btn" type="button" data-filter="youtube">YouTube</button>
+        </div>
+
+        <div class="row g-4" data-animate>
+          <!-- CC: Shorts -->
+          <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="create">
+            <div class="video-card">
+              <div class="video-head">
+                <span class="chip chip-create">Creator</span>
+                <span class="chip chip-ghost">Short</span>
+              </div>
+              <div class="ratio ratio-9x16 video-frame">
+                <iframe
+                  src="https://www.youtube.com/embed/hwqzvZyO-54"
+                  title="Content Creation Short 1"
+                  loading="lazy"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen></iframe>
+              </div>
+              <div class="video-meta">
+                <div class="video-title">On-camera Short</div>
+                <div class="video-tags">Hook • Delivery • Story</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="create">
+            <div class="video-card">
+              <div class="video-head">
+                <span class="chip chip-create">Creator</span>
+                <span class="chip chip-ghost">Short</span>
+              </div>
+              <div class="ratio ratio-9x16 video-frame">
+                <iframe
+                  src="https://www.youtube.com/embed/qcDr3tEWJzE"
+                  title="Content Creation Short 2"
+                  loading="lazy"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen></iframe>
+              </div>
+              <div class="video-meta">
+                <div class="video-title">On-camera Short</div>
+                <div class="video-tags">Concept • Shooting • Edit</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="create">
+            <div class="video-card">
+              <div class="video-head">
+                <span class="chip chip-create">Creator</span>
+                <span class="chip chip-ghost">Short</span>
+              </div>
+              <div class="ratio ratio-9x16 video-frame">
+                <iframe
+                  src="https://www.youtube.com/embed/5IXdCBKqc-k"
+                  title="Content Creation Short 3"
+                  loading="lazy"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen></iframe>
+              </div>
+              <div class="video-meta">
+                <div class="video-title">On-camera Short</div>
+                <div class="video-tags">Direction • Performance • Pace</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="create">
+            <div class="video-card">
+              <div class="video-head">
+                <span class="chip chip-create">Creator</span>
+                <span class="chip chip-ghost">Short</span>
+              </div>
+              <div class="ratio ratio-9x16 video-frame">
+                <iframe
+                  src="https://www.youtube.com/embed/BznO4vpu6oA"
+                  title="Content Creation Short 4"
+                  loading="lazy"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen></iframe>
+              </div>
+              <div class="video-meta">
+                <div class="video-title">On-camera Short</div>
+                <div class="video-tags">Script • Shoot • Edit</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CC: YouTube -->
+          <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="youtube" data-group="create">
+            <div class="video-card">
+              <div class="video-head">
+                <span class="chip chip-create">Creator</span>
+                <span class="chip chip-ghost">YouTube</span>
+              </div>
+              <div class="ratio ratio-16x9 video-frame">
+                <iframe
+                  src="https://www.youtube.com/embed/XD0AC8IM47E"
+                  title="Content Creation YouTube 1"
+                  loading="lazy"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen></iframe>
+              </div>
+              <div class="video-meta">
+                <div class="video-title">YouTube Project</div>
+                <div class="video-tags">Concept • Production • Edit</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="youtube" data-group="create">
+            <div class="video-card">
+              <div class="video-head">
+                <span class="chip chip-create">Creator</span>
+                <span class="chip chip-ghost">YouTube</span>
+              </div>
+              <div class="ratio ratio-16x9 video-frame">
+                <iframe
+                  src="https://www.youtube.com/embed/0ZDJulsMbpY"
+                  title="Content Creation YouTube 2"
+                  loading="lazy"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen></iframe>
+              </div>
+              <div class="video-meta">
+                <div class="video-title">YouTube Project</div>
+                <div class="video-tags">Story • Shoot • Edit</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="youtube" data-group="create">
+            <div class="video-card">
+              <div class="video-head">
+                <span class="chip chip-create">Creator</span>
+                <span class="chip chip-ghost">YouTube</span>
+              </div>
+              <div class="ratio ratio-16x9 video-frame">
+                <iframe
+                  src="https://www.youtube.com/embed/9UsZ7roRvlk"
+                  title="Content Creation YouTube 3"
+                  loading="lazy"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen></iframe>
+              </div>
+              <div class="video-meta">
+                <div class="video-title">YouTube Project</div>
+                <div class="video-tags">Direction • Editing • Delivery</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="youtube" data-group="create">
+            <div class="video-card">
+              <div class="video-head">
+                <span class="chip chip-create">Creator</span>
+                <span class="chip chip-ghost">YouTube</span>
+              </div>
+              <div class="ratio ratio-16x9 video-frame">
+                <iframe
+                  src="https://www.youtube.com/embed/Mw-XSyH3xNQ"
+                  title="Content Creation YouTube 4"
+                  loading="lazy"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen></iframe>
+              </div>
+              <div class="video-meta">
+                <div class="video-title">YouTube Project</div>
+                <div class="video-tags">Production • Edit • Platform ready</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="youtube" data-group="create">
+            <div class="video-card">
+              <div class="video-head">
+                <span class="chip chip-create">Creator</span>
+                <span class="chip chip-ghost">YouTube</span>
+              </div>
+              <div class="ratio ratio-16x9 video-frame">
+                <iframe
+                  src="https://www.youtube.com/embed/SnYlYmBOFgk"
+                  title="Content Creation YouTube 5"
+                  loading="lazy"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen></iframe>
+              </div>
+              <div class="video-meta">
+                <div class="video-title">YouTube Project</div>
+                <div class="video-tags">Concept • Execution • Edit</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
 
       <hr class="m-0" />
 
