@@ -417,3 +417,128 @@ hr.m-0{
     transition: none !important;
   }
 }
+/* =========================================
+   Buttons / Filters stronger
+   ========================================= */
+.smart-tabs .nav-link{
+  padding: 12px 16px;
+  font-weight: 900;
+  letter-spacing: .3px;
+  box-shadow: 0 10px 22px rgba(0,0,0,0.10);
+}
+.smart-tabs .nav-link.active{
+  box-shadow: 0 16px 36px rgba(0,0,0,0.14);
+}
+
+.filter-btn{
+  padding: 10px 14px;
+  font-weight: 900;
+  box-shadow: 0 10px 18px rgba(0,0,0,0.08);
+  cursor: pointer;
+}
+.filter-btn:active{ transform: translateY(0); }
+.filter-btn.is-active{
+  background: rgba(189,93,56,0.16);
+  border-color: rgba(189,93,56,0.55);
+  box-shadow: 0 14px 30px rgba(0,0,0,0.14);
+}
+
+/* =========================================
+   Mobile menu (hamburger) drawer style
+   ========================================= */
+@media (max-width: 991.98px){
+  #sideNav{
+    position: sticky;
+    top: 0;
+    z-index: 1050;
+  }
+
+  /* make collapse look like a drawer */
+  #navbarResponsive{
+    background: var(--accent);
+    border-top: 1px solid rgba(255,255,255,0.18);
+    border-radius: 0 0 16px 16px;
+    box-shadow: 0 18px 44px rgba(0,0,0,0.22);
+    padding: 12px 14px 16px;
+  }
+
+  #sideNav .navbar-nav .nav-link{
+    padding: 12px 10px;
+    border-radius: 12px;
+  }
+  #sideNav .navbar-nav .nav-link:hover{
+    background: rgba(255,255,255,0.12);
+  }
+}
+
+/* =========================================
+   Shorts as thumbnails (no tall iframes)
+   ========================================= */
+.video-thumb{
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.08);
+  background: rgba(0,0,0,0.04);
+  aspect-ratio: 1 / 1; /* square = nicer grid */
+  cursor: pointer;
+  transform: translateZ(0);
+}
+
+.video-thumb::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-size: cover;
+  background-position: center;
+  filter: saturate(1.05) contrast(1.02);
+  transform: scale(1.02);
+}
+
+.video-thumb::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.00), rgba(0,0,0,0.38));
+  opacity: 0;
+  transition: opacity .22s ease;
+}
+
+.video-thumb .play{
+  position:absolute;
+  left: 12px;
+  bottom: 12px;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  display:grid;
+  place-items:center;
+  background: rgba(255,255,255,0.90);
+  border: 1px solid rgba(0,0,0,0.10);
+  box-shadow: 0 14px 30px rgba(0,0,0,0.22);
+  font-weight: 900;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity .22s ease, transform .22s ease;
+}
+
+.video-thumb:hover::after{ opacity: 1; }
+.video-thumb:hover .play{ opacity: 1; transform: translateY(0); }
+
+/* =========================================
+   Modal video nicer
+   ========================================= */
+.video-modal .modal-content{
+  border-radius: 18px;
+  overflow: hidden;
+}
+.video-modal .modal-body{
+  padding: 0;
+  background: #000;
+}
+.video-modal iframe{
+  width: 100%;
+  height: min(72vh, 720px);
+  border: 0;
+  display:block;
+}
