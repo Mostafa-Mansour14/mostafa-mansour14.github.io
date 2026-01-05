@@ -22,7 +22,6 @@
 
   <body id="page-top">
     <!-- Navigation -->
-    <!-- ✅ مهم: شيلنا fixed-top -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary" id="sideNav">
       <a class="navbar-brand js-scroll-trigger" href="#page-top">
         <span class="d-block d-lg-none">Mostafa Mansour</span>
@@ -31,11 +30,11 @@
         </span>
       </a>
 
+      <!-- ✅ Important: NO data-bs-toggle / NO data-bs-target -->
       <button
         class="navbar-toggler"
+        id="navToggler"
         type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarResponsive"
         aria-controls="navbarResponsive"
         aria-expanded="false"
         aria-label="Toggle navigation">
@@ -141,7 +140,7 @@
 
           <p class="mb-4" data-animate>
             A focused selection of my work—organized into <strong>Video Editing</strong> and <strong>Content Creation</strong>.
-            Shorts are displayed as clean thumbnails and open in a popup player.
+            Shorts open in a popup player.
           </p>
 
           <!-- Tabs -->
@@ -159,7 +158,7 @@
           </ul>
 
           <div class="tab-content" id="portfolioTabsContent">
-            <!-- TAB 1: VIDEO EDITING -->
+            <!-- TAB 1 -->
             <div class="tab-pane fade show active" id="tab-edit" role="tabpanel" aria-labelledby="edit-tab" tabindex="0">
               <div class="smart-card p-3 p-md-4 mb-4" data-animate>
                 <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
@@ -172,7 +171,6 @@
                 <p class="mb-0">Selected edits that highlight rhythm, transitions, and platform-optimized delivery.</p>
               </div>
 
-              <!-- Filters -->
               <div class="portfolio-filters mb-3" data-animate data-filter-group="edit">
                 <button class="filter-btn is-active" type="button" data-filter="all">All</button>
                 <button class="filter-btn" type="button" data-filter="short">Shorts</button>
@@ -180,7 +178,6 @@
               </div>
 
               <div class="row g-4" data-animate>
-                <!-- Shorts -->
                 <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="edit">
                   <div class="video-card">
                     <div class="video-head">
@@ -236,12 +233,10 @@
                     </div>
                   </div>
                 </div>
-
-                <!-- ✅ لو عندك YouTube Edits ضيفهم هنا data-kind="youtube" -->
               </div>
             </div>
 
-            <!-- TAB 2: CONTENT CREATION -->
+            <!-- TAB 2 -->
             <div class="tab-pane fade" id="tab-create" role="tabpanel" aria-labelledby="create-tab" tabindex="0">
               <div class="smart-card p-3 p-md-4 mb-4" data-animate>
                 <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
@@ -254,7 +249,6 @@
                 <p class="mb-0">Projects I created from scratch—idea, filming, directing, on-camera delivery, and editing.</p>
               </div>
 
-              <!-- Filters -->
               <div class="portfolio-filters mb-3" data-animate data-filter-group="create">
                 <button class="filter-btn is-active" type="button" data-filter="all">All</button>
                 <button class="filter-btn" type="button" data-filter="short">Shorts</button>
@@ -262,7 +256,6 @@
               </div>
 
               <div class="row g-4" data-animate>
-                <!-- Shorts -->
                 <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="create">
                   <div class="video-card">
                     <div class="video-head">
@@ -319,7 +312,7 @@
                   </div>
                 </div>
 
-                <!-- YouTube (16:9) -->
+                <!-- YouTube -->
                 <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="youtube" data-group="create">
                   <div class="video-card">
                     <div class="video-head">
@@ -329,7 +322,7 @@
                     <div class="ratio ratio-16x9 video-frame">
                       <iframe
                         src="https://www.youtube.com/embed/XD0AC8IM47E"
-                        title="Content Creation YouTube 1"
+                        title="YouTube 1"
                         loading="lazy"
                         referrerpolicy="strict-origin-when-cross-origin"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -351,7 +344,7 @@
                     <div class="ratio ratio-16x9 video-frame">
                       <iframe
                         src="https://www.youtube.com/embed/0ZDJulsMbpY"
-                        title="Content Creation YouTube 2"
+                        title="YouTube 2"
                         loading="lazy"
                         referrerpolicy="strict-origin-when-cross-origin"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -373,7 +366,7 @@
                     <div class="ratio ratio-16x9 video-frame">
                       <iframe
                         src="https://www.youtube.com/embed/9UsZ7roRvlk"
-                        title="Content Creation YouTube 3"
+                        title="YouTube 3"
                         loading="lazy"
                         referrerpolicy="strict-origin-when-cross-origin"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -395,7 +388,7 @@
                     <div class="ratio ratio-16x9 video-frame">
                       <iframe
                         src="https://www.youtube.com/embed/Mw-XSyH3xNQ"
-                        title="Content Creation YouTube 4"
+                        title="YouTube 4"
                         loading="lazy"
                         referrerpolicy="strict-origin-when-cross-origin"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -417,7 +410,7 @@
                     <div class="ratio ratio-16x9 video-frame">
                       <iframe
                         src="https://www.youtube.com/embed/SnYlYmBOFgk"
-                        title="Content Creation YouTube 5"
+                        title="YouTube 5"
                         loading="lazy"
                         referrerpolicy="strict-origin-when-cross-origin"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -433,6 +426,7 @@
               </div>
             </div>
           </div>
+
         </div>
       </section>
 
@@ -480,18 +474,6 @@
             <li><span class="fa-li"><i class="fas fa-check"></i></span>Adobe Photoshop</li>
             <li><span class="fa-li"><i class="fas fa-check"></i></span>Adobe Lightroom</li>
             <li><span class="fa-li"><i class="fas fa-check"></i></span>OBS Studio &amp; vMix (Live Production)</li>
-          </ul>
-
-          <div class="subheading mb-3" data-animate>Editing &amp; Creative Skills</div>
-          <ul class="fa-ul mb-0" data-animate>
-            <li><span class="fa-li"><i class="fas fa-check"></i></span>Short-form editing (Shorts / Reels / Ads)</li>
-            <li><span class="fa-li"><i class="fas fa-check"></i></span>YouTube video editing (long-form &amp; highlights)</li>
-            <li><span class="fa-li"><i class="fas fa-check"></i></span>Speed ramping &amp; dynamic transitions</li>
-            <li><span class="fa-li"><i class="fas fa-check"></i></span>Color grading &amp; color correction</li>
-            <li><span class="fa-li"><i class="fas fa-check"></i></span>Motion graphics &amp; animated text</li>
-            <li><span class="fa-li"><i class="fas fa-check"></i></span>Sound design &amp; audio cleanup</li>
-            <li><span class="fa-li"><i class="fas fa-check"></i></span>Social media–optimized exports</li>
-            <li><span class="fa-li"><i class="fas fa-check"></i></span>AI tools in video production workflows</li>
           </ul>
         </div>
       </section>
