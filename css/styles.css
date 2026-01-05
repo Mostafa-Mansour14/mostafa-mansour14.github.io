@@ -11088,3 +11088,136 @@ section.resume-section .resume-section-content {
 .ratio-9x16 {
   --bs-aspect-ratio: 177.7778%; /* (16 / 9) * 100 */
 }
+/* =========================
+   Pro polish + Animations
+   ========================= */
+
+/* Smooth scroll */
+html { scroll-behavior: smooth; }
+
+/* Better section jump with fixed nav */
+.resume-section { scroll-margin-top: 90px; }
+
+/* Subtle background glow */
+body {
+  background: radial-gradient(1200px 600px at 20% 10%, rgba(189, 93, 56, 0.10), transparent 60%),
+              radial-gradient(900px 500px at 90% 30%, rgba(189, 93, 56, 0.08), transparent 55%),
+              #fff;
+}
+
+/* Make About title area feel premium */
+.hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 14px 0 20px;
+}
+
+.hero-badge {
+  border: 1px solid rgba(0,0,0,0.08);
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(6px);
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+}
+
+/* Two main tracks cards */
+.track-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.track-card {
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 18px;
+  padding: 18px;
+  background: rgba(255,255,255,0.85);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+
+.track-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 40px rgba(0,0,0,0.09);
+  border-color: rgba(189,93,56,0.35);
+}
+
+.track-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.track-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: rgba(189, 93, 56, 0.12);
+  color: #bd5d38;
+  font-size: 18px;
+}
+
+.track-list {
+  margin: 0;
+  padding-left: 18px;
+  color: #444;
+}
+
+.track-list li { margin-bottom: 8px; }
+
+/* Social icons: modern spacing */
+.social-icons{
+  display:flex;
+  flex-wrap:wrap;
+  gap:14px;
+  align-items:center;
+}
+.social-icons .social-icon{
+  margin-right:0 !important;
+  transition: transform .18s ease, background-color .18s ease;
+}
+.social-icons .social-icon:hover{
+  transform: translateY(-2px);
+}
+
+/* =========================
+   Reveal animation system
+   Use: data-animate="up" or "fade"
+   ========================= */
+[data-animate]{
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity .6s ease, transform .6s ease;
+  transition-delay: var(--d, 0ms);
+}
+
+[data-animate="fade"]{
+  transform: translateY(0);
+}
+
+.is-visible[data-animate]{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Text micro-animation (subtle) */
+[data-animate="text"]{
+  opacity: 0;
+  transform: translateY(10px);
+}
+.is-visible[data-animate="text"]{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Mobile */
+@media (max-width: 768px){
+  .track-grid { grid-template-columns: 1fr; }
+  .hero-badge { font-size: 0.85rem; }
+}
