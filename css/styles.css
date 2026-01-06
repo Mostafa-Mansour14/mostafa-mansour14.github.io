@@ -712,3 +712,73 @@ body.modal-open{
 @media (max-width: 576px){
   .lightbox-nav{ width:42px; height:42px; font-size:28px; }
 }
+/* =========================
+   GALLERY AUTO (SAFE ADD)
+   ========================= */
+.gallery-zone{
+  filter:none !important;
+}
+
+.gallery-wrap{
+  border:1px solid rgba(0,0,0,0.09);
+  border-radius:18px;
+  background:#fff;
+  box-shadow:0 14px 34px rgba(0,0,0,.08);
+  padding:14px;
+}
+
+.gallery-scroller{
+  display:flex;
+  gap:18px;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  scrollbar-width:none;
+}
+.gallery-scroller::-webkit-scrollbar{ display:none; }
+
+.gallery-item{
+  flex:0 0 auto;
+  width:clamp(240px, 60vw, 420px);
+  aspect-ratio:4/5;
+  border-radius:18px;
+  overflow:hidden;
+  border:1px solid rgba(0,0,0,0.1);
+  scroll-snap-align:center;
+  background:#fff;
+}
+
+.gallery-item img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+}
+
+.gallery-controls{
+  display:flex;
+  gap:10px;
+}
+
+.gallery-btn{
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  border:1px solid rgba(0,0,0,0.12);
+  background:#fff;
+  cursor:pointer;
+}
+
+.gallery-dots{
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  margin-top:10px;
+}
+.gallery-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#ccc;
+}
+.gallery-dot.is-active{
+  background:#bd5d38;
+}
