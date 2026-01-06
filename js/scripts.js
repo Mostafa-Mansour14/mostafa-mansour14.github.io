@@ -1,14 +1,11 @@
 (() => {
   'use strict';
 
-  /* enable JS flag for animations */
-  document.documentElement.classList.add('js');
-
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
 
   /* -------------------------
-     Safety cleanup (modals)
+     Cleanup: stuck modal artifacts
   ------------------------- */
   function cleanupModalArtifacts() {
     document.body.classList.remove('modal-open');
@@ -18,20 +15,24 @@
   }
 
   /* -------------------------
-     Reveal animation
-  ------------------------- */
+     Reveal animation for [data-animate]
+ ------------------------- */
   function initReveal() {
     const items = $$('[data-animate]');
     if (!items.length) return;
 
-    items.forEach((el, i) =>
-      el.style.setProperty('--d', `${Math.min(i * 55, 450)}ms`)
-    );
+    items.forEach((el, i) => {
+      el.style.setProperty('--d', `${Math.min(i * 55, 450)}ms`);
+    });
 
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (!e.isIntersecting) return;
         e.target.classList.add('is-visible');
+
+        // also underline section headings when visible
+        if (e.target.matches('h2')) e.target.classList.add('is-visible');
+
         io.unobserve(e.target);
       });
     }, { threshold: 0.15 });
@@ -40,192 +41,142 @@
   }
 
   /* -------------------------
-     Mobile menu (stable)
-  ------------------------- */
+     Mobile menu: auto close on click/outside/resizes
+ ------------------------- */
   function initMobileMenu() {
-    const collapseEl = $('#navbarResponsive');
-    const toggler = $('#navToggler') || $('.navbar-toggler');
-    if (!collapseEl || !toggler || !window.bootstrap) return;
+    const navCollapseEl = $('#navbarResponsive');
+    const navToggler = $('.navbar-toggler');
+    if (!navCollapseEl || !navToggler || !window.bootstrap) return;
 
     const collapse =
-      bootstrap.Collapse.getInstance(collapseEl) ||
-      new bootstrap.Collapse(collapseEl, { toggle: false });
+      bootstrap.Collapse.getInstance(navCollapseEl) ||
+      new bootstrap.Collapse(navCollapseEl, { toggle: false });
 
-    let backdrop = $('.nav-backdrop');
-    if (!backdrop) {
-      backdrop = document.createElement('div');
-      backdrop.className = 'nav-backdrop';
-      document.body.appendChild(backdrop);
-    }
+    // Ensure starts closed on load (mobile)
+    collapse.hide();
+    navCollapseEl.classList.remove('show');
+    navToggler.setAttribute('aria-expanded', 'false');
 
-    function isMobile() {
-      return window.getComputedStyle(toggler).display !== 'none';
-    }
-
-    function setNavHeight() {
-      const nav = $('#sideNav');
-      const h = nav ? nav.getBoundingClientRect().height : 64;
-      document.documentElement.style.setProperty('--nav-h', `${Math.ceil(h)}px`);
-    }
-
-    function openMenu() {
-      setNavHeight();
-      collapse.show();
-      backdrop.classList.add('is-active');
-      toggler.setAttribute('aria-expanded', 'true');
-    }
-
-    function closeMenu() {
-      collapse.hide();
-      backdrop.classList.remove('is-active');
-      toggler.setAttribute('aria-expanded', 'false');
-    }
-
-    toggler.addEventListener('click', (e) => {
-      e.preventDefault();
-      collapseEl.classList.contains('show') ? closeMenu() : openMenu();
-    });
-
-    backdrop.addEventListener('click', closeMenu);
-
-    $$('#navbarResponsive .nav-link').forEach(link => {
+    // Close on nav link click (mobile only)
+    $$('#navbarResponsive .nav-link').forEach((link) => {
       link.addEventListener('click', () => {
-        if (isMobile()) closeMenu();
+        const isMobile = window.getComputedStyle(navToggler).display !== 'none';
+        if (isMobile) collapse.hide();
       });
     });
 
-    window.addEventListener('resize', () => {
-      setNavHeight();
-      if (!isMobile()) closeMenu();
+    // Close if click outside
+    document.addEventListener('click', (e) => {
+      const isMobile = window.getComputedStyle(navToggler).display !== 'none';
+      if (!isMobile) return;
+
+      const clickedInsideMenu = navCollapseEl.contains(e.target);
+      const clickedToggler = navToggler.contains(e.target);
+      if (!clickedInsideMenu && !clickedToggler) collapse.hide();
     });
 
-    setNavHeight();
+    // Close when switching to desktop
+    window.addEventListener('resize', () => {
+      const isMobile = window.getComputedStyle(navToggler).display !== 'none';
+      if (!isMobile) collapse.hide();
+    });
   }
 
   /* -------------------------
      Portfolio filters
-  ------------------------- */
+ ------------------------- */
   function initPortfolioFilters() {
-    function apply(group, kind) {
-      $$(`.portfolio-item[data-group="${group}"]`).forEach(item => {
-        const show = kind === 'all' || item.dataset.kind === kind;
+    function applyFilter(group, kind) {
+      $$(`.portfolio-item[data-group="${group}"]`).forEach((item) => {
+        const show = (kind === 'all') || (item.dataset.kind === kind);
         item.classList.toggle('is-hidden', !show);
       });
     }
 
-    $$('[data-filter-group]').forEach(wrap => {
-      const group = wrap.dataset.filterGroup;
+    $$('[data-filter-group]').forEach((wrap) => {
+      const group = wrap.getAttribute('data-filter-group');
       const buttons = $$('.filter-btn', wrap);
 
-      buttons.forEach(btn => {
+      buttons.forEach((btn) => {
         btn.addEventListener('click', () => {
-          buttons.forEach(b => b.classList.remove('is-active'));
+          buttons.forEach((b) => b.classList.remove('is-active'));
           btn.classList.add('is-active');
-          apply(group, btn.dataset.filter || 'all');
+          applyFilter(group, btn.getAttribute('data-filter') || 'all');
         });
       });
 
-      apply(group, 'all');
+      applyFilter(group, 'all');
     });
   }
 
   /* -------------------------
-     Video modal
-  ------------------------- */
-  function initVideoModal() {
+     Video thumbs -> Modal player
+ ------------------------- */
+  function initVideoThumbsAndModal() {
     const modalEl = $('#videoModal');
-    const player = $('#modalPlayer');
-    if (!modalEl || !player || !window.bootstrap) return;
+    const modalPlayer = $('#modalPlayer');
+    const modal = (modalEl && window.bootstrap) ? new bootstrap.Modal(modalEl) : null;
 
-    const modal =
-      bootstrap.Modal.getInstance(modalEl) ||
-      new bootstrap.Modal(modalEl);
+    // Build thumbnails
+    $$('.video-thumb[data-video]').forEach((thumb) => {
+      const id = thumb.getAttribute('data-video');
+      if (!id) return;
 
-    $$('.video-thumb[data-video]').forEach(thumb => {
-      const id = thumb.dataset.video;
-      thumb.style.setProperty(
-        '--thumb',
-        `url('https://i.ytimg.com/vi/${id}/hqdefault.jpg')`
-      );
+      thumb.style.setProperty('--thumb', `url('https://i.ytimg.com/vi/${id}/hqdefault.jpg')`);
       thumb.classList.add('has-thumb');
+
       thumb.addEventListener('click', () => {
+        if (!modal || !modalPlayer) return;
         cleanupModalArtifacts();
-        player.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
+        modalPlayer.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
         modal.show();
       });
     });
 
-    modalEl.addEventListener('hidden.bs.modal', () => {
-      player.src = '';
-      cleanupModalArtifacts();
+    // On close: stop video + cleanup
+    if (modalEl && modalPlayer) {
+      modalEl.addEventListener('hidden.bs.modal', () => {
+        modalPlayer.src = '';
+        cleanupModalArtifacts();
+      });
+    }
+
+    // ESC safety
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') cleanupModalArtifacts();
     });
   }
 
   /* -------------------------
-     Gallery (horizontal RTL)
-  ------------------------- */
-  function initGallery() {
-  const scroller = document.querySelector('[data-gallery-scroller]');
-  if (!scroller) return;
+     Gallery buttons (no blur, portrait-friendly)
+ ------------------------- */
+  function initGalleryButtons() {
+    const scroller = $('[data-gallery-scroller]');
+    if (!scroller) return;
 
-  const items = Array.from(scroller.querySelectorAll('.gallery-item'));
-  const prev = document.querySelector('[data-gallery-prev]');
-  const next = document.querySelector('[data-gallery-next]');
+    const prev = $('[data-gallery-prev]');
+    const next = $('[data-gallery-next]');
 
-  // helper: closest to center
-  const setActiveByCenter = () => {
-    const rect = scroller.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
+    const getStep = () => {
+      const item = scroller.querySelector('.gallery-item');
+      if (!item) return 320;
+      const w = item.getBoundingClientRect().width;
+      const gap = parseFloat(getComputedStyle(scroller).gap || '14') || 14;
+      return Math.round(w + gap);
+    };
 
-    let best = null;
-    let bestDist = Infinity;
+    const move = (dir) => scroller.scrollBy({ left: dir * getStep(), behavior: 'smooth' });
 
-    items.forEach((el) => {
-      const r = el.getBoundingClientRect();
-      const elCenter = r.left + r.width / 2;
-      const d = Math.abs(centerX - elCenter);
-      if (d < bestDist) {
-        bestDist = d;
-        best = el;
-      }
-    });
+    prev?.addEventListener('click', () => move(-1));
+    next?.addEventListener('click', () => move(1));
+  }
 
-    items.forEach((el) => el.classList.toggle('is-active', el === best));
-    return best;
-  };
-
-  const scrollToItem = (el) => {
-    if (!el) return;
-    const left = el.offsetLeft - (scroller.clientWidth - el.clientWidth) / 2;
-    scroller.scrollTo({ left, behavior: 'smooth' });
-  };
-
-  const getActive = () => items.find(i => i.classList.contains('is-active')) || items[0];
-
-  const move = (dir) => {
-    const active = getActive();
-    const idx = Math.max(0, items.indexOf(active));
-    const nextIdx = Math.min(items.length - 1, Math.max(0, idx + dir));
-    scrollToItem(items[nextIdx]);
-  };
-
-  prev?.addEventListener('click', () => move(-1));
-  next?.addEventListener('click', () => move(1));
-
-  // update active while scrolling (throttled)
-  let raf = 0;
-  scroller.addEventListener('scroll', () => {
-    if (raf) cancelAnimationFrame(raf);
-    raf = requestAnimationFrame(() => setActiveByCenter());
-  }, { passive: true });
-
-  // set initial active + center it
-  const first = setActiveByCenter();
-  // لو حابب يبدأ على أول صورة من غير ما يوسّط، امسح السطر اللي تحت
-  scrollToItem(first);
-
-  // When user clicks a card -> center it
-  items.forEach((item) => {
-    item.addEventListener('click', () => scrollToItem(item));
+  document.addEventListener('DOMContentLoaded', () => {
+    cleanupModalArtifacts();
+    initReveal();
+    initMobileMenu();
+    initPortfolioFilters();
+    initVideoThumbsAndModal();
+    initGalleryButtons();
   });
-}
+})();
