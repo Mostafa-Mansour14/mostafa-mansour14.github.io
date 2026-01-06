@@ -255,3 +255,4 @@
     window.addEventListener('hashchange', cleanupModalArtifacts);
   });
 })();
+
