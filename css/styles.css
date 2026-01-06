@@ -675,3 +675,26 @@ body.modal-open{
 @media (max-width: 576px){
   .gallery-hint{ display:none; }
 }
+/* =========================
+   HARD DESKTOP FIX (Stop rotation / wrong direction)
+   Put this at the VERY END of styles.css
+   ========================= */
+@media (min-width: 992px){
+  html, body{
+    transform: none !important;
+    rotate: 0deg !important;
+    writing-mode: horizontal-tb !important;
+    text-orientation: mixed !important;
+    direction: ltr !important;
+  }
+
+  /* reset any accidental transforms on layout wrappers */
+  .container-fluid,
+  #sideNav,
+  .resume-section,
+  .resume-section-content{
+    transform: none !important;
+    rotate: 0deg !important;
+    writing-mode: horizontal-tb !important;
+  }
+}
