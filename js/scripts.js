@@ -165,36 +165,67 @@
      Gallery (horizontal RTL)
   ------------------------- */
   function initGallery() {
-    const scroller = $('[data-gallery-scroller]');
-    if (!scroller) return;
+  const scroller = document.querySelector('[data-gallery-scroller]');
+  if (!scroller) return;
 
-    const prev = $('[data-gallery-prev]');
-    const next = $('[data-gallery-next]');
+  const items = Array.from(scroller.querySelectorAll('.gallery-item'));
+  const prev = document.querySelector('[data-gallery-prev]');
+  const next = document.querySelector('[data-gallery-next]');
 
-    const step = () => {
-      const item = scroller.querySelector('.gallery-item');
-      if (!item) return 320;
-      const gap = parseFloat(getComputedStyle(scroller).gap || '14');
-      return item.getBoundingClientRect().width + gap;
-    };
+  // helper: closest to center
+  const setActiveByCenter = () => {
+    const rect = scroller.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
 
-    const move = dir => {
-      scroller.scrollBy({ left: dir * step(), behavior: 'smooth' });
-    };
+    let best = null;
+    let bestDist = Infinity;
 
-    prev?.addEventListener('click', () => move(-1));
-    next?.addEventListener('click', () => move(1));
-  }
+    items.forEach((el) => {
+      const r = el.getBoundingClientRect();
+      const elCenter = r.left + r.width / 2;
+      const d = Math.abs(centerX - elCenter);
+      if (d < bestDist) {
+        bestDist = d;
+        best = el;
+      }
+    });
 
-  /* -------------------------
-     Init
-  ------------------------- */
-  document.addEventListener('DOMContentLoaded', () => {
-    cleanupModalArtifacts();
-    initReveal();
-    initMobileMenu();
-    initPortfolioFilters();
-    initVideoModal();
-    initGallery();
+    items.forEach((el) => el.classList.toggle('is-active', el === best));
+    return best;
+  };
+
+  const scrollToItem = (el) => {
+    if (!el) return;
+    const left = el.offsetLeft - (scroller.clientWidth - el.clientWidth) / 2;
+    scroller.scrollTo({ left, behavior: 'smooth' });
+  };
+
+  const getActive = () => items.find(i => i.classList.contains('is-active')) || items[0];
+
+  const move = (dir) => {
+    const active = getActive();
+    const idx = Math.max(0, items.indexOf(active));
+    const nextIdx = Math.min(items.length - 1, Math.max(0, idx + dir));
+    scrollToItem(items[nextIdx]);
+  };
+
+  prev?.addEventListener('click', () => move(-1));
+  next?.addEventListener('click', () => move(1));
+
+  // update active while scrolling (throttled)
+  let raf = 0;
+  scroller.addEventListener('scroll', () => {
+    if (raf) cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(() => setActiveByCenter());
+  }, { passive: true });
+
+  // set initial active + center it
+  const first = setActiveByCenter();
+  // لو حابب يبدأ على أول صورة من غير ما يوسّط، امسح السطر اللي تحت
+  scrollToItem(first);
+
+  // When user clicks a card -> center it
+  items.forEach((item) => {
+    item.addEventListener('click', () => scrollToItem(item));
   });
-})();
+}
