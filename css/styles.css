@@ -634,3 +634,9 @@ body.modal-open{
 @media (max-width: 576px){
   .gallery-btn{ width:42px; height:42px; }
 }
+/* EMERGENCY FIX: if JS fails, don't blur the whole site */
+[data-animate]{
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+}
