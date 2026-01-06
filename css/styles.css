@@ -711,3 +711,64 @@ body.modal-open{
 @media (max-width: 576px){
   .lightbox-nav{ width:42px; height:42px; font-size:28px; }
 }
+/* =========================
+   TOP NAV FIX (because CSS had #sideNav)
+   ========================= */
+.nav-max, .content-max{
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.page-wrap{
+  padding-top: 84px; /* space for fixed top navbar */
+  position: relative;
+}
+#topNav .nav-avatar{
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  object-fit: cover;
+  border: 2px solid rgba(255,255,255,0.35);
+}
+#topNav .brand-name{
+  font-weight: 900;
+  letter-spacing: .4px;
+  text-transform: uppercase;
+}
+@media (max-width: 991.98px){
+  .page-wrap{ padding-top: 76px; }
+}
+
+/* =========================
+   SUBTLE BACKGROUND ICONS
+   ========================= */
+.bg-icons{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: .14;
+}
+.bg-i{
+  position: absolute;
+  color: rgba(189,93,56,0.55);
+  filter: blur(.2px);
+  animation: bgFloat 10s ease-in-out infinite;
+}
+@keyframes bgFloat{
+  0%{ transform: translateY(0) rotate(0deg); opacity:.12; }
+  50%{ transform: translateY(-14px) rotate(6deg); opacity:.18; }
+  100%{ transform: translateY(0) rotate(0deg); opacity:.12; }
+}
+.bg-i-1{ left: 6%; top: 18%; font-size: 64px; animation-duration: 11s; }
+.bg-i-2{ left: 82%; top: 14%; font-size: 78px; animation-duration: 13s; }
+.bg-i-3{ left: 12%; top: 72%; font-size: 70px; animation-duration: 12s; }
+.bg-i-4{ left: 72%; top: 76%; font-size: 66px; animation-duration: 14s; }
+.bg-i-5{ left: 46%; top: 44%; font-size: 90px; animation-duration: 15s; }
+
+/* keep content above bg icons */
+.container.content-max{ position: relative; z-index: 1; }
+
+/* =========================
+   GALLERY: ensure no blur ever
+   ========================= */
+.gallery-zone, .gallery-zone *{ filter: none !important; }
