@@ -133,13 +133,47 @@ window.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('hashchange', () => forceCloseAnyModalArtifacts());
 
   // =========================
-  // GALLERY (JSON Auto) + Lightbox
   // =========================
-  const galleryZone = document.querySelector('[data-gallery]');
-  const scroller = document.getElementById('galleryScroller');
-  const dotsWrap = document.getElementById('galleryDots');
-  const prevBtn = document.querySelector('[data-gprev]');
-  const nextBtn = document.querySelector('[data-gnext]');
+// GALLERY (AUTO FROM JSON)
+// =========================
+async function initGalleryFromJson(){
+  const wrap=document.querySelector('[data-gallery]');
+  if(!wrap) return;
+
+  const jsonPath=wrap.dataset.galleryJson;
+  const scroller=document.getElementById('galleryScroller');
+  const dots=document.getElementById('galleryDots');
+  const prev=document.querySelector('[data-gprev]');
+  const next=document.querySelector('[data-gnext]');
+
+  let files=[];
+  try{
+    const res=await fetch(jsonPath,{cache:'no-store'});
+    files=await res.json();
+  }catch(e){ return; }
+
+  files=files.filter(f=>/\.(png|jpg|jpeg|webp|gif)$/i.test(f));
+  scroller.innerHTML='';
+  dots.innerHTML='';
+
+  files.forEach((file,i)=>{
+    const fig=document.createElement('figure');
+    fig.className='gallery-item'+(i===0?' is-active':'');
+
+    const img=document.createElement('img');
+    img.src=`assets/img/gallery/${file}`;
+    img.loading='lazy';
+
+    fig.appendChild(img);
+    scroller.appendChild(fig);
+
+    const dot=document.createElement('span');
+    dot.className='gallery-dot'+(i===0?' is-active':'');
+    dot.onclick=()=>fig.scrollIntoView({behavior:'smooth',inline:'center'});
+    dots.appendChild(dot);
+  });
+}
+initGalleryFromJson();
 
   // Lightbox
   const lb = document.getElementById('lightbox');
