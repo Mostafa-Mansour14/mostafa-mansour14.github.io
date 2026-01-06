@@ -2,7 +2,6 @@ window.addEventListener('DOMContentLoaded', () => {
   const navCollapseEl = document.getElementById('navbarResponsive');
   const navToggler = document.querySelector('.navbar-toggler');
 
-  // Bootstrap collapse instance
   let collapse = null;
   if (navCollapseEl && window.bootstrap) {
     collapse = bootstrap.Collapse.getInstance(navCollapseEl) || new bootstrap.Collapse(navCollapseEl, { toggle: false });
@@ -82,7 +81,7 @@ window.addEventListener('DOMContentLoaded', () => {
     thumb.addEventListener('click', () => openVideo(id));
   });
 
-  // Reveal on scroll (premium)
+  // Reveal
   const revealEls = document.querySelectorAll('[data-animate]');
   const io = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
