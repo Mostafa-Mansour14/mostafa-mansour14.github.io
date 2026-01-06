@@ -3,16 +3,28 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Mostafa Mansour — Video Editor & Content Creator. Portfolio, experience, skills, and contact." />
+    <meta
+      name="description"
+      content="Mostafa Mansour — Video Editor & Content Creator. Portfolio, experience, skills, and contact."
+    />
     <meta name="author" content="Mostafa Mansour" />
     <title>Mostafa Mansour | Video Editor & Content Creator</title>
 
     <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
 
-    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script
+      src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
+      crossorigin="anonymous"
+    ></script>
 
-    <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i"
+      rel="stylesheet"
+    />
 
     <link href="css/styles.css" rel="stylesheet" />
   </head>
@@ -310,7 +322,6 @@
                     </div>
                   </div>
 
-                  <!-- YouTube embeds (Add more if you want) -->
                   <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="youtube" data-group="create">
                     <div class="video-card">
                       <div class="video-head">
@@ -332,81 +343,52 @@
                       </div>
                     </div>
                   </div>
-
                 </div>
               </div>
             </div>
+
+            <!-- =========================
+                 GALLERY (Auto + Lightbox)
+                 ========================= -->
+            <div
+              class="mt-5 gallery-zone"
+              data-animate
+              data-gallery
+              data-gallery-json="assets/img/gallery/gallery.json"
+            >
+              <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+                <div>
+                  <h3 class="h4 mb-1">Concept Product Visualization</h3>
+                  <div class="text-muted">Branding • Product Design • Visual Direction</div>
+                </div>
+                <div class="gallery-controls">
+                  <button class="gallery-btn" type="button" data-gprev aria-label="Previous">
+                    <i class="fa-solid fa-chevron-left"></i>
+                  </button>
+                  <button class="gallery-btn" type="button" data-gnext aria-label="Next">
+                    <i class="fa-solid fa-chevron-right"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="gallery-wrap">
+                <div class="gallery-viewport">
+                  <div class="gallery-scroller" id="galleryScroller">
+                    <!-- Auto from gallery.json -->
+                  </div>
+                </div>
+                <div class="gallery-dots" id="galleryDots" aria-label="Gallery pagination"></div>
+              </div>
+            </div>
+
+            <!-- Lightbox -->
+            <div class="lightbox" id="lightbox" aria-hidden="true">
+              <button class="lightbox-close" type="button" aria-label="Close">×</button>
+              <button class="lightbox-nav prev" type="button" aria-label="Previous">‹</button>
+              <img class="lightbox-img" alt="" />
+              <button class="lightbox-nav next" type="button" aria-label="Next">›</button>
+            </div>
           </div>
-          <!-- =========================
-     GALLERY (Images Carousel)
-     Put this AFTER the videos inside #portfolio
-     ========================= -->
-<div class="mt-5" data-animate>
-  <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
-    <div>
-      <h3 class="h4 mb-1">Concept Product Visualization</h3>
-      <div class="text-muted">Branding • Product Design • Visual Direction</div>
-    </div>
-    <div class="gallery-controls">
-      <button class="gallery-btn" type="button" data-gprev aria-label="Previous">
-        <i class="fa-solid fa-chevron-left"></i>
-      </button>
-      <button class="gallery-btn" type="button" data-gnext aria-label="Next">
-        <i class="fa-solid fa-chevron-right"></i>
-      </button>
-    </div>
-  </div>
-
-  <div class="gallery-wrap">
-    <div class="gallery-viewport">
-      <div class="gallery-scroller" id="galleryScroller">
-        <!-- IMPORTANT: put your images here -->
-        <figure class="gallery-item is-active">
-          <img src="assets/img/gallery/mostafa-mansour_product_ (1).png" alt="Concept Product 1" loading="lazy" />
-        </figure>
-        <figure class="gallery-item">
-          <img src="assets/img/gallery/mostafa-mansour_product_ (2).png" alt="Concept Product 2" loading="lazy" />
-        </figure>
-        <figure class="gallery-item">
-          <img src="assets/img/gallery/mostafa-mansour_product_ (3).png" alt="Concept Product 3" loading="lazy" />
-        </figure>
-        <figure class="gallery-item">
-          <img src="assets/img/gallery/mostafa-mansour_product_ (4).png" alt="Concept Product 4" loading="lazy" />
-        </figure>
-        <figure class="gallery-item">
-          <img src="assets/img/gallery/mostafa-mansour_product_ (5).png" alt="Concept Product 5" loading="lazy" />
-        </figure>
-        <figure class="gallery-item">
-          <img src="assets/img/gallery/mostafa-mansour_product_ (6).png" alt="Concept Product 6" loading="lazy" />
-        </figure>
-        <figure class="gallery-item">
-          <img src="assets/img/gallery/mostafa-mansour_product_ (7).png" alt="Concept Product 7" loading="lazy" />
-        </figure>
-        <figure class="gallery-item">
-          <img src="assets/img/gallery/mostafa-mansour_product_ (8).png" alt="Concept Product 8" loading="lazy" />
-        </figure>
-        <figure class="gallery-item">
-          <img src="assets/img/gallery/mostafa-mansour_product_ (9).png" alt="Concept Product 9" loading="lazy" />
-        </figure>
-        <figure class="gallery-item">
-          <img src="assets/img/gallery/mostafa-mansour_product_ (10).png" alt="Concept Product 10" loading="lazy" />
-        </figure>
-        <figure class="gallery-item">
-          <img src="assets/img/gallery/mostafa-mansour_product_ (11).png" alt="Concept Product 11" loading="lazy" />
-        </figure>
-        <figure class="gallery-item">
-          <img src="assets/img/gallery/mostafa-mansour_product_ (12).png" alt="Concept Product 12" loading="lazy" />
-        </figure>
-        <figure class="gallery-item">
-          <img src="assets/img/gallery/mostafa-mansour_product_ (13).png" alt="Concept Product 13" loading="lazy" />
-        </figure>
-      </div>
-    </div>
-
-    <div class="gallery-dots" id="galleryDots" aria-label="Gallery pagination"></div>
-  </div>
-</div>
-
         </section>
 
         <hr class="m-0" />
