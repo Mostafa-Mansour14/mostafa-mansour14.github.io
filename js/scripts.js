@@ -26,7 +26,6 @@
         if (e.target.matches('.resume-section-content > h2')) {
           e.target.classList.add('is-visible');
         }
-
         io.unobserve(e.target);
       });
     }, { threshold: 0.15 });
@@ -125,6 +124,7 @@
     });
   }
 
+  // ✅ Premium Gallery: Auto-size based on each image ratio (perfect for Instagram portrait)
   function initGallery() {
     const scroller = $('[data-gallery-scroller]');
     if (!scroller) return;
@@ -136,7 +136,7 @@
     const next = $('[data-gallery-next]');
     const dotsWrap = $('[data-gallery-dots]');
 
-    // Build dots
+    // Dots
     if (dotsWrap) {
       dotsWrap.innerHTML = '';
       items.forEach((_, i) => {
@@ -147,10 +147,39 @@
       });
     }
 
-    const imageModalEl = $('#imageModal');
-    const imageModalImg = $('#imageModalImg');
-    const imageModal = (imageModalEl && window.bootstrap) ? new bootstrap.Modal(imageModalEl) : null;
+    // Auto size helper
+    function desiredHeightPx() {
+      const vh = window.innerHeight || 800;
+      // height for portrait: between 420 and 720 approx
+      return Math.max(420, Math.min(720, Math.round(vh * 0.62)));
+    }
 
+    function applyAutoSizes() {
+      const H = desiredHeightPx();
+
+      items.forEach((fig) => {
+        const img = $('img', fig);
+        if (!img) return;
+
+        // If not loaded yet, wait
+        const nw = img.naturalWidth || 0;
+        const nh = img.naturalHeight || 0;
+
+        // default portrait ratio if not ready
+        const ratio = (nw > 0 && nh > 0) ? (nw / nh) : (9 / 16);
+
+        // width based on height*ratio, clamp to keep it clean
+        const W = Math.max(240, Math.min(520, Math.round(H * ratio)));
+
+        fig.style.width = `${W}px`;
+        fig.style.height = `${H}px`;
+      });
+
+      // refresh active state after resize
+      setActiveByCenter();
+    }
+
+    // Active state by center
     function setActiveByCenter() {
       const rect = scroller.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
@@ -172,7 +201,6 @@
       if (dotsWrap) {
         Array.from(dotsWrap.children).forEach((dot, idx) => dot.classList.toggle('is-active', idx === bestIdx));
       }
-
       return bestIdx;
     }
 
@@ -186,51 +214,18 @@
       scrollToEl(items[idx]);
     }
 
-    // Buttons
     prev?.addEventListener('click', () => {
       const idx = setActiveByCenter();
       scrollToIndex(idx - 1);
     });
+
     next?.addEventListener('click', () => {
       const idx = setActiveByCenter();
       scrollToIndex(idx + 1);
     });
 
-    // Drag scroll (desktop)
-    let isDown = false;
-    let startX = 0;
-    let startScroll = 0;
-
-    scroller.addEventListener('mousedown', (e) => {
-      isDown = true;
-      startX = e.pageX;
-      startScroll = scroller.scrollLeft;
-    });
-    window.addEventListener('mouseup', () => { isDown = false; });
-    window.addEventListener('mousemove', (e) => {
-      if (!isDown) return;
-      e.preventDefault();
-      const dx = (e.pageX - startX);
-      scroller.scrollLeft = startScroll - dx;
-    });
-
-    // Wheel -> horizontal
-    scroller.addEventListener('wheel', (e) => {
-      if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
-      e.preventDefault();
-      scroller.scrollLeft += e.deltaY;
-    }, { passive: false });
-
-    // Click item => center, double click => open
-    items.forEach((fig) => {
-      fig.addEventListener('click', () => scrollToEl(fig));
-      fig.addEventListener('dblclick', () => {
-        const img = $('img', fig);
-        if (!img || !imageModal || !imageModalImg) return;
-        imageModalImg.src = img.src;
-        imageModal.show();
-      });
-    });
+    // click -> center
+    items.forEach((fig) => fig.addEventListener('click', () => scrollToEl(fig)));
 
     // Scroll updates active
     let raf = 0;
@@ -239,7 +234,33 @@
       raf = requestAnimationFrame(setActiveByCenter);
     }, { passive: true });
 
-    // Init
+    // wheel -> horizontal
+    scroller.addEventListener('wheel', (e) => {
+      if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+      e.preventDefault();
+      scroller.scrollLeft += e.deltaY;
+    }, { passive: false });
+
+    // Wait for images load to size perfectly
+    const imgs = items.map(fig => $('img', fig)).filter(Boolean);
+
+    let loadedCount = 0;
+    function onOneLoaded() {
+      loadedCount++;
+      // apply after few loads to avoid jitter
+      if (loadedCount >= Math.min(3, imgs.length)) applyAutoSizes();
+    }
+
+    imgs.forEach(img => {
+      if (img.complete && img.naturalWidth) onOneLoaded();
+      else img.addEventListener('load', onOneLoaded, { once: true });
+    });
+
+    // resize
+    window.addEventListener('resize', () => applyAutoSizes());
+
+    // initial
+    applyAutoSizes();
     setActiveByCenter();
     scrollToIndex(0);
   }
@@ -255,4 +276,3 @@
     window.addEventListener('hashchange', cleanupModalArtifacts);
   });
 })();
-
