@@ -4,9 +4,6 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
 
-  /* =========================================
-     SAFETY: remove stuck modal artifacts
-     ========================================= */
   function cleanupModalArtifacts() {
     document.body.classList.remove('modal-open');
     document.body.style.overflow = '';
@@ -14,9 +11,6 @@
     $$('.modal-backdrop').forEach(b => b.remove());
   }
 
-  /* =========================================
-     REVEAL animation for [data-animate]
-     ========================================= */
   function initReveal() {
     const items = $$('[data-animate]');
     if (!items.length) return;
@@ -27,7 +21,12 @@
       entries.forEach(e => {
         if (!e.isIntersecting) return;
         e.target.classList.add('is-visible');
-        if (e.target.matches('.resume-section-content > h2')) e.target.classList.add('is-visible');
+
+        // underline h2 titles
+        if (e.target.matches('.resume-section-content > h2')) {
+          e.target.classList.add('is-visible');
+        }
+
         io.unobserve(e.target);
       });
     }, { threshold: 0.15 });
@@ -35,9 +34,6 @@
     items.forEach(el => io.observe(el));
   }
 
-  /* =========================================
-     MOBILE MENU: auto close (click / outside / resize)
-     ========================================= */
   function initMobileMenu() {
     const navCollapseEl = $('#navbarResponsive');
     const navToggler = $('.navbar-toggler');
@@ -47,12 +43,10 @@
       bootstrap.Collapse.getInstance(navCollapseEl) ||
       new bootstrap.Collapse(navCollapseEl, { toggle: false });
 
-    // Start closed (mobile)
     collapse.hide();
     navCollapseEl.classList.remove('show');
     navToggler.setAttribute('aria-expanded', 'false');
 
-    // Close on nav link click (mobile only)
     $$('#navbarResponsive .nav-link').forEach((link) => {
       link.addEventListener('click', () => {
         const isMobile = window.getComputedStyle(navToggler).display !== 'none';
@@ -60,27 +54,21 @@
       });
     });
 
-    // Close if click outside
     document.addEventListener('click', (e) => {
       const isMobile = window.getComputedStyle(navToggler).display !== 'none';
       if (!isMobile) return;
 
       const clickedInsideMenu = navCollapseEl.contains(e.target);
       const clickedToggler = navToggler.contains(e.target);
-
       if (!clickedInsideMenu && !clickedToggler) collapse.hide();
     });
 
-    // Close when switching to desktop
     window.addEventListener('resize', () => {
       const isMobile = window.getComputedStyle(navToggler).display !== 'none';
       if (!isMobile) collapse.hide();
     });
   }
 
-  /* =========================================
-     PORTFOLIO FILTERS
-     ========================================= */
   function initPortfolioFilters() {
     function applyFilter(group, kind) {
       $$(`.portfolio-item[data-group="${group}"]`).forEach((item) => {
@@ -105,15 +93,11 @@
     });
   }
 
-  /* =========================================
-     VIDEO THUMBS => MODAL (YouTube)
-     ========================================= */
   function initVideoThumbsAndModal() {
     const modalEl = $('#videoModal');
     const modalPlayer = $('#modalPlayer');
     const modal = (modalEl && window.bootstrap) ? new bootstrap.Modal(modalEl) : null;
 
-    // Build thumbnails
     $$('.video-thumb[data-video]').forEach((thumb) => {
       const id = thumb.getAttribute('data-video');
       if (!id) return;
@@ -129,7 +113,6 @@
       });
     });
 
-    // On close: stop video + cleanup
     if (modalEl && modalPlayer) {
       modalEl.addEventListener('hidden.bs.modal', () => {
         modalPlayer.src = '';
@@ -137,44 +120,23 @@
       });
     }
 
-    // ESC safety
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') cleanupModalArtifacts();
     });
   }
 
-  /* =========================================
-     PREMIUM GALLERY (Center-focus + dots + drag + modal)
-     REQUIREMENTS in HTML:
-       - [data-gallery-scroller]
-       - .gallery-item img inside .gallery-media
-       - buttons: [data-gallery-prev], [data-gallery-next]
-       - dots container: [data-gallery-dots]
-       - image modal: #imageModal + #imageModalImg
-     ========================================= */
-  function initPremiumGallery() {
+  function initGallery() {
     const scroller = $('[data-gallery-scroller]');
-    if (!scroller) return; // gallery not added yet
+    if (!scroller) return;
 
-    const items = Array.from(scroller.querySelectorAll('.gallery-item'));
+    const items = $$('.gallery-item', scroller);
     if (!items.length) return;
 
     const prev = $('[data-gallery-prev]');
     const next = $('[data-gallery-next]');
     const dotsWrap = $('[data-gallery-dots]');
 
-    const modalEl = $('#imageModal');
-    const modalImg = $('#imageModalImg');
-    const imageModal = (modalEl && window.bootstrap) ? new bootstrap.Modal(modalEl) : null;
-
-    // set blurred background from image src
-    items.forEach((fig) => {
-      const img = $('img', fig);
-      const media = $('.gallery-media', fig);
-      if (img && media) media.style.setProperty('--bg', `url("${img.src}")`);
-    });
-
-    // dots
+    // Build dots
     if (dotsWrap) {
       dotsWrap.innerHTML = '';
       items.forEach((_, i) => {
@@ -185,51 +147,56 @@
       });
     }
 
-    const setActiveByCenter = () => {
+    const imageModalEl = $('#imageModal');
+    const imageModalImg = $('#imageModalImg');
+    const imageModal = (imageModalEl && window.bootstrap) ? new bootstrap.Modal(imageModalEl) : null;
+
+    function setActiveByCenter() {
       const rect = scroller.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
 
-      let best = null;
+      let bestIdx = 0;
       let bestDist = Infinity;
 
-      items.forEach((el) => {
+      items.forEach((el, idx) => {
         const r = el.getBoundingClientRect();
         const elCenter = r.left + r.width / 2;
-        const d = Math.abs(centerX - elCenter);
-        if (d < bestDist) { bestDist = d; best = el; }
+        const dist = Math.abs(centerX - elCenter);
+        if (dist < bestDist) {
+          bestDist = dist;
+          bestIdx = idx;
+        }
       });
 
-      items.forEach((el, idx) => {
-        const active = (el === best);
-        el.classList.toggle('is-active', active);
-        const dot = dotsWrap?.children?.[idx];
-        if (dot) dot.classList.toggle('is-active', active);
-      });
+      items.forEach((el, idx) => el.classList.toggle('is-active', idx === bestIdx));
+      if (dotsWrap) {
+        Array.from(dotsWrap.children).forEach((dot, idx) => dot.classList.toggle('is-active', idx === bestIdx));
+      }
 
-      return best;
-    };
+      return bestIdx;
+    }
 
-    const scrollToEl = (el) => {
-      if (!el) return;
+    function scrollToEl(el) {
       const left = el.offsetLeft - (scroller.clientWidth - el.clientWidth) / 2;
       scroller.scrollTo({ left, behavior: 'smooth' });
-    };
+    }
 
     function scrollToIndex(i) {
       const idx = Math.max(0, Math.min(items.length - 1, i));
       scrollToEl(items[idx]);
     }
 
-    function getActiveIndex() {
-      const idx = items.findIndex(i => i.classList.contains('is-active'));
-      return idx >= 0 ? idx : 0;
-    }
+    // Buttons
+    prev?.addEventListener('click', () => {
+      const idx = setActiveByCenter();
+      scrollToIndex(idx - 1);
+    });
+    next?.addEventListener('click', () => {
+      const idx = setActiveByCenter();
+      scrollToIndex(idx + 1);
+    });
 
-    // buttons
-    prev?.addEventListener('click', () => scrollToIndex(getActiveIndex() - 1));
-    next?.addEventListener('click', () => scrollToIndex(getActiveIndex() + 1));
-
-    // drag scroll (desktop)
+    // Drag scroll (desktop)
     let isDown = false;
     let startX = 0;
     let startScroll = 0;
@@ -239,9 +206,7 @@
       startX = e.pageX;
       startScroll = scroller.scrollLeft;
     });
-
     window.addEventListener('mouseup', () => { isDown = false; });
-
     window.addEventListener('mousemove', (e) => {
       if (!isDown) return;
       e.preventDefault();
@@ -249,52 +214,44 @@
       scroller.scrollLeft = startScroll - dx;
     });
 
-    // wheel -> horizontal (premium)
+    // Wheel -> horizontal
     scroller.addEventListener('wheel', (e) => {
       if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
       e.preventDefault();
       scroller.scrollLeft += e.deltaY;
     }, { passive: false });
 
-    // click to center / view
+    // Click item => center, double click => open
     items.forEach((fig) => {
-      fig.addEventListener('click', (e) => {
-        const viewBtn = e.target.closest('[data-gallery-view]');
+      fig.addEventListener('click', () => scrollToEl(fig));
+      fig.addEventListener('dblclick', () => {
         const img = $('img', fig);
-
-        if (viewBtn && img && imageModal && modalImg) {
-          modalImg.src = img.src;
-          imageModal.show();
-          return;
-        }
-        scrollToEl(fig);
+        if (!img || !imageModal || !imageModalImg) return;
+        imageModalImg.src = img.src;
+        imageModal.show();
       });
     });
 
-    // update active on scroll
+    // Scroll updates active
     let raf = 0;
     scroller.addEventListener('scroll', () => {
       if (raf) cancelAnimationFrame(raf);
       raf = requestAnimationFrame(setActiveByCenter);
     }, { passive: true });
 
-    // init
+    // Init
     setActiveByCenter();
     scrollToIndex(0);
   }
 
-  /* =========================================
-     START
-     ========================================= */
   document.addEventListener('DOMContentLoaded', () => {
     cleanupModalArtifacts();
     initReveal();
     initMobileMenu();
     initPortfolioFilters();
     initVideoThumbsAndModal();
-    initPremiumGallery();
+    initGallery();
 
-    // extra safety
     window.addEventListener('hashchange', cleanupModalArtifacts);
   });
 })();
