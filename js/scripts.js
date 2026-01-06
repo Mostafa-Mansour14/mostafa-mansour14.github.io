@@ -12,7 +12,6 @@ window.addEventListener('DOMContentLoaded', () => {
     document.body.style.paddingRight = '';
     document.body.style.filter = '';
   }
-
   forceCloseAnyModalArtifacts();
 
   document.addEventListener('keydown', (e) => {
@@ -30,7 +29,6 @@ window.addEventListener('DOMContentLoaded', () => {
     navToggler?.setAttribute('aria-expanded', 'false');
   }
 
-  // close on nav click
   document.querySelectorAll('#navbarResponsive .nav-link').forEach((link) => {
     link.addEventListener('click', () => {
       if (!navToggler) return;
@@ -39,7 +37,6 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // close on outside click
   document.addEventListener('click', (e) => {
     if (!navCollapseEl || !navToggler) return;
     const isMobile = window.getComputedStyle(navToggler).display !== 'none';
@@ -136,132 +133,166 @@ window.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('hashchange', () => forceCloseAnyModalArtifacts());
 
   // =========================
-  // GALLERY (Auto-build + easy add images)
+  // GALLERY (JSON Auto) + Lightbox
   // =========================
-
-  /**
-   * ✅ EASY ADD IMAGES:
-   * Just put images in: assets/img/gallery/
-   * and set COUNT below.
-   *
-   * Important: your file names have a space before (1)
-   * Example: "mostafa-mansour_product_ (1).png"
-   */
-  const GALLERY = {
-    folder: 'assets/img/gallery/',
-    prefix: 'mostafa-mansour_product_ (',
-    suffix: ').png',
-    count: 13, // <-- change this if you add more images
-    startIndex: 1
-  };
-
-  const galleryRoot = document.querySelector('[data-gallery]');
-  // لو مش حاطط root، هنحاول نلاقي عناصر افتراضية بالـ IDs
+  const galleryZone = document.querySelector('[data-gallery]');
   const scroller = document.getElementById('galleryScroller');
   const dotsWrap = document.getElementById('galleryDots');
   const prevBtn = document.querySelector('[data-gprev]');
   const nextBtn = document.querySelector('[data-gnext]');
 
-  // Helper: create gallery slides automatically if scroller exists and empty OR you want auto
-  function ensureGallerySlides() {
-    if (!scroller) return [];
+  // Lightbox
+  const lb = document.getElementById('lightbox');
+  const lbImg = lb ? lb.querySelector('.lightbox-img') : null;
+  const lbClose = lb ? lb.querySelector('.lightbox-close') : null;
+  const lbPrev = lb ? lb.querySelector('.lightbox-nav.prev') : null;
+  const lbNext = lb ? lb.querySelector('.lightbox-nav.next') : null;
 
-    const existing = Array.from(scroller.querySelectorAll('.gallery-item img'));
-    if (existing.length > 0) {
-      // already has images in HTML
-      return Array.from(scroller.querySelectorAll('.gallery-item'));
-    }
+  let galleryItems = [];
+  let activeIndex = 0;
 
-    // build from config
-    const frag = document.createDocumentFragment();
-    for (let i = GALLERY.startIndex; i < GALLERY.startIndex + GALLERY.count; i++) {
-      const fig = document.createElement('figure');
-      fig.className = 'gallery-item';
+  function openLightbox(index) {
+    if (!lb || !lbImg || !galleryItems.length) return;
+    activeIndex = Math.max(0, Math.min(galleryItems.length - 1, index));
+    const img = galleryItems[activeIndex].querySelector('img');
+    if (!img) return;
 
-      const img = document.createElement('img');
-      img.loading = 'lazy';
-      img.alt = `Concept Product ${i}`;
-      img.src = `${GALLERY.folder}${GALLERY.prefix}${i}${GALLERY.suffix}`;
-
-      fig.appendChild(img);
-      frag.appendChild(fig);
-    }
-
-    scroller.appendChild(frag);
-    return Array.from(scroller.querySelectorAll('.gallery-item'));
+    lbImg.src = img.src;
+    lbImg.alt = img.alt || '';
+    lb.classList.add('is-open');
+    lb.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
   }
 
-  function initGallery() {
-    if (!scroller) return;
+  function closeLightbox() {
+    if (!lb || !lbImg) return;
+    lb.classList.remove('is-open');
+    lb.setAttribute('aria-hidden', 'true');
+    lbImg.src = '';
+    document.body.style.overflow = '';
+  }
 
-    // IMPORTANT: remove any blur on gallery area immediately
-    const zone = scroller.closest('.gallery-zone') || scroller.parentElement;
-    zone?.classList.add('is-visible'); // avoids staying hidden/blur if it had data-animate
+  function stepLightbox(dir) {
+    if (!galleryItems.length) return;
+    openLightbox(activeIndex + dir);
+  }
 
-    const items = ensureGallerySlides();
-    if (items.length === 0) return;
+  lbClose?.addEventListener('click', closeLightbox);
+  lbPrev?.addEventListener('click', () => stepLightbox(-1));
+  lbNext?.addEventListener('click', () => stepLightbox(1));
+  lb?.addEventListener('click', (e) => {
+    if (e.target === lb) closeLightbox();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (!lb || !lb.classList.contains('is-open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') stepLightbox(-1);
+    if (e.key === 'ArrowRight') stepLightbox(1);
+  });
+
+  function buildDots(items) {
+    if (!dotsWrap) return;
+    dotsWrap.innerHTML = '';
+    items.forEach((_, i) => {
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'gallery-dot' + (i === 0 ? ' is-active' : '');
+      dot.setAttribute('aria-label', `Go to image ${i + 1}`);
+      dot.addEventListener('click', () => {
+        items[i].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      });
+      dotsWrap.appendChild(dot);
+    });
+  }
+
+  function setActiveByCenter(items) {
+    const center = scroller.scrollLeft + scroller.clientWidth / 2;
+    let bestIndex = 0;
+    let bestDist = Infinity;
+
+    items.forEach((item, i) => {
+      const itemCenter = item.offsetLeft + item.offsetWidth / 2;
+      const d = Math.abs(itemCenter - center);
+      if (d < bestDist) { bestDist = d; bestIndex = i; }
+    });
+
+    items.forEach((it, i) => it.classList.toggle('is-active', i === bestIndex));
+    if (dotsWrap) {
+      Array.from(dotsWrap.children).forEach((dot, i) => dot.classList.toggle('is-active', i === bestIndex));
+    }
+  }
+
+  function scrollByOne(items, dir) {
+    const active = scroller.querySelector('.gallery-item.is-active') || items[0];
+    const index = Math.max(0, items.indexOf(active));
+    const nextIndex = Math.min(items.length - 1, Math.max(0, index + dir));
+    items[nextIndex].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+  }
+
+  function wireGallery(items) {
+    galleryItems = items;
+
+    // click => lightbox
+    items.forEach((fig, idx) => {
+      fig.addEventListener('click', () => openLightbox(idx));
+    });
 
     // first active
     items.forEach((it, idx) => it.classList.toggle('is-active', idx === 0));
-
-    // build dots
-    if (dotsWrap) {
-      dotsWrap.innerHTML = '';
-      items.forEach((_, i) => {
-        const dot = document.createElement('button');
-        dot.type = 'button';
-        dot.className = 'gallery-dot' + (i === 0 ? ' is-active' : '');
-        dot.setAttribute('aria-label', `Go to image ${i + 1}`);
-        dot.addEventListener('click', () => {
-          items[i].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-        });
-        dotsWrap.appendChild(dot);
-      });
-    }
-
-    function setActiveByCenter() {
-      const center = scroller.scrollLeft + scroller.clientWidth / 2;
-      let bestIndex = 0;
-      let bestDist = Infinity;
-
-      items.forEach((item, i) => {
-        const itemCenter = item.offsetLeft + item.offsetWidth / 2;
-        const d = Math.abs(itemCenter - center);
-        if (d < bestDist) { bestDist = d; bestIndex = i; }
-      });
-
-      items.forEach((it, i) => it.classList.toggle('is-active', i === bestIndex));
-      if (dotsWrap) {
-        Array.from(dotsWrap.children).forEach((dot, i) => dot.classList.toggle('is-active', i === bestIndex));
-      }
-    }
+    buildDots(items);
+    setActiveByCenter(items);
 
     let t = null;
     scroller.addEventListener('scroll', () => {
       clearTimeout(t);
-      t = setTimeout(setActiveByCenter, 80);
+      t = setTimeout(() => setActiveByCenter(items), 80);
     });
 
-    function scrollByOne(dir) {
-      const active = scroller.querySelector('.gallery-item.is-active') || items[0];
-      const index = Math.max(0, items.indexOf(active));
-      const nextIndex = Math.min(items.length - 1, Math.max(0, index + dir));
-      items[nextIndex].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-    }
-
-    prevBtn?.addEventListener('click', () => scrollByOne(-1));
-    nextBtn?.addEventListener('click', () => scrollByOne(1));
-
-    // keyboard support
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') scrollByOne(-1);
-      if (e.key === 'ArrowRight') scrollByOne(1);
-    });
-
-    // initial
-    setActiveByCenter();
-    window.addEventListener('resize', () => setActiveByCenter());
+    prevBtn?.addEventListener('click', () => scrollByOne(items, -1));
+    nextBtn?.addEventListener('click', () => scrollByOne(items, 1));
+    window.addEventListener('resize', () => setActiveByCenter(items));
   }
 
-  initGallery();
+  async function initGalleryFromJson() {
+    if (!scroller || !galleryZone) return;
+
+    // avoid blur “sticking”
+    galleryZone.classList.add('is-visible');
+
+    const jsonPath = galleryZone.getAttribute('data-gallery-json');
+    if (!jsonPath) return;
+
+    try {
+      const res = await fetch(jsonPath, { cache: 'no-store' });
+      if (!res.ok) throw new Error('Failed to load gallery json');
+      const files = await res.json();
+      if (!Array.isArray(files) || files.length === 0) return;
+
+      const frag = document.createDocumentFragment();
+      files.forEach((file, i) => {
+        const fig = document.createElement('figure');
+        fig.className = 'gallery-item';
+
+        const img = document.createElement('img');
+        img.loading = 'lazy';
+        img.alt = `Concept Product ${i + 1}`;
+        img.src = `assets/img/gallery/${file}`;
+
+        fig.appendChild(img);
+        frag.appendChild(fig);
+      });
+
+      scroller.innerHTML = '';
+      scroller.appendChild(frag);
+
+      const items = Array.from(scroller.querySelectorAll('.gallery-item'));
+      if (items.length) wireGallery(items);
+    } catch (err) {
+      // fallback (optional): do nothing silently
+      // console.warn(err);
+    }
+  }
+
+  initGalleryFromJson();
 });
