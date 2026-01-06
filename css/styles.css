@@ -544,16 +544,19 @@ body.modal-open{
 }
 
 /* =========================
-   GALLERY (Premium, no blur, auto-height, cards fit image)
+/* =========================
+   GALLERY (Auto-size Instagram Portrait - NO BLUR / NO HALO)
    ========================= */
+
 .gallery-wrap{
-  border:1px solid rgba(0,0,0,0.09);
-  border-radius:18px;
-  background: rgba(255,255,255,0.86);
-  box-shadow:0 12px 30px rgba(0,0,0,0.08);
-  padding:14px;
+  border: 1px solid rgba(0,0,0,0.09);
+  border-radius: 18px;
+  background: rgba(255,255,255,0.92);
+  box-shadow: 0 14px 34px rgba(0,0,0,0.08);
+  padding: 14px;
 }
 
+/* Head */
 .gallery-head{
   display:flex;
   align-items:center;
@@ -581,8 +584,8 @@ body.modal-open{
   height:44px;
   border-radius:999px;
   border:1px solid rgba(0,0,0,0.12);
-  background: rgba(255,255,255,0.75);
-  box-shadow:0 10px 18px rgba(0,0,0,0.08);
+  background: rgba(255,255,255,0.85);
+  box-shadow: 0 10px 18px rgba(0,0,0,0.08);
   display:grid;
   place-items:center;
   cursor:pointer;
@@ -591,73 +594,61 @@ body.modal-open{
 .gallery-btn:hover{
   transform: translateY(-2px);
   border-color: rgba(189,93,56,0.35);
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 16px 30px rgba(0,0,0,0.12);
 }
 
+/* Scroller */
 .gallery-viewport{ position:relative; }
 .gallery-scroller{
   display:flex;
-  gap:18px;
+  gap: 18px;
   overflow-x:auto;
   overflow-y:hidden;
-  padding:8px 6px 12px;
+  padding: 8px 6px 14px;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   scrollbar-width:none;
-  cursor:grab;
 }
-.gallery-scroller:active{ cursor:grabbing; }
 .gallery-scroller::-webkit-scrollbar{ display:none; }
 
-/* soft edge fades */
-.gallery-viewport::before,
-.gallery-viewport::after{
-  content:"";
-  position:absolute;
-  top:0;
-  bottom:34px;
-  width:70px;
-  pointer-events:none;
-  z-index:2;
-}
-.gallery-viewport::before{
-  left:0;
-  background: linear-gradient(90deg, rgba(255,255,255,0.96), rgba(255,255,255,0));
-}
-.gallery-viewport::after{
-  right:0;
-  background: linear-gradient(270deg, rgba(255,255,255,0.96), rgba(255,255,255,0));
-}
-
-/* Card fits image (auto height) */
+/* The ITEM: fit image EXACTLY (no extra halo) */
 .gallery-item{
-  scroll-snap-align:center;
+  scroll-snap-align: center;
   flex: 0 0 auto;
-  width: 300px;
-  max-width: 82vw;
   margin: 0;
+
   border-radius: 18px;
   overflow: hidden;
-  border:1px solid rgba(0,0,0,0.10);
-  background: rgba(255,255,255,0.95);
-  box-shadow: 0 12px 26px rgba(0,0,0,0.10);
-  transition: transform .22s ease, opacity .22s ease, border-color .22s ease, box-shadow .22s ease;
-  opacity: .70;
-  transform: scale(.95);
-}
-.gallery-item.is-active{
-  opacity: 1;
-  transform: scale(1);
-  border-color: rgba(189,93,56,0.35);
-  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(0,0,0,0.10);
+
+  /* مهم: شيلنا الخلفية والظلال اللي بتعمل هالة */
+  background: transparent;
+  box-shadow: none;
+
+  /* مقاسه هيجي من JS حسب كل صورة */
+  width: auto;
+  height: auto;
+
+  /* إحساس Premium بس من غير blur */
+  transform: scale(.96);
+  opacity: .78;
+  transition: transform .22s ease, opacity .22s ease, border-color .22s ease;
 }
 
+/* Active slide */
+.gallery-item.is-active{
+  transform: scale(1);
+  opacity: 1;
+  border-color: rgba(189,93,56,0.42);
+}
+
+/* Image: show FULL portrait clean */
 .gallery-item img{
-  width:100%;
-  height:auto;              /* ✅ auto based on image */
   display:block;
-  object-fit: contain;      /* show full */
-  background: transparent;  /* no black edges */
+  width: 100%;
+  height: 100%;
+  object-fit: contain;     /* ✅ full image */
+  background: transparent; /* ✅ no gray/white halo */
 }
 
 /* Dots */
@@ -665,7 +656,7 @@ body.modal-open{
   display:flex;
   justify-content:center;
   gap:10px;
-  padding-top:6px;
+  padding-top: 6px;
 }
 .gallery-dot{
   width:8px;
@@ -682,33 +673,5 @@ body.modal-open{
 }
 
 @media (max-width: 576px){
-  .gallery-item{ width: 78vw; }
   .gallery-hint{ display:none; }
 }
-
-/* Gallery image modal */
-.image-modal{
-  border-radius:18px;
-  overflow:hidden;
-  box-shadow:0 24px 80px rgba(0,0,0,0.35);
-}
-.image-modal .modal-body{
-  position:relative;
-  background:#000;
-  padding:0;
-}
-.image-modal img{
-  width:100%;
-  height: min(78vh, 820px);
-  object-fit: contain;
-  display:block;
-}
-.image-close{
-  position:absolute;
-  top:12px;
-  right:12px;
-  z-index:5;
-  filter: invert(1);
-  opacity:.95;
-}
-
