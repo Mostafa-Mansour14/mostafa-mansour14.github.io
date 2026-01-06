@@ -1,0 +1,30 @@
+name: Build gallery.json
+
+on:
+  push:
+    paths:
+      - "assets/img/gallery/**"
+      - ".github/workflows/gallery-json.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate gallery.json
+        run: |
+          cd assets/img/gallery
+          ls -1 | sed '/^gallery\.json$/d' | sed '/^\./d' | jq -R -s -c 'split("\n")[:-1]' > gallery.json
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add assets/img/gallery/gallery.json
+          git commit -m "Auto-update gallery.json" || exit 0
+          git push
