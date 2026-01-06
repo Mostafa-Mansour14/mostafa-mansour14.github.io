@@ -548,14 +548,17 @@ hr.m-0{ border-top:1px solid rgba(0,0,0,.08); }
   }
 }
 /* =========================================
-   Horizontal Gallery (RTL)
+   Gallery Carousel (Center Focus / Portrait)
    ========================================= */
+
 .gallery-wrap{
   border: 1px solid rgba(0,0,0,0.09);
   border-radius: 18px;
   background: rgba(255,255,255,0.86);
   box-shadow: 0 12px 30px rgba(0,0,0,0.08);
   padding: 14px;
+  position: relative;
+  overflow: hidden;
 }
 
 .gallery-head{
@@ -605,50 +608,82 @@ hr.m-0{ border-top:1px solid rgba(0,0,0,.08); }
 
 .gallery-btn:active{ transform: translateY(0); }
 
+/* scroller */
 .gallery-scroller{
   display:flex;
-  gap: 14px;
+  gap: 16px;
   overflow-x:auto;
   overflow-y:hidden;
-  padding: 8px 6px 10px;
+  padding: 10px 10px 14px;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(0,0,0,0.25) transparent;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+.gallery-scroller::-webkit-scrollbar{ display:none; }
+
+/* Side fades (premium) */
+.gallery-wrap::before,
+.gallery-wrap::after{
+  content:"";
+  position:absolute;
+  top: 62px;             /* بعد الهيدر */
+  bottom: 10px;
+  width: 58px;
+  pointer-events:none;
+  z-index: 2;
+}
+.gallery-wrap::before{
+  left: 0;
+  background: linear-gradient(90deg, rgba(255,255,255,0.95), rgba(255,255,255,0));
+}
+.gallery-wrap::after{
+  right: 0;
+  background: linear-gradient(270deg, rgba(255,255,255,0.95), rgba(255,255,255,0));
 }
 
-.gallery-scroller::-webkit-scrollbar{ height: 10px; }
-.gallery-scroller::-webkit-scrollbar-thumb{
-  background: rgba(0,0,0,0.22);
-  border-radius: 999px;
-}
-
+/* item (portrait card) */
 .gallery-item{
-  scroll-snap-align: start;
+  scroll-snap-align: center;
   flex: 0 0 auto;
-  width: 320px;
-  border-radius: 16px;
+  width: 280px;                 /* مناسب للصور الطول */
+  border-radius: 18px;
   overflow:hidden;
   border: 1px solid rgba(0,0,0,0.10);
   background: rgba(255,255,255,0.90);
   box-shadow: 0 12px 26px rgba(0,0,0,0.10);
-  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+  transition: transform .28s ease, filter .28s ease, opacity .28s ease, box-shadow .28s ease, border-color .28s ease;
+  will-change: transform, filter, opacity;
 }
 
-.gallery-item:hover{
-  transform: translateY(-6px);
-  border-color: rgba(189,93,56,0.30);
-  box-shadow: var(--shadow-lg);
+/* default: preview state */
+.gallery-item{
+  transform: scale(0.92);
+  filter: blur(3.5px) saturate(0.95);
+  opacity: 0.62;
 }
 
+/* active: center focused */
+.gallery-item.is-active{
+  transform: scale(1);
+  filter: none;
+  opacity: 1;
+  border-color: rgba(189,93,56,0.28);
+  box-shadow: 0 18px 46px rgba(0,0,0,0.16);
+}
+
+/* image area - portrait ratio */
 .gallery-item img{
   width:100%;
-  height: 220px;
+  aspect-ratio: 4 / 5;          /* مناسب للانستجرام */
   object-fit: cover;
   display:block;
 }
 
-.gallery-item figcaption{ padding: 12px 12px 14px; }
+/* caption */
+.gallery-item figcaption{
+  padding: 12px 12px 14px;
+}
 
 .cap-title{
   font-weight: 900;
@@ -662,8 +697,10 @@ hr.m-0{ border-top:1px solid rgba(0,0,0,.08); }
   line-height: 1.3;
 }
 
+/* mobile tuning */
 @media (max-width: 576px){
   .gallery-item{ width: 78vw; }
-  .gallery-item img{ height: 210px; }
   .gallery-hint{ display:none; }
+  .gallery-wrap::before,
+  .gallery-wrap::after{ width: 42px; }
 }
