@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -22,7 +22,7 @@
 
   <body id="page-top">
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary" id="sideNav">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
       <a class="navbar-brand js-scroll-trigger" href="#page-top">
         <span class="d-block d-lg-none">Mostafa Mansour</span>
         <span class="d-none d-lg-block">
@@ -30,11 +30,11 @@
         </span>
       </a>
 
-      <!-- ✅ Important: NO data-bs-toggle / NO data-bs-target -->
       <button
         class="navbar-toggler"
-        id="navToggler"
         type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarResponsive"
         aria-controls="navbarResponsive"
         aria-expanded="false"
         aria-label="Toggle navigation">
@@ -45,6 +45,7 @@
         <ul class="navbar-nav">
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">About</a></li>
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#portfolio">Portfolio</a></li>
+          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#gallery">Gallery</a></li>
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#experience">Experience</a></li>
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#skills">Skills</a></li>
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#education">Education</a></li>
@@ -140,18 +141,35 @@
 
           <p class="mb-4" data-animate>
             A focused selection of my work—organized into <strong>Video Editing</strong> and <strong>Content Creation</strong>.
-            Shorts open in a popup player.
+            Shorts are displayed as clean thumbnails and open in a popup player.
           </p>
 
           <!-- Tabs -->
           <ul class="nav smart-tabs mb-4" id="portfolioTabs" role="tablist" data-animate>
             <li class="nav-item" role="presentation">
-              <button class="nav-link active" id="edit-tab" data-bs-toggle="tab" data-bs-target="#tab-edit" type="button" role="tab">
+              <button
+                class="nav-link active"
+                id="edit-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#tab-edit"
+                type="button"
+                role="tab"
+                aria-controls="tab-edit"
+                aria-selected="true">
                 <i class="fa-solid fa-scissors me-2"></i> Video Editing
               </button>
             </li>
+
             <li class="nav-item" role="presentation">
-              <button class="nav-link" id="create-tab" data-bs-toggle="tab" data-bs-target="#tab-create" type="button" role="tab">
+              <button
+                class="nav-link"
+                id="create-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#tab-create"
+                type="button"
+                role="tab"
+                aria-controls="tab-create"
+                aria-selected="false">
                 <i class="fa-solid fa-camera me-2"></i> Content Creation
               </button>
             </li>
@@ -171,6 +189,7 @@
                 <p class="mb-0">Selected edits that highlight rhythm, transitions, and platform-optimized delivery.</p>
               </div>
 
+              <!-- Filters -->
               <div class="portfolio-filters mb-3" data-animate data-filter-group="edit">
                 <button class="filter-btn is-active" type="button" data-filter="all">All</button>
                 <button class="filter-btn" type="button" data-filter="short">Shorts</button>
@@ -312,73 +331,7 @@
                   </div>
                 </div>
 
-                <!-- YouTube -->
-                <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="youtube" data-group="create">
-                  <div class="video-card">
-                    <div class="video-head">
-                      <span class="chip chip-create">Creator</span>
-                      <span class="chip chip-ghost">YouTube</span>
-                    </div>
-                    <div class="ratio ratio-16x9 video-frame">
-                      <iframe
-                        src="https://www.youtube.com/embed/XD0AC8IM47E"
-                        title="YouTube 1"
-                        loading="lazy"
-                        referrerpolicy="strict-origin-when-cross-origin"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen></iframe>
-                    </div>
-                    <div class="video-meta">
-                      <div class="video-title">YouTube Project</div>
-                      <div class="video-tags">Concept • Production • Edit</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="youtube" data-group="create">
-                  <div class="video-card">
-                    <div class="video-head">
-                      <span class="chip chip-create">Creator</span>
-                      <span class="chip chip-ghost">YouTube</span>
-                    </div>
-                    <div class="ratio ratio-16x9 video-frame">
-                      <iframe
-                        src="https://www.youtube.com/embed/0ZDJulsMbpY"
-                        title="YouTube 2"
-                        loading="lazy"
-                        referrerpolicy="strict-origin-when-cross-origin"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen></iframe>
-                    </div>
-                    <div class="video-meta">
-                      <div class="video-title">YouTube Project</div>
-                      <div class="video-tags">Story • Shoot • Edit</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="youtube" data-group="create">
-                  <div class="video-card">
-                    <div class="video-head">
-                      <span class="chip chip-create">Creator</span>
-                      <span class="chip chip-ghost">YouTube</span>
-                    </div>
-                    <div class="ratio ratio-16x9 video-frame">
-                      <iframe
-                        src="https://www.youtube.com/embed/9UsZ7roRvlk"
-                        title="YouTube 3"
-                        loading="lazy"
-                        referrerpolicy="strict-origin-when-cross-origin"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen></iframe>
-                    </div>
-                    <div class="video-meta">
-                      <div class="video-title">YouTube Project</div>
-                      <div class="video-tags">Direction • Editing • Delivery</div>
-                    </div>
-                  </div>
-                </div>
-
+                <!-- YouTube examples -->
                 <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="youtube" data-group="create">
                   <div class="video-card">
                     <div class="video-head">
@@ -388,7 +341,7 @@
                     <div class="ratio ratio-16x9 video-frame">
                       <iframe
                         src="https://www.youtube.com/embed/Mw-XSyH3xNQ"
-                        title="YouTube 4"
+                        title="YouTube Project"
                         loading="lazy"
                         referrerpolicy="strict-origin-when-cross-origin"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -401,220 +354,91 @@
                   </div>
                 </div>
 
-                <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="youtube" data-group="create">
-                  <div class="video-card">
-                    <div class="video-head">
-                      <span class="chip chip-create">Creator</span>
-                      <span class="chip chip-ghost">YouTube</span>
-                    </div>
-                    <div class="ratio ratio-16x9 video-frame">
-                      <iframe
-                        src="https://www.youtube.com/embed/SnYlYmBOFgk"
-                        title="YouTube 5"
-                        loading="lazy"
-                        referrerpolicy="strict-origin-when-cross-origin"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen></iframe>
-                    </div>
-                    <div class="video-meta">
-                      <div class="video-title">YouTube Project</div>
-                      <div class="video-tags">Concept • Execution • Edit</div>
-                    </div>
-                  </div>
-                </div>
-
               </div>
             </div>
           </div>
-
         </div>
       </section>
 
       <hr class="m-0" />
-<!-- =========================
-     PREMIUM GALLERY (Portrait)
-     Place AFTER Portfolio section
-     ========================= -->
-<section class="resume-section" id="gallery">
-  <div class="resume-section-content">
-    <h2 class="mb-4" data-animate>Gallery</h2>
 
-    <p class="mb-4 gallery-desc" data-animate>
-      Concept Product Visualization
-      <br />
-      <span class="text-muted">Branding • Product Design • Visual Direction</span>
-    </p>
+      <!-- =========================
+           GALLERY (Premium, no blur, auto-height)
+           ========================= -->
+      <section class="resume-section" id="gallery">
+        <div class="resume-section-content">
+          <h2 class="mb-4" data-animate>Gallery</h2>
 
-    <div class="gallery-premium" data-animate>
-      <div class="gallery-top">
-        <div class="gallery-hint">
-          <i class="fa-solid fa-hand-pointer"></i>
-          <span>Drag / Swipe</span>
+          <p class="mb-4" data-animate>
+            Concept Product Visualization<br />
+            <span class="text-muted">Branding • Product Design • Visual Direction</span>
+          </p>
+
+          <div class="gallery-wrap" data-animate>
+            <div class="gallery-head">
+              <div class="gallery-hint">
+                <i class="fa-solid fa-hand-pointer"></i>
+                <span>Drag / Swipe</span>
+              </div>
+              <div class="gallery-controls">
+                <button class="gallery-btn" type="button" data-gallery-prev aria-label="Previous">
+                  <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <button class="gallery-btn" type="button" data-gallery-next aria-label="Next">
+                  <i class="fa-solid fa-chevron-right"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="gallery-viewport">
+              <div class="gallery-scroller" data-gallery-scroller aria-label="Image gallery">
+                <!-- 1..13 -->
+                <figure class="gallery-item"><img src="assets/img/gallery/mostafa-mansour_product_ (1).png" alt="Gallery 1" loading="lazy" /></figure>
+                <figure class="gallery-item"><img src="assets/img/gallery/mostafa-mansour_product_ (2).png" alt="Gallery 2" loading="lazy" /></figure>
+                <figure class="gallery-item"><img src="assets/img/gallery/mostafa-mansour_product_ (3).png" alt="Gallery 3" loading="lazy" /></figure>
+                <figure class="gallery-item"><img src="assets/img/gallery/mostafa-mansour_product_ (4).png" alt="Gallery 4" loading="lazy" /></figure>
+                <figure class="gallery-item"><img src="assets/img/gallery/mostafa-mansour_product_ (5).png" alt="Gallery 5" loading="lazy" /></figure>
+                <figure class="gallery-item"><img src="assets/img/gallery/mostafa-mansour_product_ (6).png" alt="Gallery 6" loading="lazy" /></figure>
+                <figure class="gallery-item"><img src="assets/img/gallery/mostafa-mansour_product_ (7).png" alt="Gallery 7" loading="lazy" /></figure>
+                <figure class="gallery-item"><img src="assets/img/gallery/mostafa-mansour_product_ (8).png" alt="Gallery 8" loading="lazy" /></figure>
+                <figure class="gallery-item"><img src="assets/img/gallery/mostafa-mansour_product_ (9).png" alt="Gallery 9" loading="lazy" /></figure>
+                <figure class="gallery-item"><img src="assets/img/gallery/mostafa-mansour_product_ (10).png" alt="Gallery 10" loading="lazy" /></figure>
+                <figure class="gallery-item"><img src="assets/img/gallery/mostafa-mansour_product_ (11).png" alt="Gallery 11" loading="lazy" /></figure>
+                <figure class="gallery-item"><img src="assets/img/gallery/mostafa-mansour_product_ (12).png" alt="Gallery 12" loading="lazy" /></figure>
+                <figure class="gallery-item"><img src="assets/img/gallery/mostafa-mansour_product_ (13).png" alt="Gallery 13" loading="lazy" /></figure>
+              </div>
+
+              <div class="gallery-dots" data-gallery-dots aria-hidden="true"></div>
+            </div>
+          </div>
         </div>
+      </section>
 
-        <div class="gallery-actions">
-          <button class="gallery-btn" type="button" data-gallery-prev aria-label="Previous">
-            <i class="fa-solid fa-chevron-left"></i>
-          </button>
-          <button class="gallery-btn" type="button" data-gallery-next aria-label="Next">
-            <i class="fa-solid fa-chevron-right"></i>
-          </button>
+      <hr class="m-0" />
+
+      <!-- Experience -->
+      <section class="resume-section" id="experience">
+        <div class="resume-section-content">
+          <h2 class="mb-5" data-animate>Experience</h2>
+
+          <div class="d-flex flex-column flex-md-row justify-content-between mb-5" data-animate>
+            <div class="flex-grow-1">
+              <h3 class="mb-0">Video Editor · Videographer · Motion Graphics</h3>
+              <div class="subheading mb-3">Freelance / Projects</div>
+              <p class="mb-0">
+                I work as a Video Editor, Videographer, and Motion Graphics Artist, collaborating with content creators, brands, companies, conferences, and live events.
+              </p>
+              <p class="mb-0 mt-3">
+                Specialized in short-form content (Shorts, Reels, Ads), YouTube videos, and branded content with strong attention to pacing, speed ramping, and dynamic transitions.
+              </p>
+              <p class="mb-0 mt-3">
+                Experience in live streaming production and direction using OBS and vMix, plus integrating AI tools into video workflows.
+              </p>
+            </div>
+            <div class="flex-shrink-0"><span class="text-primary">2020 – Present</span></div>
+          </div>
         </div>
-      </div>
-
-      <div class="gallery-viewport">
-        <div class="gallery-scroller" data-gallery-scroller dir="rtl" aria-label="Image gallery">
-
-          <!-- 1 -->
-          <figure class="gallery-item">
-            <div class="gallery-media">
-              <img src="assets/img/gallery/mostafa-mansour_product_ (1).png" alt="Concept Product Visualization 1" loading="lazy" />
-              <button class="gallery-view" type="button" data-gallery-view aria-label="View image">
-                <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
-              </button>
-            </div>
-          </figure>
-
-          <!-- 2 -->
-          <figure class="gallery-item">
-            <div class="gallery-media">
-              <img src="assets/img/gallery/mostafa-mansour_product_ (2).png" alt="Concept Product Visualization 2" loading="lazy" />
-              <button class="gallery-view" type="button" data-gallery-view aria-label="View image">
-                <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
-              </button>
-            </div>
-          </figure>
-
-          <!-- 3 -->
-          <figure class="gallery-item">
-            <div class="gallery-media">
-              <img src="assets/img/gallery/mostafa-mansour_product_ (3).png" alt="Concept Product Visualization 3" loading="lazy" />
-              <button class="gallery-view" type="button" data-gallery-view aria-label="View image">
-                <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
-              </button>
-            </div>
-          </figure>
-
-          <!-- 4 -->
-          <figure class="gallery-item">
-            <div class="gallery-media">
-              <img src="assets/img/gallery/mostafa-mansour_product_ (4).png" alt="Concept Product Visualization 4" loading="lazy" />
-              <button class="gallery-view" type="button" data-gallery-view aria-label="View image">
-                <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
-              </button>
-            </div>
-          </figure>
-
-          <!-- 5 -->
-          <figure class="gallery-item">
-            <div class="gallery-media">
-              <img src="assets/img/gallery/mostafa-mansour_product_ (5).png" alt="Concept Product Visualization 5" loading="lazy" />
-              <button class="gallery-view" type="button" data-gallery-view aria-label="View image">
-                <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
-              </button>
-            </div>
-          </figure>
-
-          <!-- 6 -->
-          <figure class="gallery-item">
-            <div class="gallery-media">
-              <img src="assets/img/gallery/mostafa-mansour_product_ (6).png" alt="Concept Product Visualization 6" loading="lazy" />
-              <button class="gallery-view" type="button" data-gallery-view aria-label="View image">
-                <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
-              </button>
-            </div>
-          </figure>
-
-          <!-- 7 -->
-          <figure class="gallery-item">
-            <div class="gallery-media">
-              <img src="assets/img/gallery/mostafa-mansour_product_ (7).png" alt="Concept Product Visualization 7" loading="lazy" />
-              <button class="gallery-view" type="button" data-gallery-view aria-label="View image">
-                <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
-              </button>
-            </div>
-          </figure>
-
-          <!-- 8 -->
-          <figure class="gallery-item">
-            <div class="gallery-media">
-              <img src="assets/img/gallery/mostafa-mansour_product_ (8).png" alt="Concept Product Visualization 8" loading="lazy" />
-              <button class="gallery-view" type="button" data-gallery-view aria-label="View image">
-                <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
-              </button>
-            </div>
-          </figure>
-
-          <!-- 9 -->
-          <figure class="gallery-item">
-            <div class="gallery-media">
-              <img src="assets/img/gallery/mostafa-mansour_product_ (9).png" alt="Concept Product Visualization 9" loading="lazy" />
-              <button class="gallery-view" type="button" data-gallery-view aria-label="View image">
-                <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
-              </button>
-            </div>
-          </figure>
-
-          <!-- 10 -->
-          <figure class="gallery-item">
-            <div class="gallery-media">
-              <img src="assets/img/gallery/mostafa-mansour_product_ (10).png" alt="Concept Product Visualization 10" loading="lazy" />
-              <button class="gallery-view" type="button" data-gallery-view aria-label="View image">
-                <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
-              </button>
-            </div>
-          </figure>
-
-          <!-- 11 -->
-          <figure class="gallery-item">
-            <div class="gallery-media">
-              <img src="assets/img/gallery/mostafa-mansour_product_ (11).png" alt="Concept Product Visualization 11" loading="lazy" />
-              <button class="gallery-view" type="button" data-gallery-view aria-label="View image">
-                <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
-              </button>
-            </div>
-          </figure>
-
-          <!-- 12 -->
-          <figure class="gallery-item">
-            <div class="gallery-media">
-              <img src="assets/img/gallery/mostafa-mansour_product_ (12).png" alt="Concept Product Visualization 12" loading="lazy" />
-              <button class="gallery-view" type="button" data-gallery-view aria-label="View image">
-                <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
-              </button>
-            </div>
-          </figure>
-
-          <!-- 13 -->
-          <figure class="gallery-item">
-            <div class="gallery-media">
-              <img src="assets/img/gallery/mostafa-mansour_product_ (13).png" alt="Concept Product Visualization 13" loading="lazy" />
-              <button class="gallery-view" type="button" data-gallery-view aria-label="View image">
-                <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
-              </button>
-            </div>
-          </figure>
-
-        </div>
-
-        <div class="gallery-dots" data-gallery-dots aria-hidden="true"></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Image Modal (Premium Lightbox) -->
-<div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-xl">
-    <div class="modal-content image-modal">
-      <div class="modal-body">
-        <button type="button" class="btn-close image-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        <img id="imageModalImg" src="" alt="Gallery image preview" />
-      </div>
-    </div>
-  </div>
-</div>
-
+      </section>
 
       <hr class="m-0" />
 
@@ -634,6 +458,18 @@
             <li><span class="fa-li"><i class="fas fa-check"></i></span>Adobe Photoshop</li>
             <li><span class="fa-li"><i class="fas fa-check"></i></span>Adobe Lightroom</li>
             <li><span class="fa-li"><i class="fas fa-check"></i></span>OBS Studio &amp; vMix (Live Production)</li>
+          </ul>
+
+          <div class="subheading mb-3" data-animate>Editing &amp; Creative Skills</div>
+          <ul class="fa-ul mb-0" data-animate>
+            <li><span class="fa-li"><i class="fas fa-check"></i></span>Short-form editing (Shorts / Reels / Ads)</li>
+            <li><span class="fa-li"><i class="fas fa-check"></i></span>YouTube video editing (long-form &amp; highlights)</li>
+            <li><span class="fa-li"><i class="fas fa-check"></i></span>Speed ramping &amp; dynamic transitions</li>
+            <li><span class="fa-li"><i class="fas fa-check"></i></span>Color grading &amp; color correction</li>
+            <li><span class="fa-li"><i class="fas fa-check"></i></span>Motion graphics &amp; animated text</li>
+            <li><span class="fa-li"><i class="fas fa-check"></i></span>Sound design &amp; audio cleanup</li>
+            <li><span class="fa-li"><i class="fas fa-check"></i></span>Social media–optimized exports</li>
+            <li><span class="fa-li"><i class="fas fa-check"></i></span>AI tools in video production workflows</li>
           </ul>
         </div>
       </section>
@@ -709,6 +545,18 @@
         <div class="modal-content">
           <div class="modal-body">
             <iframe id="modalPlayer" src="" title="Video Player" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Image Modal (Gallery Lightbox) -->
+    <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content image-modal">
+          <div class="modal-body">
+            <button type="button" class="btn-close image-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <img id="imageModalImg" src="" alt="Gallery image preview" />
           </div>
         </div>
       </div>
