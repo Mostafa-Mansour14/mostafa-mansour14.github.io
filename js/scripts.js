@@ -11,6 +11,7 @@
     $$('.modal-backdrop').forEach(b => b.remove());
   }
 
+  
   function initReveal() {
     const items = $$('[data-animate]');
     if (!items.length) return;
