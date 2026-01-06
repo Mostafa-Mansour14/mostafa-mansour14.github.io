@@ -13,15 +13,36 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Generate gallery.json
         run: |
-          cd assets/img/gallery
-          ls -1 | sed '/^gallery\.json$/d' | sed '/^\./d' | jq -R -s -c 'split("\n")[:-1]' > gallery.json
+          python - << 'PY'
+          import os, json
 
-      - name: Commit changes
+          folder = "assets/img/gallery"
+          files = []
+          for name in os.listdir(folder):
+              if name.lower() == "gallery.json":
+                  continue
+              if name.startswith("."):
+                  continue
+              # only images
+              low = name.lower()
+              if low.endswith((".png", ".jpg", ".jpeg", ".webp", ".gif")):
+                  files.append(name)
+
+          # sort nicely (optional)
+          files.sort(key=lambda x: x.lower())
+
+          out_path = os.path.join(folder, "gallery.json")
+          with open(out_path, "w", encoding="utf-8") as f:
+              json.dump(files, f, ensure_ascii=False, indent=2)
+
+          print("gallery.json updated with", len(files), "files")
+          PY
+
+      - name: Commit & push if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
