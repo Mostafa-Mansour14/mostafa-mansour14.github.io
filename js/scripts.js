@@ -145,46 +145,109 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // =========================
   // GALLERY (AUTO FROM gallery.json)
-  // =========================
-  async function initGalleryFromJson() {
-    const wrap = document.querySelector('[data-gallery]');
-    const scroller = document.getElementById('galleryScroller');
-    const dotsWrap = document.getElementById('galleryDots');
-    const prevBtn = document.querySelector('[data-gprev]');
-    const nextBtn = document.querySelector('[data-gnext]');
-    if (!wrap || !scroller) return;
+ async function initGalleryFromJson() {
+  const wrap = document.querySelector('[data-gallery]');
+  const scroller = document.getElementById('galleryScroller');
+  const dotsWrap = document.getElementById('galleryDots');
+  const prevBtn = document.querySelector('[data-gprev]');
+  const nextBtn = document.querySelector('[data-gnext]');
 
-    const jsonPath = wrap.getAttribute('data-gallery-json') || 'assets/img/gallery/gallery.json';
+  console.log('[GALLERY] wrap:', !!wrap, 'scroller:', !!scroller);
 
-    let files = [];
-    try {
-      const res = await fetch(jsonPath, { cache: 'no-store' });
-      files = await res.json();
-    } catch (e) {
-      console.warn('gallery.json not found / failed to load:', e);
-      return;
-    }
+  if (!wrap || !scroller) return;
 
-    files = (files || []).filter(name => {
-      const low = String(name || '').toLowerCase();
-      return low && low !== 'gallery.json' && low.match(/\.(png|jpg|jpeg|webp|gif)$/);
+  const jsonPath = wrap.getAttribute('data-gallery-json') || 'assets/img/gallery/gallery.json';
+  console.log('[GALLERY] jsonPath:', jsonPath);
+
+  let files = [];
+  try {
+    const res = await fetch(jsonPath, { cache: 'no-store' });
+    console.log('[GALLERY] fetch status:', res.status);
+    files = await res.json();
+    console.log('[GALLERY] files raw:', files);
+  } catch (e) {
+    console.error('[GALLERY] failed to load json:', e);
+    return;
+  }
+
+  files = (files || []).map(String).filter(name => {
+    const low = name.toLowerCase();
+    return low && low !== 'gallery.json' && /\.(png|jpg|jpeg|webp|gif)$/.test(low);
+  });
+
+  console.log('[GALLERY] files filtered:', files);
+
+  scroller.innerHTML = '';
+  if (dotsWrap) dotsWrap.innerHTML = '';
+
+  const frag = document.createDocumentFragment();
+  files.forEach((file, idx) => {
+    const fig = document.createElement('figure');
+    fig.className = 'gallery-item' + (idx === 0 ? ' is-active' : '');
+
+    const img = document.createElement('img');
+    img.loading = 'lazy';
+    img.alt = `Concept Product ${idx + 1}`;
+    img.src = `assets/img/gallery/${file}`;
+
+    fig.appendChild(img);
+    frag.appendChild(fig);
+  });
+
+  scroller.appendChild(frag);
+
+  const items = Array.from(scroller.querySelectorAll('.gallery-item'));
+  console.log('[GALLERY] items created:', items.length);
+
+  if (items.length === 0) return;
+
+  if (dotsWrap) {
+    items.forEach((_, i) => {
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'gallery-dot' + (i === 0 ? ' is-active' : '');
+      dot.addEventListener('click', () => {
+        items[i].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      });
+      dotsWrap.appendChild(dot);
+    });
+  }
+
+  function setActiveByCenter() {
+    const center = scroller.scrollLeft + scroller.clientWidth / 2;
+    let bestIndex = 0, bestDist = Infinity;
+    items.forEach((item, i) => {
+      const itemCenter = item.offsetLeft + item.offsetWidth / 2;
+      const d = Math.abs(itemCenter - center);
+      if (d < bestDist) { bestDist = d; bestIndex = i; }
     });
 
-    scroller.innerHTML = '';
-    if (dotsWrap) dotsWrap.innerHTML = '';
+    items.forEach((it, i) => it.classList.toggle('is-active', i === bestIndex));
+    if (dotsWrap) Array.from(dotsWrap.children).forEach((dot, i) => dot.classList.toggle('is-active', i === bestIndex));
+  }
 
-    const frag = document.createDocumentFragment();
-    files.forEach((file, idx) => {
-      const fig = document.createElement('figure');
-      fig.className = 'gallery-item' + (idx === 0 ? ' is-active' : '');
+  let t = null;
+  scroller.addEventListener('scroll', () => {
+    clearTimeout(t);
+    t = setTimeout(setActiveByCenter, 80);
+  });
 
-      const img = document.createElement('img');
-      img.loading = 'lazy';
-      img.alt = `Concept Product ${idx + 1}`;
-      img.src = `assets/img/gallery/${file}`;
+  function scrollByOne(dir) {
+    const active = scroller.querySelector('.gallery-item.is-active') || items[0];
+    const index = Math.max(0, items.indexOf(active));
+    const nextIndex = Math.min(items.length - 1, Math.max(0, index + dir));
+    items[nextIndex].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+  }
 
-      fig.appendChild(img);
-      frag.appendChild(fig);
+  prevBtn?.addEventListener('click', () => scrollByOne(-1));
+  nextBtn?.addEventListener('click', () => scrollByOne(1));
+
+  setActiveByCenter();
+  window.addEventListener('resize', setActiveByCenter);
+}
+
+initGalleryFromJson();
+
     });
     scroller.appendChild(frag);
 
