@@ -136,9 +136,7 @@ window.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('hashchange', () => forceCloseAnyModalArtifacts());
 
   // =========================
-  // GALLERY (AUTO: Any image you upload will appear)
-  // - Primary: GitHub API list folder contents (works on GitHub Pages)
-  // - Fallback: gallery.json
+  // GALLERY 1 (AUTO: GitHub folder / fallback JSON)
   // =========================
   const scroller = document.getElementById('galleryScroller');
   const dotsWrap = document.getElementById('galleryDots');
@@ -169,7 +167,6 @@ window.addEventListener('DOMContentLoaded', () => {
     const res = await fetch(url, { cache: 'no-store' });
     if (!res.ok) throw new Error('GitHub API failed');
     const data = await res.json();
-    // data is array of {name, type, download_url}
     const files = Array.isArray(data)
       ? data.filter(x => x && x.type === 'file').map(x => x.name)
       : [];
@@ -184,7 +181,7 @@ window.addEventListener('DOMContentLoaded', () => {
     return onlyImages(files);
   }
 
-  function buildGallery(files) {
+  function buildGalleryFromFiles(files) {
     if (!scroller) return;
     scroller.innerHTML = '';
     if (dotsWrap) dotsWrap.innerHTML = '';
@@ -254,7 +251,6 @@ window.addEventListener('DOMContentLoaded', () => {
     prevBtn?.addEventListener('click', () => scrollByOne(-1));
     nextBtn?.addEventListener('click', () => scrollByOne(1));
 
-    // Keyboard (optional)
     window.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft') scrollByOne(-1);
       if (e.key === 'ArrowRight') scrollByOne(1);
@@ -267,22 +263,136 @@ window.addEventListener('DOMContentLoaded', () => {
   async function initGallery() {
     if (!scroller || !galleryWrap) return;
 
-    // Prevent gallery being stuck "blurred" even if data-animate exists
     galleryWrap.classList.add('is-visible');
 
     let files = [];
     try {
-      files = await listFromGithubAPI(); // ✅ auto from folder
+      files = await listFromGithubAPI();
     } catch (e) {
       try {
-        files = await listFromJson(); // fallback
+        files = await listFromJson();
       } catch (_) {
         files = [];
       }
     }
 
-    buildGallery(files);
+    buildGalleryFromFiles(files);
   }
 
   initGallery();
+
+  // =========================
+  // GALLERY 2 (Cars — ImageKit URLs)
+  // =========================
+  const carsScroller = document.getElementById('carsGalleryScroller');
+  const carsDotsWrap = document.getElementById('carsGalleryDots');
+  const carsPrevBtn = document.querySelector('[data-gprev-cars]');
+  const carsNextBtn = document.querySelector('[data-gnext-cars]');
+  const carsGalleryWrap = document.querySelector('[data-gallery-cars]');
+
+  // ✅ ImageKit URLs (clean + optimized)
+  const CAR_IMAGES = [
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(1).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(4).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(5).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(7).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(8).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(9).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(10).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(11).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(12).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(13).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(14).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(18).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(19).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(21).JPG?tr=q-auto,f-auto"
+  ];
+
+  function buildGalleryFromUrls({ scrollerEl, dotsEl, prevEl, nextEl, wrapEl, urls, altPrefix = "Gallery Image" }) {
+    if (!scrollerEl || !wrapEl) return;
+
+    wrapEl.classList.add('is-visible');
+
+    scrollerEl.innerHTML = '';
+    if (dotsEl) dotsEl.innerHTML = '';
+
+    const frag = document.createDocumentFragment();
+
+    urls.forEach((url, idx) => {
+      const fig = document.createElement('figure');
+      fig.className = 'gallery-item' + (idx === 0 ? ' is-active' : '');
+
+      const img = document.createElement('img');
+      img.loading = 'lazy';
+      img.alt = `${altPrefix} ${idx + 1}`;
+      img.src = url;
+
+      fig.appendChild(img);
+      frag.appendChild(fig);
+    });
+
+    scrollerEl.appendChild(frag);
+
+    const items = Array.from(scrollerEl.querySelectorAll('.gallery-item'));
+    if (items.length === 0) return;
+
+    if (dotsEl) {
+      items.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'gallery-dot' + (i === 0 ? ' is-active' : '');
+        dot.setAttribute('aria-label', `Go to image ${i + 1}`);
+        dot.addEventListener('click', () => {
+          items[i].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        });
+        dotsEl.appendChild(dot);
+      });
+    }
+
+    function setActiveByCenter() {
+      const center = scrollerEl.scrollLeft + scrollerEl.clientWidth / 2;
+      let bestIndex = 0;
+      let bestDist = Infinity;
+
+      items.forEach((item, i) => {
+        const itemCenter = item.offsetLeft + item.offsetWidth / 2;
+        const d = Math.abs(itemCenter - center);
+        if (d < bestDist) { bestDist = d; bestIndex = i; }
+      });
+
+      items.forEach((it, i) => it.classList.toggle('is-active', i === bestIndex));
+      if (dotsEl) {
+        Array.from(dotsEl.children).forEach((dot, i) => dot.classList.toggle('is-active', i === bestIndex));
+      }
+    }
+
+    let t = null;
+    scrollerEl.addEventListener('scroll', () => {
+      clearTimeout(t);
+      t = setTimeout(setActiveByCenter, 90);
+    });
+
+    function scrollByOne(dir) {
+      const active = scrollerEl.querySelector('.gallery-item.is-active') || items[0];
+      const index = Math.max(0, items.indexOf(active));
+      const nextIndex = Math.min(items.length - 1, Math.max(0, index + dir));
+      items[nextIndex].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    }
+
+    prevEl?.addEventListener('click', () => scrollByOne(-1));
+    nextEl?.addEventListener('click', () => scrollByOne(1));
+
+    setActiveByCenter();
+    window.addEventListener('resize', setActiveByCenter);
+  }
+
+  buildGalleryFromUrls({
+    scrollerEl: carsScroller,
+    dotsEl: carsDotsWrap,
+    prevEl: carsPrevBtn,
+    nextEl: carsNextBtn,
+    wrapEl: carsGalleryWrap,
+    urls: CAR_IMAGES,
+    altPrefix: "Car Concept"
+  });
 });
