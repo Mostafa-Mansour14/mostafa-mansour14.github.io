@@ -391,3 +391,4 @@ window.addEventListener('DOMContentLoaded', () => {
     altPrefix: "Car Concept"
   });
 });
+
