@@ -21,6 +21,9 @@
   </head>
 
   <body id="page-top">
+    <!-- Premium 3D background (behind everything) -->
+    <div id="bg3d" aria-hidden="true"></div>
+
     <!-- TOP NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="topNav">
       <div class="container nav-max">
@@ -160,167 +163,69 @@
             </ul>
 
             <div class="tab-content" id="portfolioTabsContent">
-             <!-- TAB 1 -->
-<div class="tab-pane fade show active" id="tab-edit" role="tabpanel" aria-labelledby="edit-tab" tabindex="0">
+              <!-- TAB 1 -->
+              <div class="tab-pane fade show active" id="tab-edit" role="tabpanel" aria-labelledby="edit-tab" tabindex="0">
+                <div class="smart-card p-3 p-md-4 mb-4" data-animate>
+                  <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+                    <div>
+                      <h3 class="h5 mb-1">Video Editing Work</h3>
+                      <div class="text-muted">Pacing • Transitions • Color • Motion • Sound</div>
+                    </div>
+                    <span class="type-badge type-edit"><i class="fa-solid fa-scissors me-2"></i>Editing</span>
+                  </div>
+                  <p class="mb-0">Selected edits that highlight rhythm, transitions, and platform-optimized delivery.</p>
+                </div>
 
-  <div class="smart-card p-3 p-md-4 mb-4" data-animate>
-    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
-      <div>
-        <h3 class="h5 mb-1">Video Editing Work</h3>
-        <div class="text-muted">Pacing • Transitions • Color • Motion • Sound</div>
-      </div>
-      <span class="type-badge type-edit">
-        <i class="fa-solid fa-scissors me-2"></i>Editing
-      </span>
-    </div>
-    <p class="mb-0">
-      Selected edits that highlight rhythm, transitions, and platform-optimized delivery.
-    </p>
-  </div>
-<div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="edit">
-  <div class="video-card">
-    <div class="video-head">
-      <span class="chip chip-edit">Editing</span>
-      <span class="chip chip-ghost">Short</span>
-    </div>
+                <div class="portfolio-filters mb-3" data-animate data-filter-group="edit">
+                  <button class="filter-btn is-active" type="button" data-filter="all">All</button>
+                  <button class="filter-btn" type="button" data-filter="short">Shorts</button>
+                  <button class="filter-btn" type="button" data-filter="youtube">YouTube</button>
+                </div>
 
-    <div class="video-thumb" data-video="5129Esy6WhI">
-      <span class="play">▶</span>
-    </div>
+                <!-- IMPORTANT: all edit items must be inside this row -->
+                <div class="row g-4" data-animate>
+                  <!-- Existing -->
+                  <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="edit">
+                    <div class="video-card">
+                      <div class="video-head">
+                        <span class="chip chip-edit">Editing</span>
+                        <span class="chip chip-ghost">Short</span>
+                      </div>
+                      <div class="video-thumb" data-video="GEFvzpgGZmU"><span class="play">▶</span></div>
+                      <div class="video-meta">
+                        <div class="video-title">Short Edit</div>
+                        <div class="video-tags">Pacing • Transitions • Visual rhythm</div>
+                      </div>
+                    </div>
+                  </div>
 
-    <div class="video-meta">
-      <div class="video-title">Short Edit</div>
-      <div class="video-tags">Hook • Timing • Clean cuts</div>
-    </div>
-  </div>
-</div>
+                  <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="edit">
+                    <div class="video-card">
+                      <div class="video-head">
+                        <span class="chip chip-edit">Editing</span>
+                        <span class="chip chip-ghost">Short</span>
+                      </div>
+                      <div class="video-thumb" data-video="0shWVNJMoVo"><span class="play">▶</span></div>
+                      <div class="video-meta">
+                        <div class="video-title">Short Edit</div>
+                        <div class="video-tags">Cuts • Energy • Beat sync</div>
+                      </div>
+                    </div>
+                  </div>
 
-
-  <div class="portfolio-filters mb-3" data-animate data-filter-group="edit">
-    <button class="filter-btn is-active" type="button" data-filter="all">All</button>
-    <button class="filter-btn" type="button" data-filter="short">Shorts</button>
-    <button class="filter-btn" type="button" data-filter="youtube">YouTube</button>
-  </div>
-
-  <div class="row g-4" data-animate>
-
-    <!-- EXISTING SHORTS (kept) -->
-    <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="edit">
-      <div class="video-card">
-        <div class="video-head">
-          <span class="chip chip-edit">Editing</span>
-          <span class="chip chip-ghost">Short</span>
-        </div>
-        <div class="video-thumb" data-video="GEFvzpgGZmU"><span class="play">▶</span></div>
-        <div class="video-meta">
-          <div class="video-title">Short Edit</div>
-          <div class="video-tags">Pacing • Transitions • Visual rhythm</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="edit">
-      <div class="video-card">
-        <div class="video-head">
-          <span class="chip chip-edit">Editing</span>
-          <span class="chip chip-ghost">Short</span>
-        </div>
-        <div class="video-thumb" data-video="0shWVNJMoVo"><span class="play">▶</span></div>
-        <div class="video-meta">
-          <div class="video-title">Short Edit</div>
-          <div class="video-tags">Cuts • Energy • Beat sync</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="edit">
-      <div class="video-card">
-        <div class="video-head">
-          <span class="chip chip-edit">Editing</span>
-          <span class="chip chip-ghost">Short</span>
-        </div>
-        <div class="video-thumb" data-video="mYQBfzR22TQ"><span class="play">▶</span></div>
-        <div class="video-meta">
-          <div class="video-title">Short Edit</div>
-          <div class="video-tags">Timing • Motion • Flow</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="edit">
-      <div class="video-card">
-        <div class="video-head">
-          <span class="chip chip-edit">Editing</span>
-          <span class="chip chip-ghost">Short</span>
-        </div>
-        <div class="video-thumb" data-video="Juso-cC3Xd4"><span class="play">▶</span></div>
-        <div class="video-meta">
-          <div class="video-title">Short Edit</div>
-          <div class="video-tags">Speed • Cuts • Punchy delivery</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- NEW SHORTS -->
-    <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="edit">
-      <div class="video-card">
-        <div class="video-head">
-          <span class="chip chip-edit">Editing</span>
-          <span class="chip chip-ghost">Short</span>
-        </div>
-        <div class="video-thumb" data-video="WCWSpc121pI"><span class="play">▶</span></div>
-        <div class="video-meta">
-          <div class="video-title">Short Edit</div>
-          <div class="video-tags">Pacing • Hook • Clean cuts</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="edit">
-      <div class="video-card">
-        <div class="video-head">
-          <span class="chip chip-edit">Editing</span>
-          <span class="chip chip-ghost">Short</span>
-        </div>
-        <div class="video-thumb" data-video="nJZVmrPypEg"><span class="play">▶</span></div>
-        <div class="video-meta">
-          <div class="video-title">Short Edit</div>
-          <div class="video-tags">Energy • Transitions • Flow</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="edit">
-      <div class="video-card">
-        <div class="video-head">
-          <span class="chip chip-edit">Editing</span>
-          <span class="chip chip-ghost">Short</span>
-        </div>
-        <div class="video-thumb" data-video="TjLQyM1boSA"><span class="play">▶</span></div>
-        <div class="video-meta">
-          <div class="video-title">Short Edit</div>
-          <div class="video-tags">Timing • Beat sync • Punch</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="edit">
-      <div class="video-card">
-        <div class="video-head">
-          <span class="chip chip-edit">Editing</span>
-          <span class="chip chip-ghost">Short</span>
-        </div>
-        <div class="video-thumb" data-video="5rJbLmcfBSE"><span class="play">▶</span></div>
-        <div class="video-meta">
-          <div class="video-title">Short Edit</div>
-          <div class="video-tags">Story • Rhythm • Clean sound</div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</div>
-
+                  <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="edit">
+                    <div class="video-card">
+                      <div class="video-head">
+                        <span class="chip chip-edit">Editing</span>
+                        <span class="chip chip-ghost">Short</span>
+                      </div>
+                      <div class="video-thumb" data-video="mYQBfzR22TQ"><span class="play">▶</span></div>
+                      <div class="video-meta">
+                        <div class="video-title">Short Edit</div>
+                        <div class="video-tags">Timing • Motion • Flow</div>
+                      </div>
+                    </div>
+                  </div>
 
                   <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="edit">
                     <div class="video-card">
@@ -332,6 +237,77 @@
                       <div class="video-meta">
                         <div class="video-title">Short Edit</div>
                         <div class="video-tags">Speed • Cuts • Punchy delivery</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- New (from you) -->
+                  <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="edit">
+                    <div class="video-card">
+                      <div class="video-head">
+                        <span class="chip chip-edit">Editing</span>
+                        <span class="chip chip-ghost">Short</span>
+                      </div>
+                      <div class="video-thumb" data-video="WCWSpc121pI"><span class="play">▶</span></div>
+                      <div class="video-meta">
+                        <div class="video-title">Short Edit</div>
+                        <div class="video-tags">Pacing • Hook • Clean cuts</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="edit">
+                    <div class="video-card">
+                      <div class="video-head">
+                        <span class="chip chip-edit">Editing</span>
+                        <span class="chip chip-ghost">Short</span>
+                      </div>
+                      <div class="video-thumb" data-video="nJZVmrPypEg"><span class="play">▶</span></div>
+                      <div class="video-meta">
+                        <div class="video-title">Short Edit</div>
+                        <div class="video-tags">Energy • Transitions • Flow</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="edit">
+                    <div class="video-card">
+                      <div class="video-head">
+                        <span class="chip chip-edit">Editing</span>
+                        <span class="chip chip-ghost">Short</span>
+                      </div>
+                      <div class="video-thumb" data-video="TjLQyM1boSA"><span class="play">▶</span></div>
+                      <div class="video-meta">
+                        <div class="video-title">Short Edit</div>
+                        <div class="video-tags">Timing • Beat sync • Punch</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="edit">
+                    <div class="video-card">
+                      <div class="video-head">
+                        <span class="chip chip-edit">Editing</span>
+                        <span class="chip chip-ghost">Short</span>
+                      </div>
+                      <div class="video-thumb" data-video="5rJbLmcfBSE"><span class="play">▶</span></div>
+                      <div class="video-meta">
+                        <div class="video-title">Short Edit</div>
+                        <div class="video-tags">Story • Rhythm • Clean sound</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="edit">
+                    <div class="video-card">
+                      <div class="video-head">
+                        <span class="chip chip-edit">Editing</span>
+                        <span class="chip chip-ghost">Short</span>
+                      </div>
+                      <div class="video-thumb" data-video="5129Esy6WhI"><span class="play">▶</span></div>
+                      <div class="video-meta">
+                        <div class="video-title">Short Edit</div>
+                        <div class="video-tags">Hook • Timing • Clean cuts</div>
                       </div>
                     </div>
                   </div>
@@ -655,6 +631,12 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Three.js (3D background) -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <script src="js/bg3d.js"></script>
+
+    <!-- Site main script -->
     <script src="js/scripts.js"></script>
   </body>
 </html>
