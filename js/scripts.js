@@ -395,4 +395,110 @@ window.addEventListener('DOMContentLoaded', () => {
     urls: CAR_IMAGES,
     altPrefix: "Car Concept"
   });
+    // =========================
+  // CARS GALLERY (ImageKit)
+  // =========================
+  const carsScroller = document.getElementById('carsGalleryScroller');
+  const carsDotsWrap = document.getElementById('carsGalleryDots');
+  const carsPrevBtn = document.querySelector('[data-gprev-cars]');
+  const carsNextBtn = document.querySelector('[data-gnext-cars]');
+  const carsGalleryWrap = document.querySelector('[data-gallery-cars]');
+
+  const CAR_IMAGES = [
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(1).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(4).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(5).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(7).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(8).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(9).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(10).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(11).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(12).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(13).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(14).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(18).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(19).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(21).JPG?tr=q-auto,f-auto"
+  ];
+
+  function buildCarsGallery(urls) {
+    if (!carsScroller || !carsGalleryWrap) return;
+
+    carsGalleryWrap.classList.add('is-visible');
+    carsScroller.innerHTML = '';
+    if (carsDotsWrap) carsDotsWrap.innerHTML = '';
+
+    const frag = document.createDocumentFragment();
+
+    urls.forEach((url, idx) => {
+      const fig = document.createElement('figure');
+      fig.className = 'gallery-item' + (idx === 0 ? ' is-active' : '');
+
+      const img = document.createElement('img');
+      img.loading = 'lazy';
+      img.alt = `Car Concept ${idx + 1}`;
+      img.src = url;
+
+      fig.appendChild(img);
+      frag.appendChild(fig);
+    });
+
+    carsScroller.appendChild(frag);
+
+    const items = Array.from(carsScroller.querySelectorAll('.gallery-item'));
+    if (items.length === 0) return;
+
+    // dots
+    if (carsDotsWrap) {
+      items.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'gallery-dot' + (i === 0 ? ' is-active' : '');
+        dot.setAttribute('aria-label', `Go to image ${i + 1}`);
+        dot.addEventListener('click', () => {
+          items[i].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        });
+        carsDotsWrap.appendChild(dot);
+      });
+    }
+
+    function setActiveByCenter() {
+      const center = carsScroller.scrollLeft + carsScroller.clientWidth / 2;
+      let bestIndex = 0;
+      let bestDist = Infinity;
+
+      items.forEach((item, i) => {
+        const itemCenter = item.offsetLeft + item.offsetWidth / 2;
+        const d = Math.abs(itemCenter - center);
+        if (d < bestDist) { bestDist = d; bestIndex = i; }
+      });
+
+      items.forEach((it, i) => it.classList.toggle('is-active', i === bestIndex));
+      if (carsDotsWrap) {
+        Array.from(carsDotsWrap.children).forEach((dot, i) => dot.classList.toggle('is-active', i === bestIndex));
+      }
+    }
+
+    let t = null;
+    carsScroller.addEventListener('scroll', () => {
+      clearTimeout(t);
+      t = setTimeout(setActiveByCenter, 90);
+    });
+
+    function scrollByOne(dir) {
+      const active = carsScroller.querySelector('.gallery-item.is-active') || items[0];
+      const index = Math.max(0, items.indexOf(active));
+      const nextIndex = Math.min(items.length - 1, Math.max(0, index + dir));
+      items[nextIndex].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    }
+
+    carsPrevBtn?.addEventListener('click', () => scrollByOne(-1));
+    carsNextBtn?.addEventListener('click', () => scrollByOne(1));
+
+    setActiveByCenter();
+    window.addEventListener('resize', setActiveByCenter);
+  }
+
+  buildCarsGallery(CAR_IMAGES);
+
 });
