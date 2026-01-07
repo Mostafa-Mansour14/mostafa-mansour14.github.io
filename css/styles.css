@@ -711,3 +711,9 @@ body.modal-open{
 @media (max-width: 576px){
   .lightbox-nav{ width:42px; height:42px; font-size:28px; }
 }
+/* EMERGENCY: disable reveal blur if JS fails */
+[data-animate]{
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+}
