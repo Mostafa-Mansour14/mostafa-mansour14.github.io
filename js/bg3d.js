@@ -1,11 +1,10 @@
 // =========================
-// Premium 3D Background (Media / Video Vibe)
-// Camera + Lens + Play + Clapper + Timeline
+// Premium 3D Background (Cinema Vibe)
+// Movie Camera + Film Reel + Clapper + Spotlight + Play
 // =========================
 (function () {
   if (!window.THREE) return;
 
-  // Respect reduced motion
   const reduceMotion =
     window.matchMedia &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -27,14 +26,14 @@
   // Scene & Camera
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(
-    50,
+    52,
     window.innerWidth / window.innerHeight,
     0.1,
     100
   );
-  camera.position.z = 10;
+  camera.position.z = 11;
 
-  // Lights (soft cinematic)
+  // Lights (cinematic soft)
   const key = new THREE.DirectionalLight(0xffffff, 1.05);
   key.position.set(7, 8, 10);
   scene.add(key);
@@ -43,205 +42,257 @@
   rim.position.set(-8, 2, 8);
   scene.add(rim);
 
-  const amb = new THREE.AmbientLight(0xffffff, 0.35);
+  const amb = new THREE.AmbientLight(0xffffff, 0.34);
   scene.add(amb);
 
-  // Materials (keep classy)
+  // Materials
   const matWarm = new THREE.MeshStandardMaterial({
-    color: 0xbd5d38, roughness: 0.42, metalness: 0.55,
+    color: 0xbd5d38,
+    roughness: 0.45,
+    metalness: 0.55,
   });
   const matCool = new THREE.MeshStandardMaterial({
-    color: 0x2b6fff, roughness: 0.45, metalness: 0.5,
+    color: 0x2b6fff,
+    roughness: 0.5,
+    metalness: 0.5,
   });
   const matDark = new THREE.MeshStandardMaterial({
-    color: 0x1f2327, roughness: 0.6, metalness: 0.25,
+    color: 0x1f2327,
+    roughness: 0.65,
+    metalness: 0.22,
   });
   const matWhite = new THREE.MeshStandardMaterial({
-    color: 0xffffff, roughness: 0.55, metalness: 0.15,
+    color: 0xffffff,
+    roughness: 0.6,
+    metalness: 0.12,
   });
 
   const group = new THREE.Group();
   scene.add(group);
 
-  // Helpers
-  function addRoundedBox(w, h, d, mat) {
-    const g = new THREE.BoxGeometry(w, h, d);
-    const m = new THREE.Mesh(g, mat);
-    return m;
-  }
+  const roundedBox = (w, h, d, mat) => new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
 
   // =========================
-  // 1) CAMERA (body + lens)
+  // 1) MOVIE CAMERA (cinema camera with 2 reels)
   // =========================
-  const cameraIcon = new THREE.Group();
+  const movieCam = new THREE.Group();
 
-  // body
-  const body = addRoundedBox(2.3, 1.35, 0.9, matDark);
+  // camera body
+  const body = roundedBox(2.25, 1.35, 0.95, matDark);
   body.position.set(0, 0, 0);
-  cameraIcon.add(body);
+  movieCam.add(body);
 
-  // top bump
-  const top = addRoundedBox(0.9, 0.42, 0.75, matDark);
-  top.position.set(-0.55, 0.88, 0);
-  cameraIcon.add(top);
-
-  // lens base
-  const lensBase = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.55, 0.62, 0.65, 24),
+  // lens
+  const lens = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.55, 0.65, 0.9, 28),
     matWarm
   );
-  lensBase.rotation.x = Math.PI / 2;
-  lensBase.position.set(0.85, 0.05, 0.0);
-  cameraIcon.add(lensBase);
+  lens.rotation.x = Math.PI / 2;
+  lens.position.set(1.4, -0.05, 0);
+  movieCam.add(lens);
 
-  // lens glass ring
+  // lens ring (glass feel)
   const lensRing = new THREE.Mesh(
-    new THREE.TorusGeometry(0.48, 0.11, 14, 42),
+    new THREE.TorusGeometry(0.48, 0.1, 14, 50),
     matCool
   );
   lensRing.rotation.y = Math.PI / 2;
-  lensRing.position.set(1.18, 0.05, 0.0);
-  cameraIcon.add(lensRing);
+  lensRing.position.set(1.9, -0.05, 0);
+  movieCam.add(lensRing);
 
-  // small button
-  const btn = new THREE.Mesh(
-    new THREE.SphereGeometry(0.12, 18, 18),
-    matWarm
+  // handle
+  const handle = roundedBox(0.55, 0.25, 0.55, matDark);
+  handle.position.set(-0.55, 0.95, 0);
+  movieCam.add(handle);
+
+  // reels (two discs)
+  const reelGeo = new THREE.CylinderGeometry(0.45, 0.45, 0.18, 28);
+  const reel1 = new THREE.Mesh(reelGeo, matWhite);
+  reel1.position.set(-0.8, 0.9, 0.35);
+  reel1.rotation.x = Math.PI / 2;
+  movieCam.add(reel1);
+
+  const reel2 = new THREE.Mesh(reelGeo, matWhite);
+  reel2.position.set(-0.2, 0.9, 0.35);
+  reel2.rotation.x = Math.PI / 2;
+  movieCam.add(reel2);
+
+  // reel holes (simple)
+  const holeGeo = new THREE.CylinderGeometry(0.06, 0.06, 0.22, 12);
+  for (let i = 0; i < 5; i++) {
+    const ang = (i / 5) * Math.PI * 2;
+    const h1 = new THREE.Mesh(holeGeo, matDark);
+    h1.position.set(-0.8 + Math.cos(ang) * 0.22, 0.9 + Math.sin(ang) * 0.22, 0.35);
+    h1.rotation.x = Math.PI / 2;
+    movieCam.add(h1);
+
+    const h2 = new THREE.Mesh(holeGeo, matDark);
+    h2.position.set(-0.2 + Math.cos(ang) * 0.22, 0.9 + Math.sin(ang) * 0.22, 0.35);
+    h2.rotation.x = Math.PI / 2;
+    movieCam.add(h2);
+  }
+
+  movieCam.scale.setScalar(0.85);
+  movieCam.position.set(-3.3, 1.55, -1.2);
+  movieCam.rotation.set(0.2, -0.65, 0.1);
+  group.add(movieCam);
+
+  // =========================
+  // 2) FILM REEL
+  // =========================
+  const reel = new THREE.Group();
+  const reelDisc = new THREE.Mesh(
+    new THREE.CylinderGeometry(1.05, 1.05, 0.22, 34),
+    matWhite
   );
-  btn.position.set(-0.9, 0.35, 0.48);
-  cameraIcon.add(btn);
+  reelDisc.rotation.x = Math.PI / 2;
+  reel.add(reelDisc);
 
-  cameraIcon.scale.setScalar(0.85);
-  cameraIcon.position.set(-3.2, 1.6, -1.2);
-  cameraIcon.rotation.set(0.2, -0.6, 0.1);
-  group.add(cameraIcon);
-
-  // =========================
-  // 2) PLAY ICON (triangle + circle)
-  // =========================
-  const playIcon = new THREE.Group();
-
-  const playCircle = new THREE.Mesh(
-    new THREE.TorusGeometry(1.05, 0.12, 14, 64),
-    matWarm
+  const reelRing = new THREE.Mesh(
+    new THREE.TorusGeometry(0.95, 0.08, 14, 60),
+    matCool
   );
-  playCircle.rotation.x = Math.PI / 2.2;
-  playIcon.add(playCircle);
+  reelRing.rotation.y = Math.PI / 2;
+  reel.add(reelRing);
 
-  const triShape = new THREE.Shape();
-  triShape.moveTo(-0.25, -0.45);
-  triShape.lineTo(0.55, 0.0);
-  triShape.lineTo(-0.25, 0.45);
-  triShape.closePath();
+  for (let i = 0; i < 6; i++) {
+    const ang = (i / 6) * Math.PI * 2;
+    const hole = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.12, 0.12, 0.3, 14),
+      matDark
+    );
+    hole.position.set(Math.cos(ang) * 0.45, Math.sin(ang) * 0.45, 0);
+    hole.rotation.x = Math.PI / 2;
+    reel.add(hole);
+  }
 
-  const triGeo = new THREE.ExtrudeGeometry(triShape, {
-    depth: 0.18,
-    bevelEnabled: true,
-    bevelSize: 0.06,
-    bevelThickness: 0.06,
-    bevelSegments: 2,
-    steps: 1,
-  });
-  const tri = new THREE.Mesh(triGeo, matCool);
-  tri.rotation.y = Math.PI / 10;
-  tri.position.set(0.08, 0, -0.08);
-  playIcon.add(tri);
-
-  playIcon.scale.setScalar(0.75);
-  playIcon.position.set(3.1, -0.2, -1.6);
-  playIcon.rotation.set(0.2, 0.7, -0.1);
-  group.add(playIcon);
+  reel.scale.setScalar(0.72);
+  reel.position.set(3.25, -0.25, -1.8);
+  reel.rotation.set(0.25, 0.85, -0.12);
+  group.add(reel);
 
   // =========================
-  // 3) CLAPPERBOARD (slate)
+  // 3) CLAPPERBOARD
   // =========================
   const clapper = new THREE.Group();
-
-  const slate = addRoundedBox(2.1, 1.25, 0.18, matDark);
+  const slate = roundedBox(2.15, 1.25, 0.18, matDark);
   clapper.add(slate);
 
-  // stripes top
-  const topBar = addRoundedBox(2.15, 0.35, 0.2, matWhite);
+  const topBar = roundedBox(2.2, 0.35, 0.2, matWhite);
   topBar.position.set(0, 0.75, 0);
   clapper.add(topBar);
 
-  // diagonal stripes (thin boxes)
-  for (let i = 0; i < 6; i++) {
-    const stripe = addRoundedBox(0.34, 0.08, 0.22, i % 2 ? matWarm : matCool);
-    stripe.position.set(-0.82 + i * 0.34, 0.75, 0.02);
+  for (let i = 0; i < 7; i++) {
+    const stripe = roundedBox(0.32, 0.08, 0.22, i % 2 ? matWarm : matCool);
+    stripe.position.set(-0.92 + i * 0.32, 0.75, 0.02);
     stripe.rotation.z = -0.55;
     clapper.add(stripe);
   }
 
   clapper.scale.setScalar(0.72);
-  clapper.position.set(0.4, -2.1, -1.1);
-  clapper.rotation.set(-0.1, 0.3, 0.12);
+  clapper.position.set(0.5, -2.2, -1.1);
+  clapper.rotation.set(-0.12, 0.35, 0.12);
   group.add(clapper);
 
   // =========================
-  // 4) TIMELINE BARS (edit vibe)
+  // 4) SPOTLIGHT (cone light)
   // =========================
-  const timeline = new THREE.Group();
-  const barMats = [matWarm, matCool, matDark];
+  const spotlight = new THREE.Group();
 
-  for (let i = 0; i < 9; i++) {
-    const h = 0.3 + (i % 3) * 0.18;
-    const bar = addRoundedBox(0.35, h, 0.25, barMats[i % 3]);
-    bar.position.set(-1.6 + i * 0.42, 0, 0);
-    timeline.add(bar);
-  }
+  const head = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.35, 0.45, 0.9, 20),
+    matDark
+  );
+  head.rotation.z = Math.PI / 2.8;
+  spotlight.add(head);
 
-  // base line
-  const base = addRoundedBox(4.2, 0.08, 0.12, matWhite);
-  base.position.set(0.0, -0.45, 0);
-  timeline.add(base);
+  const cone = new THREE.Mesh(
+    new THREE.ConeGeometry(1.9, 3.6, 24, 1, true),
+    new THREE.MeshStandardMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.12,
+      roughness: 1,
+      metalness: 0,
+    })
+  );
+  cone.position.set(1.7, -0.9, 0);
+  cone.rotation.z = -0.95;
+  spotlight.add(cone);
 
-  timeline.scale.setScalar(0.78);
-  timeline.position.set(0.2, 2.45, -2.2);
-  timeline.rotation.set(0.25, -0.2, 0.0);
-  group.add(timeline);
+  spotlight.scale.setScalar(0.8);
+  spotlight.position.set(-0.2, 2.6, -2.4);
+  spotlight.rotation.set(0.25, -0.25, 0);
+  group.add(spotlight);
 
   // =========================
-  // Subtle parallax
+  // 5) PLAY RING (subtle)
   // =========================
+  const play = new THREE.Group();
+  const ring = new THREE.Mesh(
+    new THREE.TorusGeometry(0.95, 0.11, 14, 64),
+    matWarm
+  );
+  ring.rotation.x = Math.PI / 2.1;
+  play.add(ring);
+
+  const triShape = new THREE.Shape();
+  triShape.moveTo(-0.22, -0.42);
+  triShape.lineTo(0.56, 0.0);
+  triShape.lineTo(-0.22, 0.42);
+  triShape.closePath();
+
+  const triGeo = new THREE.ExtrudeGeometry(triShape, {
+    depth: 0.16,
+    bevelEnabled: true,
+    bevelSize: 0.05,
+    bevelThickness: 0.05,
+    bevelSegments: 2,
+    steps: 1,
+  });
+  const tri = new THREE.Mesh(triGeo, matCool);
+  tri.position.set(0.08, 0, -0.08);
+  play.add(tri);
+
+  play.scale.setScalar(0.65);
+  play.position.set(2.0, 2.0, -2.6);
+  play.rotation.set(0.18, 0.35, -0.08);
+  group.add(play);
+
+  // Parallax (very subtle)
   let mx = 0, my = 0;
   document.addEventListener("mousemove", (e) => {
     mx = (e.clientX / window.innerWidth - 0.5) * 2;
     my = (e.clientY / window.innerHeight - 0.5) * 2;
   });
 
-  // Animate
   let running = true;
   function animate() {
     if (!running) return;
 
-    // Slow global drift
-    group.rotation.y += 0.0013;
-    group.rotation.x += 0.0009;
+    group.rotation.y += 0.0012;
+    group.rotation.x += 0.0008;
 
-    // Parallax (very subtle)
-    group.rotation.y += mx * 0.00055;
-    group.rotation.x += my * 0.00045;
+    group.rotation.y += mx * 0.0005;
+    group.rotation.x += my * 0.0004;
 
-    // Individual small motion
-    cameraIcon.rotation.y += 0.0009;
-    playIcon.rotation.x += 0.0008;
-    clapper.rotation.y -= 0.0007;
-    timeline.rotation.z += 0.0006;
+    // micro motion
+    movieCam.rotation.y += 0.0008;
+    reel.rotation.z += 0.0011;
+    clapper.rotation.y -= 0.0006;
+    play.rotation.x += 0.0007;
 
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
   }
   animate();
 
-  // Resize
   window.addEventListener("resize", () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
   });
 
-  // Pause when tab hidden
   document.addEventListener("visibilitychange", () => {
     running = !document.hidden;
     if (running) animate();
