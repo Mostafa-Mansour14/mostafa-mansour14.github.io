@@ -13,7 +13,6 @@ window.addEventListener('DOMContentLoaded', () => {
     document.body.style.filter = '';
   }
 
-  
   forceCloseAnyModalArtifacts();
 
   document.addEventListener('keydown', (e) => {
