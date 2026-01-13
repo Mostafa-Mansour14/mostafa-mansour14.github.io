@@ -135,76 +135,106 @@ window.addEventListener('DOMContentLoaded', () => {
 
   window.addEventListener('hashchange', () => forceCloseAnyModalArtifacts());
 
-  // =========================
-  // GALLERY (Auto-build + easy add images)
-  // =========================
+  // =====================================================
+  // ✅ TWO GALLERIES (Products + Cars) AFTER VIDEOS
+  // =====================================================
 
   /**
-   * ✅ EASY ADD IMAGES:
-   * Just put images in: assets/img/gallery/
-   * and set COUNT below.
-   *
-   * Important: your file names have a space before (1)
-   * Example: "mostafa-mansour_product_ (1).png"
+   * PRODUCTS GALLERY (GitHub assets)
+   * Put images in: assets/img/gallery/
+   * Using your current naming:
+   * mostafa-mansour_product_ (1).png
    */
-  const GALLERY = {
+  const PRODUCTS = {
     folder: 'assets/img/gallery/',
     prefix: 'mostafa-mansour_product_ (',
     suffix: ').png',
-    count: 13, // <-- change this if you add more images
+    count: 13,
     startIndex: 1
   };
 
-  const galleryRoot = document.querySelector('[data-gallery]');
-  // لو مش حاطط root، هنحاول نلاقي عناصر افتراضية بالـ IDs
-  const scroller = document.getElementById('galleryScroller');
-  const dotsWrap = document.getElementById('galleryDots');
-  const prevBtn = document.querySelector('[data-gprev]');
-  const nextBtn = document.querySelector('[data-gnext]');
+  /**
+   * CARS GALLERY (ImageKit links)
+   * ✅ from your message
+   */
+  const CAR_IMAGES = [
+    "https://ik.imagekit.io/ygv06l7eo/motoors/IMG_2720.JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(7).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/motoors/IMG_5377.JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(12).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/motoors/IMG_2297.JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(4).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/motoors/IMG_5381.JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(19).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/motoors/IMG_2521.JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(9).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/motoors/IMG_5360.JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(1).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/motoors/IMG_2674.JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(14).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/motoors/IMG_2861.JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(11).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/motoors/IMG_5373.JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(5).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/motoors/IMG_2462.JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(10).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/motoors/IMG_2299.JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(8).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/motoors/IMG_5321.JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(13).JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/motoors/IMG_5376.JPG?tr=q-auto,f-auto",
+    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(18).JPG?tr=q-auto,f-auto"
+  ];
 
-  // Helper: create gallery slides automatically if scroller exists and empty OR you want auto
-  function ensureGallerySlides() {
-    if (!scroller) return [];
-
-    const existing = Array.from(scroller.querySelectorAll('.gallery-item img'));
-    if (existing.length > 0) {
-      // already has images in HTML
-      return Array.from(scroller.querySelectorAll('.gallery-item'));
+  function buildProductsUrls() {
+    const arr = [];
+    for (let i = PRODUCTS.startIndex; i < PRODUCTS.startIndex + PRODUCTS.count; i++) {
+      arr.push(`${PRODUCTS.folder}${PRODUCTS.prefix}${i}${PRODUCTS.suffix}`);
     }
+    return arr;
+  }
 
-    // build from config
+  function initGallery({ key, scrollerId, dotsId }) {
+    const scroller = document.getElementById(scrollerId);
+    const dotsWrap = document.getElementById(dotsId);
+    const prevBtn = document.querySelector(`[data-gprev="${key}"]`);
+    const nextBtn = document.querySelector(`[data-gnext="${key}"]`);
+
+    if (!scroller) return;
+
+    // make sure gallery doesn't stay hidden
+    const zone = scroller.closest('.gallery-zone');
+    zone?.classList.add('is-visible');
+
+    // Decide images source
+    const images =
+      key === 'cars' ? CAR_IMAGES :
+      key === 'products' ? buildProductsUrls() : [];
+
+    if (!images.length) return;
+
+    // Build slides
+    scroller.innerHTML = '';
     const frag = document.createDocumentFragment();
-    for (let i = GALLERY.startIndex; i < GALLERY.startIndex + GALLERY.count; i++) {
+
+    images.forEach((src, idx) => {
       const fig = document.createElement('figure');
-      fig.className = 'gallery-item';
+      fig.className = 'gallery-item' + (idx === 0 ? ' is-active' : '');
 
       const img = document.createElement('img');
       img.loading = 'lazy';
-      img.alt = `Concept Product ${i}`;
-      img.src = `${GALLERY.folder}${GALLERY.prefix}${i}${GALLERY.suffix}`;
+      img.alt = `${key} image ${idx + 1}`;
+      img.src = src;
 
       fig.appendChild(img);
       frag.appendChild(fig);
-    }
+    });
 
     scroller.appendChild(frag);
-    return Array.from(scroller.querySelectorAll('.gallery-item'));
-  }
 
-  function initGallery() {
-    if (!scroller) return;
+    const items = Array.from(scroller.querySelectorAll('.gallery-item'));
 
-    // IMPORTANT: remove any blur on gallery area immediately
-    const zone = scroller.closest('.gallery-zone') || scroller.parentElement;
-    zone?.classList.add('is-visible'); // avoids staying hidden/blur if it had data-animate
-
-    const items = ensureGallerySlides();
-    if (items.length === 0) return;
-
-    // first active
-    items.forEach((it, idx) => it.classList.toggle('is-active', idx === 0));
-
-    // build dots
+    // Build dots
     if (dotsWrap) {
       dotsWrap.innerHTML = '';
       items.forEach((_, i) => {
@@ -252,16 +282,13 @@ window.addEventListener('DOMContentLoaded', () => {
     prevBtn?.addEventListener('click', () => scrollByOne(-1));
     nextBtn?.addEventListener('click', () => scrollByOne(1));
 
-    // keyboard support
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') scrollByOne(-1);
-      if (e.key === 'ArrowRight') scrollByOne(1);
-    });
-
-    // initial
-    setActiveByCenter();
     window.addEventListener('resize', () => setActiveByCenter());
+
+    // initial set
+    setActiveByCenter();
   }
 
-  initGallery();
+  // ✅ init both galleries (AFTER VIDEOS)
+  initGallery({ key: 'products', scrollerId: 'galleryScrollerProducts', dotsId: 'galleryDotsProducts' });
+  initGallery({ key: 'cars', scrollerId: 'galleryScrollerCars', dotsId: 'galleryDotsCars' });
 });
