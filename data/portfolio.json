@@ -1,10 +1,38 @@
 {
   "videos": {
-    "edit": [],
-    "create": []
+    "edit": [
+      {
+        "title": "Short Edit",
+        "kind": "short",
+        "video": "GEFvzpgGZmU",
+        "thumb": "",
+        "tags": ["pacing", "transitions"]
+      }
+    ],
+    "create": [
+      {
+        "title": "On-camera Short",
+        "kind": "short",
+        "video": "hwqzvZyO-54",
+        "thumb": "",
+        "tags": ["hook", "delivery"]
+      }
+    ]
   },
   "galleries": {
-    "concept": [],
-    "cars": []
+    "concept": [
+      {
+        "title": "Concept 1",
+        "url": "https://example.com/image1.jpg",
+        "alt": "Concept visual"
+      }
+    ],
+    "cars": [
+      {
+        "title": "Car 1",
+        "url": "https://ik.imagekit.io/ygv06l7eo/motoors/IMG_2720.JPG",
+        "alt": "Car concept"
+      }
+    ]
   }
 }
