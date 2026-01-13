@@ -4,87 +4,36 @@ backend:
 
 publish_mode: editorial_workflow
 
-# Required by your CMS schema error (even if you won't upload)
+# required by Decap schema
 media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
 
-# Some schema validators complain if media_library missing; keep it minimal.
-# Decap will still use media_folder by default.
 media_library:
-  name: uploadcare
-
-# NOTE: uploadcare needs no keys if you won't open the uploader.
-# You will paste links in fields instead.
+  name: github
 
 collections:
   - name: "portfolio"
     label: "Portfolio"
     files:
       - file: "data/portfolio.json"
-        label: "Portfolio Data"
-        name: "portfolio_data"
+        label: "Portfolio Items"
+        name: "items"
         fields:
           - label: "Videos"
             name: "videos"
-            widget: "object"
+            widget: "list"
             fields:
-              - label: "Video Editing"
-                name: "edit"
-                widget: "list"
-                summary: "{{fields.title}} ({{fields.kind}})"
-                fields:
-                  - { label: "Title", name: "title", widget: "string" }
-                  - label: "Kind"
-                    name: "kind"
-                    widget: "select"
-                    options: ["short", "youtube"]
-                  - label: "YouTube ID or URL"
-                    name: "video"
-                    widget: "string"
-                    hint: "Put YouTube ID like: GEFvzpgGZmU OR full URL"
-                  - { label: "Thumbnail URL (optional)", name: "thumb", widget: "string", required: false }
-                  - label: "Tags"
-                    name: "tags"
-                    widget: "list"
-                    required: false
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Section", name: "section", widget: "select", options: ["editing", "creator"] }
+              - { label: "Kind", name: "kind", widget: "select", options: ["short", "youtube"] }
+              - { label: "YouTube ID", name: "youtubeId", widget: "string" }
+              - { label: "Tags", name: "tags", widget: "list", required: false }
 
-              - label: "Content Creation"
-                name: "create"
-                widget: "list"
-                summary: "{{fields.title}} ({{fields.kind}})"
-                fields:
-                  - { label: "Title", name: "title", widget: "string" }
-                  - label: "Kind"
-                    name: "kind"
-                    widget: "select"
-                    options: ["short", "youtube"]
-                  - label: "YouTube ID or URL"
-                    name: "video"
-                    widget: "string"
-                  - { label: "Thumbnail URL (optional)", name: "thumb", widget: "string", required: false }
-                  - label: "Tags"
-                    name: "tags"
-                    widget: "list"
-                    required: false
-
-          - label: "Galleries"
-            name: "galleries"
-            widget: "object"
+          - label: "Images"
+            name: "images"
+            widget: "list"
             fields:
-              - label: "Concept Product Visualization"
-                name: "concept"
-                widget: "list"
-                summary: "{{fields.title}}"
-                fields:
-                  - { label: "Title", name: "title", widget: "string", required: false }
-                  - { label: "Image URL", name: "url", widget: "string" }
-                  - { label: "Alt (optional)", name: "alt", widget: "string", required: false }
-
-              - label: "Cars — Visual Concepts"
-                name: "cars"
-                widget: "list"
-                summary: "{{fields.title}}"
-                fields:
-                  - { label: "Title", name: "title", widget: "string", required: false }
-                  - { label: "Image URL", name: "url", widget: "string" }
-                  - { label: "Alt (optional)", name: "alt", widget: "string", required: false }
+              - { label: "Title", name: "title", widget: "string", required: false }
+              - { label: "Gallery", name: "gallery", widget: "select", options: ["concept", "cars"] }
+              - { label: "Image URL", name: "url", widget: "string" }
+              - { label: "Tags", name: "tags", widget: "list", required: false }
