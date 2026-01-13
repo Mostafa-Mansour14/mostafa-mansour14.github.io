@@ -1,12 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Admin | Portfolio CMS</title>
-    <style>
-      body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; }
-    </style>
+    <title>Admin</title>
 
     <!-- Netlify Identity (required for git-gateway login) -->
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
@@ -14,12 +11,11 @@
     <!-- Decap CMS -->
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   </head>
-
   <body>
     <script>
-      // Optional: redirect to /admin/ after login
+      // optional: after login, go back to /admin/
       if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", user => {
+        window.netlifyIdentity.on("init", (user) => {
           if (!user) {
             window.netlifyIdentity.on("login", () => {
               document.location.href = "/admin/";
