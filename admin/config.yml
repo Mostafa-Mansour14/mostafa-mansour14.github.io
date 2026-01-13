@@ -4,6 +4,16 @@ backend:
 
 publish_mode: editorial_workflow
 
+# Required (even if you won't upload images)
+media_folder: "assets/img/uploads"
+public_folder: "/assets/img/uploads"
+
+# Optional but fixes schema complaints in some setups
+media_library:
+  name: uploadcare
+  config:
+    publicKey: "demopublickey"
+
 collections:
   - name: "portfolio"
     label: "Portfolio"
@@ -12,18 +22,13 @@ collections:
         label: "Portfolio Items"
         name: "items"
         fields:
-          - label: "Items"
+          - label: "Videos"
             name: "videos"
             widget: "list"
-            summary: "{{fields.group}} • {{fields.kind}} • {{fields.title}}"
             fields:
-              - { label: "Group", name: "group", widget: "select", options: ["edit", "create"] }
-              - { label: "Kind", name: "kind", widget: "select", options: ["short", "youtube"] }
               - { label: "Title", name: "title", widget: "string" }
-              - { label: "YouTube (URL or ID)", name: "youtube", widget: "string" }
-              - { label: "Thumbnail URL (optional)", name: "thumb", widget: "string", required: false }
-              - label: "Tags (optional)"
-                name: "tags"
-                widget: "list"
-                required: false
-                field: { label: "Tag", name: "tag", widget: "string" }
+              - { label: "Section", name: "section", widget: "select", options: ["edit", "create"] }
+              - { label: "Kind", name: "kind", widget: "select", options: ["short", "youtube"] }
+              - { label: "YouTube URL", name: "youtube", widget: "string" }
+              - { label: "Thumbnail URL", name: "thumb", widget: "string", required: false }
+              - { label: "Tags", name: "tags", widget: "list", required: false }
