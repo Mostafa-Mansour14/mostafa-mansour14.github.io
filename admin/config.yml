@@ -1,34 +1,31 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: Mostafa-Mansour14/mostafa-mansour14.github.io
   branch: main
 
-publish_mode: editorial_workflow
-
-# Required (even if you won't upload images)
-media_folder: "assets/img/uploads"
-public_folder: "/assets/img/uploads"
-
-# Optional but fixes schema complaints in some setups
-media_library:
-  name: uploadcare
-  config:
-    publicKey: "demopublickey"
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
 
 collections:
   - name: "portfolio"
     label: "Portfolio"
     files:
       - file: "data/portfolio.json"
-        label: "Portfolio Items"
-        name: "items"
+        label: "Videos"
+        name: "videos"
         fields:
-          - label: "Videos"
-            name: "videos"
+          - label: "Edit Videos"
+            name: "edit"
             widget: "list"
             fields:
               - { label: "Title", name: "title", widget: "string" }
-              - { label: "Section", name: "section", widget: "select", options: ["edit", "create"] }
-              - { label: "Kind", name: "kind", widget: "select", options: ["short", "youtube"] }
-              - { label: "YouTube URL", name: "youtube", widget: "string" }
-              - { label: "Thumbnail URL", name: "thumb", widget: "string", required: false }
-              - { label: "Tags", name: "tags", widget: "list", required: false }
+              - { label: "YouTube ID", name: "video", widget: "string" }
+              - { label: "Tags", name: "tags", widget: "list", default: [] }
+
+          - label: "Create Videos"
+            name: "create"
+            widget: "list"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "YouTube ID", name: "video", widget: "string" }
+              - { label: "Tags", name: "tags", widget: "list", default: [] }
