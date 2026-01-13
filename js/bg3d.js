@@ -19,6 +19,7 @@
     alpha: true,
     powerPreference: "high-performance",
   });
+
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.6));
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.innerHTML = "";
@@ -66,7 +67,7 @@
   const box = (w, h, d, mat) => new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
 
   // =====================================================
-  // 1) CINEMA CAMERA (movie camera, not car)
+  // 1) CINEMA CAMERA
   // =====================================================
   const movieCam = new THREE.Group();
 
@@ -77,7 +78,6 @@
   handle.position.set(-0.55, 0.95, 0);
   movieCam.add(handle);
 
-  // lens barrel
   const lensBarrel = new THREE.Mesh(
     new THREE.CylinderGeometry(0.52, 0.62, 0.95, 28),
     matWarm
@@ -86,7 +86,6 @@
   lensBarrel.position.set(1.45, -0.05, 0);
   movieCam.add(lensBarrel);
 
-  // lens ring
   const lensRing = new THREE.Mesh(
     new THREE.TorusGeometry(0.48, 0.1, 14, 56),
     matCool
@@ -95,7 +94,6 @@
   lensRing.position.set(1.95, -0.05, 0);
   movieCam.add(lensRing);
 
-  // reels (2 discs)
   const reelGeo = new THREE.CylinderGeometry(0.46, 0.46, 0.18, 28);
   const r1 = new THREE.Mesh(reelGeo, matWhite);
   r1.position.set(-0.85, 0.9, 0.35);
@@ -107,7 +105,6 @@
   r2.rotation.x = Math.PI / 2;
   movieCam.add(r2);
 
-  // simple reel holes
   const holeGeo = new THREE.CylinderGeometry(0.06, 0.06, 0.22, 12);
   for (let i = 0; i < 5; i++) {
     const ang = (i / 5) * Math.PI * 2;
@@ -152,11 +149,10 @@
   group.add(clapper);
 
   // =====================================================
-  // 3) DIAPHRAGM LENS (aperture blades style)
+  // 3) DIAPHRAGM LENS
   // =====================================================
   const lens = new THREE.Group();
 
-  // outer ring
   const outer = new THREE.Mesh(
     new THREE.TorusGeometry(1.15, 0.14, 16, 80),
     matWarm
@@ -164,7 +160,6 @@
   outer.rotation.x = Math.PI / 2.2;
   lens.add(outer);
 
-  // inner ring
   const inner = new THREE.Mesh(
     new THREE.TorusGeometry(0.72, 0.10, 16, 70),
     matCool
@@ -172,14 +167,12 @@
   inner.rotation.x = Math.PI / 2.2;
   lens.add(inner);
 
-  // blades
-  const bladeMat = matDark;
   const bladeGeo = new THREE.BoxGeometry(0.62, 0.16, 0.08);
   const blades = new THREE.Group();
   const bladeCount = 8;
 
   for (let i = 0; i < bladeCount; i++) {
-    const b = new THREE.Mesh(bladeGeo, bladeMat);
+    const b = new THREE.Mesh(bladeGeo, matDark);
     const a = (i / bladeCount) * Math.PI * 2;
     b.position.set(Math.cos(a) * 0.38, Math.sin(a) * 0.38, 0);
     b.rotation.z = a + Math.PI / 4;
@@ -192,9 +185,7 @@
   lens.rotation.set(0.2, 0.85, -0.1);
   group.add(lens);
 
-  // =====================================================
-  // Motion (slow + premium)
-  // =====================================================
+  // Motion
   let mx = 0, my = 0;
   document.addEventListener("mousemove", (e) => {
     mx = (e.clientX / window.innerWidth - 0.5) * 2;
@@ -211,12 +202,10 @@
     group.rotation.y += mx * 0.00045;
     group.rotation.x += my * 0.00035;
 
-    // subtle individual rotations
     movieCam.rotation.y += 0.00075;
     clapper.rotation.y -= 0.00055;
     lens.rotation.z += 0.0010;
 
-    // aperture "breath"
     const t = performance.now() * 0.001;
     blades.rotation.z = Math.sin(t * 0.8) * 0.18;
 
@@ -225,10 +214,14 @@
   }
   animate();
 
+  let resizeT = null;
   window.addEventListener("resize", () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    clearTimeout(resizeT);
+    resizeT = setTimeout(() => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }, 80);
   });
 
   document.addEventListener("visibilitychange", () => {
