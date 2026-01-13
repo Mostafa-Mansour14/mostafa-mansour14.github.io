@@ -1,0 +1,23 @@
+backend:
+  name: git-gateway
+  branch: main
+
+publish_mode: editorial_workflow
+
+collections:
+  - name: "videos"
+    label: "Videos"
+    files:
+      - file: "data/portfolio.json"
+        label: "Portfolio Items"
+        name: "items"
+        fields:
+          - label: "Videos"
+            name: "videos"
+            widget: "list"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Section", name: "section", widget: "select", options: ["editing", "creator", "youtube"] }
+              - { label: "YouTube URL", name: "youtube", widget: "string" }
+              - { label: "Thumbnail URL", name: "thumb", widget: "string" }
+              - { label: "Tags", name: "tags", widget: "list", required: false }
