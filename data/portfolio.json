@@ -1,38 +1,19 @@
 {
-  "videos": {
-    "edit": [
-      {
-        "title": "Short Edit",
-        "kind": "short",
-        "video": "GEFvzpgGZmU",
-        "thumb": "",
-        "tags": ["pacing", "transitions"]
-      }
-    ],
-    "create": [
-      {
-        "title": "On-camera Short",
-        "kind": "short",
-        "video": "hwqzvZyO-54",
-        "thumb": "",
-        "tags": ["hook", "delivery"]
-      }
-    ]
-  },
-  "galleries": {
-    "concept": [
-      {
-        "title": "Concept 1",
-        "url": "https://example.com/image1.jpg",
-        "alt": "Concept visual"
-      }
-    ],
-    "cars": [
-      {
-        "title": "Car 1",
-        "url": "https://ik.imagekit.io/ygv06l7eo/motoors/IMG_2720.JPG",
-        "alt": "Car concept"
-      }
-    ]
-  }
+  "videos": [
+    {
+      "title": "Short Edit",
+      "section": "editing",
+      "kind": "short",
+      "youtubeId": "GEFvzpgGZmU",
+      "tags": ["Pacing", "Transitions"]
+    }
+  ],
+  "images": [
+    {
+      "title": "Concept 01",
+      "gallery": "cars",
+      "url": "https://ik.imagekit.io/xxxx/yourimage.jpg",
+      "tags": ["AI", "Lighting"]
+    }
+  ]
 }
