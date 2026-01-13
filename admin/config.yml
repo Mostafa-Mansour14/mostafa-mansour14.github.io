@@ -1,6 +1,5 @@
 backend:
-  name: github
-  repo: Mostafa-Mansour14/mostafa-mansour14.github.io
+  name: git-gateway
   branch: main
 
 media_folder: "assets/uploads"
