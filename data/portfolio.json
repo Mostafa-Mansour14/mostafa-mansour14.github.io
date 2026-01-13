@@ -1,3 +1,18 @@
 {
-  "videos": []
+  "videos": [
+    {
+      "group": "edit",
+      "kind": "short",
+      "title": "Short Edit",
+      "youtube": "GEFvzpgGZmU",
+      "tags": ["Pacing", "Transitions", "Visual rhythm"]
+    },
+    {
+      "group": "create",
+      "kind": "youtube",
+      "title": "YouTube Project",
+      "youtube": "https://www.youtube.com/watch?v=Mw-XSyH3xNQ",
+      "tags": ["Production", "Edit", "Platform ready"]
+    }
+  ]
 }
