@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -43,12 +44,9 @@
     <div id="bg3d" aria-hidden="true"></div>
 
     <!-- Top Navigation -->
-    <nav
-      class="navbar navbar-expand-lg navbar-dark fixed-top nav-premium"
-      id="mainNav"
-    >
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top nav-premium" id="mainNav">
       <div class="container nav-container">
-        <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="#page-top">
+        <a class="navbar-brand fw-bold d-flex align-items-center gap-2 js-scroll" href="#page-top">
           <span class="brand-dot"></span>
           <span>Mostafa Mansour</span>
         </a>
@@ -67,32 +65,15 @@
 
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
-            <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#about">About</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#portfolio">Portfolio</a>
-            </li>
-            <!-- ✅ New: YouTube Section -->
-            <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#youtube">YouTube</a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#experience">Experience</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#skills">Skills</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#education">Education</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#services">Services</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#certifications">Certifications</a>
-            </li>
+            <!-- ✅ IMPORTANT: class is js-scroll (matches JS) -->
+            <li class="nav-item"><a class="nav-link js-scroll" href="#about">About</a></li>
+            <li class="nav-item"><a class="nav-link js-scroll" href="#portfolio">Portfolio</a></li>
+            <li class="nav-item"><a class="nav-link js-scroll" href="#youtube">YouTube</a></li>
+            <li class="nav-item"><a class="nav-link js-scroll" href="#experience">Experience</a></li>
+            <li class="nav-item"><a class="nav-link js-scroll" href="#skills">Skills</a></li>
+            <li class="nav-item"><a class="nav-link js-scroll" href="#education">Education</a></li>
+            <li class="nav-item"><a class="nav-link js-scroll" href="#services">Services</a></li>
+            <li class="nav-item"><a class="nav-link js-scroll" href="#certifications">Certifications</a></li>
           </ul>
         </div>
       </div>
@@ -130,8 +111,7 @@
 
                 <p class="lead mt-3 mb-0" data-animate>
                   I’m a Video Editor &amp; Content Creator focused on short-form content, YouTube, and ads.
-                  I care about pacing, storytelling, color grading, and clean sound—delivering platform-optimized videos
-                  that keep attention.
+                  I care about pacing, storytelling, color grading, and clean sound—delivering platform-optimized videos that keep attention.
                 </p>
 
                 <!-- ✅ New: Growth Stats (Counters) -->
@@ -216,6 +196,7 @@
                     </ul>
                   </div>
                 </div>
+
               </div>
             </div>
           </div>
@@ -229,58 +210,35 @@
             <h2 class="mb-4" data-animate>Portfolio</h2>
 
             <p class="mb-4" data-animate>
-              A focused selection of my work—organized into <strong>Video Editing</strong> and
-              <strong>Content Creation</strong>.
+              A focused selection of my work—organized into <strong>Video Editing</strong> and <strong>Content Creation</strong>.
               Shorts open in a popup player.
             </p>
 
             <!-- Tabs -->
             <ul class="nav smart-tabs mb-4" id="portfolioTabs" role="tablist" data-animate>
               <li class="nav-item" role="presentation">
-                <button
-                  class="nav-link active"
-                  id="edit-tab"
-                  data-bs-toggle="tab"
-                  data-bs-target="#tab-edit"
-                  type="button"
-                  role="tab"
-                >
+                <button class="nav-link active" id="edit-tab" data-bs-toggle="tab" data-bs-target="#tab-edit" type="button" role="tab">
                   <i class="fa-solid fa-scissors me-2"></i> Video Editing
                 </button>
               </li>
 
               <li class="nav-item" role="presentation">
-                <button
-                  class="nav-link"
-                  id="create-tab"
-                  data-bs-toggle="tab"
-                  data-bs-target="#tab-create"
-                  type="button"
-                  role="tab"
-                >
+                <button class="nav-link" id="create-tab" data-bs-toggle="tab" data-bs-target="#tab-create" type="button" role="tab">
                   <i class="fa-solid fa-camera me-2"></i> Content Creation
                 </button>
               </li>
             </ul>
 
             <div class="tab-content" id="portfolioTabsContent">
-              <!-- TAB 1: VIDEO EDITING (✅ Shorts only now) -->
-              <div
-                class="tab-pane fade show active"
-                id="tab-edit"
-                role="tabpanel"
-                aria-labelledby="edit-tab"
-                tabindex="0"
-              >
+              <!-- TAB 1: VIDEO EDITING (✅ Shorts only) -->
+              <div class="tab-pane fade show active" id="tab-edit" role="tabpanel" aria-labelledby="edit-tab" tabindex="0">
                 <div class="smart-card p-3 p-md-4 mb-4" data-animate>
                   <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
                     <div>
                       <h3 class="h5 mb-1">Video Editing Work</h3>
                       <div class="text-muted">Pacing • Transitions • Color • Motion • Sound</div>
                     </div>
-                    <span class="type-badge type-edit"
-                      ><i class="fa-solid fa-scissors me-2"></i>Editing</span
-                    >
+                    <span class="type-badge type-edit"><i class="fa-solid fa-scissors me-2"></i>Editing</span>
                   </div>
                   <p class="mb-0">Selected edits that highlight rhythm, transitions, and platform-optimized delivery.</p>
                 </div>
@@ -291,27 +249,19 @@
                   <button class="filter-btn" type="button" data-filter="short">Shorts</button>
                 </div>
 
-                <!-- ✅ Dynamic grid (rendered by scripts.js) -->
+                <!-- ✅ Grid rendered by scripts.js -->
                 <div class="row g-4" id="editGrid" data-animate></div>
               </div>
 
-              <!-- TAB 2: CONTENT CREATION (✅ Shorts only now) -->
-              <div
-                class="tab-pane fade"
-                id="tab-create"
-                role="tabpanel"
-                aria-labelledby="create-tab"
-                tabindex="0"
-              >
+              <!-- TAB 2: CONTENT CREATION (✅ Shorts only) -->
+              <div class="tab-pane fade" id="tab-create" role="tabpanel" aria-labelledby="create-tab" tabindex="0">
                 <div class="smart-card p-3 p-md-4 mb-4" data-animate>
                   <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
                     <div>
                       <h3 class="h5 mb-1">Content Creation (End-to-End)</h3>
                       <div class="text-muted">Concept • Shooting • Direction • On-camera • Editing</div>
                     </div>
-                    <span class="type-badge type-create"
-                      ><i class="fa-solid fa-camera me-2"></i>Creator</span
-                    >
+                    <span class="type-badge type-create"><i class="fa-solid fa-camera me-2"></i>Creator</span>
                   </div>
                   <p class="mb-0">Projects I created from scratch—idea, filming, directing, on-camera delivery, and editing.</p>
                 </div>
@@ -322,7 +272,7 @@
                   <button class="filter-btn" type="button" data-filter="short">Shorts</button>
                 </div>
 
-                <!-- ✅ Dynamic grid (rendered by scripts.js) -->
+                <!-- ✅ Grid rendered by scripts.js -->
                 <div class="row g-4" id="createGrid" data-animate></div>
               </div>
             </div>
@@ -338,27 +288,17 @@
                       <div class="text-muted">Branding • Product Design • Visual Direction</div>
                     </div>
                     <div class="d-flex gap-2">
-                      <button
-                        class="gallery-btn"
-                        type="button"
-                        data-gprev="products"
-                        aria-label="Previous image"
-                      >
+                      <button class="gallery-btn" type="button" data-gprev="products" aria-label="Previous image">
                         <i class="fa-solid fa-chevron-left"></i>
                       </button>
-                      <button
-                        class="gallery-btn"
-                        type="button"
-                        data-gnext="products"
-                        aria-label="Next image"
-                      >
+                      <button class="gallery-btn" type="button" data-gnext="products" aria-label="Next image">
                         <i class="fa-solid fa-chevron-right"></i>
                       </button>
                     </div>
                   </div>
 
                   <div class="gallery-wrap mt-3">
-                    <!-- ✅ IDs fixed to match scripts.js -->
+                    <!-- ✅ IDs match scripts.js -->
                     <div class="gallery-scroller" id="productsScroller"></div>
                     <div class="gallery-dots" id="productsDots"></div>
                   </div>
@@ -374,27 +314,17 @@
                       <div class="text-muted">Automotive • Shoots • Visual Direction</div>
                     </div>
                     <div class="d-flex gap-2">
-                      <button
-                        class="gallery-btn"
-                        type="button"
-                        data-gprev="cars"
-                        aria-label="Previous image"
-                      >
+                      <button class="gallery-btn" type="button" data-gprev="cars" aria-label="Previous image">
                         <i class="fa-solid fa-chevron-left"></i>
                       </button>
-                      <button
-                        class="gallery-btn"
-                        type="button"
-                        data-gnext="cars"
-                        aria-label="Next image"
-                      >
+                      <button class="gallery-btn" type="button" data-gnext="cars" aria-label="Next image">
                         <i class="fa-solid fa-chevron-right"></i>
                       </button>
                     </div>
                   </div>
 
                   <div class="gallery-wrap mt-3">
-                    <!-- ✅ IDs fixed to match scripts.js -->
+                    <!-- ✅ IDs match scripts.js -->
                     <div class="gallery-scroller" id="carsScroller"></div>
                     <div class="gallery-dots" id="carsDots"></div>
                   </div>
@@ -402,15 +332,12 @@
               </div>
             </div>
 
-            <!-- ✅ YouTube section moved OUTSIDE editing/creation (as requested) -->
-            <hr class="my-5" />
-            <div id="youtube"></div>
           </div>
         </section>
 
         <hr class="m-0" />
 
-        <!-- YouTube (Long-form) -->
+        <!-- ✅ YouTube (Long-form) -->
         <section class="resume-section" id="youtube">
           <div class="resume-section-content">
             <h2 class="mb-4" data-animate>YouTube</h2>
@@ -418,6 +345,7 @@
               Long-form YouTube projects and widescreen work. (All YouTube embeds live here only.)
             </p>
 
+            <!-- ✅ Grid rendered by scripts.js -->
             <div class="row g-4" id="youtubeGrid" data-animate></div>
           </div>
         </section>
@@ -434,12 +362,10 @@
                 <h3 class="mb-0">Video Editor · Videographer · Motion Graphics</h3>
                 <div class="subheading mb-3">Freelance / Projects</div>
                 <p class="mb-0">
-                  I work as a Video Editor, Videographer, and Motion Graphics Artist, collaborating with content creators, brands,
-                  companies, conferences, and live events.
+                  I work as a Video Editor, Videographer, and Motion Graphics Artist, collaborating with content creators, brands, companies, conferences, and live events.
                 </p>
                 <p class="mb-0 mt-3">
-                  Specialized in short-form content (Shorts, Reels, Ads), YouTube videos, and branded content with strong attention
-                  to pacing, speed ramping, and dynamic transitions.
+                  Specialized in short-form content (Shorts, Reels, Ads), YouTube videos, and branded content with strong attention to pacing, speed ramping, and dynamic transitions.
                 </p>
                 <p class="mb-0 mt-3">
                   Experience in live streaming production and direction using OBS and vMix, plus integrating AI tools into video workflows.
@@ -555,13 +481,7 @@
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <div class="modal-body">
-            <iframe
-              id="modalPlayer"
-              src=""
-              title="Video Player"
-              allow="autoplay; encrypted-media"
-              allowfullscreen
-            ></iframe>
+            <iframe id="modalPlayer" src="" title="Video Player" allow="autoplay; encrypted-media" allowfullscreen></iframe>
           </div>
         </div>
       </div>
@@ -578,3 +498,4 @@
     <script src="js/bg3d.js"></script>
   </body>
 </html>
+```
