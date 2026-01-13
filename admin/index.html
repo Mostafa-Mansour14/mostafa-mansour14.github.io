@@ -5,12 +5,36 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Admin</title>
 
-    <!-- Netlify Identity -->
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <!-- Netlify Identity (required for git-gateway login) -->
+    <script defer src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
-    <!-- Decap CMS -->
-    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+    <!-- Decap CMS (use jsDelivr CDN instead of unpkg to avoid blank page issues) -->
+    <script defer src="https://cdn.jsdelivr.net/npm/decap-cms@3/dist/decap-cms.js"></script>
+
+    <style>
+      /* Fallback message if CMS fails to load */
+      body { font-family: Arial, sans-serif; padding: 18px; }
+      .hint { opacity: 0.8; }
+    </style>
   </head>
+
   <body>
+    <h3>Loading Admin…</h3>
+    <p class="hint">If this stays blank, we will fix it in the next step.</p>
+
+    <script>
+      // If CMS didn't load, show a clear message instead of white page
+      window.addEventListener("load", () => {
+        setTimeout(() => {
+          if (!window.CMS) {
+            document.body.innerHTML = `
+              <h2>Admin failed to load (CMS script blocked).</h2>
+              <p>Try: Incognito / disable adblock / change network. Then refresh.</p>
+              <p>If it still fails, we’ll switch to a local CMS bundle.</p>
+            `;
+          }
+        }, 1200);
+      });
+    </script>
   </body>
 </html>
