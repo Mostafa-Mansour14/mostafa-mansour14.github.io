@@ -4,17 +4,25 @@ backend:
 
 publish_mode: editorial_workflow
 
-# مهم عشان الـ schema ما يشتكيش
+# Required by your CMS schema error (even if you won't upload)
 media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
 
+# Some schema validators complain if media_library missing; keep it minimal.
+# Decap will still use media_folder by default.
+media_library:
+  name: uploadcare
+
+# NOTE: uploadcare needs no keys if you won't open the uploader.
+# You will paste links in fields instead.
+
 collections:
   - name: "portfolio"
-    label: "Portfolio Data"
+    label: "Portfolio"
     files:
       - file: "data/portfolio.json"
-        label: "Portfolio + Galleries"
-        name: "portfolio_file"
+        label: "Portfolio Data"
+        name: "portfolio_data"
         fields:
           - label: "Videos"
             name: "videos"
@@ -23,24 +31,43 @@ collections:
               - label: "Video Editing"
                 name: "edit"
                 widget: "list"
-                summary: "{{fields.title}}"
+                summary: "{{fields.title}} ({{fields.kind}})"
                 fields:
                   - { label: "Title", name: "title", widget: "string" }
-                  - { label: "YouTube ID", name: "video", widget: "string", hint: "مثال: GEFvzpgGZmU" }
-                  - { label: "Kind", name: "kind", widget: "select", options: ["short", "youtube"], default: "short" }
-                  - { label: "Tags", name: "tags", widget: "list", required: false }
+                  - label: "Kind"
+                    name: "kind"
+                    widget: "select"
+                    options: ["short", "youtube"]
+                  - label: "YouTube ID or URL"
+                    name: "video"
+                    widget: "string"
+                    hint: "Put YouTube ID like: GEFvzpgGZmU OR full URL"
+                  - { label: "Thumbnail URL (optional)", name: "thumb", widget: "string", required: false }
+                  - label: "Tags"
+                    name: "tags"
+                    widget: "list"
+                    required: false
 
               - label: "Content Creation"
                 name: "create"
                 widget: "list"
-                summary: "{{fields.title}}"
+                summary: "{{fields.title}} ({{fields.kind}})"
                 fields:
                   - { label: "Title", name: "title", widget: "string" }
-                  - { label: "YouTube ID", name: "video", widget: "string" }
-                  - { label: "Kind", name: "kind", widget: "select", options: ["short", "youtube"], default: "short" }
-                  - { label: "Tags", name: "tags", widget: "list", required: false }
+                  - label: "Kind"
+                    name: "kind"
+                    widget: "select"
+                    options: ["short", "youtube"]
+                  - label: "YouTube ID or URL"
+                    name: "video"
+                    widget: "string"
+                  - { label: "Thumbnail URL (optional)", name: "thumb", widget: "string", required: false }
+                  - label: "Tags"
+                    name: "tags"
+                    widget: "list"
+                    required: false
 
-          - label: "Galleries (Images by URL)"
+          - label: "Galleries"
             name: "galleries"
             widget: "object"
             fields:
@@ -50,8 +77,8 @@ collections:
                 summary: "{{fields.title}}"
                 fields:
                   - { label: "Title", name: "title", widget: "string", required: false }
-                  - { label: "Image URL", name: "url", widget: "string", hint: "لينك مباشر للصورة" }
-                  - { label: "Tags", name: "tags", widget: "list", required: false }
+                  - { label: "Image URL", name: "url", widget: "string" }
+                  - { label: "Alt (optional)", name: "alt", widget: "string", required: false }
 
               - label: "Cars — Visual Concepts"
                 name: "cars"
@@ -60,4 +87,4 @@ collections:
                 fields:
                   - { label: "Title", name: "title", widget: "string", required: false }
                   - { label: "Image URL", name: "url", widget: "string" }
-                  - { label: "Tags", name: "tags", widget: "list", required: false }
+                  - { label: "Alt (optional)", name: "alt", widget: "string", required: false }
