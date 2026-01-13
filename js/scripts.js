@@ -40,6 +40,7 @@ window.addEventListener("DOMContentLoaded", () => {
     "https://youtube.com/shorts/5129Esy6WhI",
   ].map(toYouTubeId);
 
+  
   // Existing shorts (from your old code)
   const EDIT_SHORTS = [
     "GEFvzpgGZmU",
