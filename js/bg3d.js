@@ -1,6 +1,6 @@
 // =========================
-// Premium 3D Background
-// ONLY: Clapper + Lens (No Camera Body)
+// Premium 3D Background (No downloads)
+// ONLY: Clapperboard
 // =========================
 (function () {
   if (!window.THREE) return;
@@ -13,6 +13,7 @@
   const container = document.getElementById("bg3d");
   if (!container) return;
 
+  // Renderer
   const renderer = new THREE.WebGLRenderer({
     antialias: true,
     alpha: true,
@@ -24,6 +25,7 @@
   container.innerHTML = "";
   container.appendChild(renderer.domElement);
 
+  // Scene & Camera
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(
     52,
@@ -31,18 +33,18 @@
     0.1,
     100
   );
-  camera.position.z = 11;
+  camera.position.z = 10.5;
 
-  // Lights (soft cinematic)
+  // Lights
   const key = new THREE.DirectionalLight(0xffffff, 1.0);
   key.position.set(7, 8, 10);
   scene.add(key);
 
-  const rim = new THREE.DirectionalLight(0xffffff, 0.5);
+  const rim = new THREE.DirectionalLight(0xffffff, 0.55);
   rim.position.set(-8, 2, 8);
   scene.add(rim);
 
-  const amb = new THREE.AmbientLight(0xffffff, 0.32);
+  const amb = new THREE.AmbientLight(0xffffff, 0.34);
   scene.add(amb);
 
   // Materials
@@ -65,67 +67,30 @@
   const box = (w, h, d, mat) => new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
 
   // =====================================================
-  // 1) CLAPPERBOARD
+  // CLAPPERBOARD ONLY
   // =====================================================
   const clapper = new THREE.Group();
 
-  const slate = box(2.15, 1.25, 0.18, matDark);
+  const slate = box(2.35, 1.35, 0.18, matDark);
   clapper.add(slate);
 
-  const topBar = box(2.2, 0.35, 0.2, matWhite);
-  topBar.position.set(0, 0.75, 0);
+  const topBar = box(2.42, 0.36, 0.2, matWhite);
+  topBar.position.set(0, 0.82, 0);
   clapper.add(topBar);
 
   for (let i = 0; i < 7; i++) {
-    const stripe = box(0.32, 0.08, 0.22, i % 2 ? matWarm : matCool);
-    stripe.position.set(-0.92 + i * 0.32, 0.75, 0.02);
+    const stripe = box(0.34, 0.085, 0.22, i % 2 ? matWarm : matCool);
+    stripe.position.set(-1.02 + i * 0.34, 0.82, 0.02);
     stripe.rotation.z = -0.55;
     clapper.add(stripe);
   }
 
-  clapper.scale.setScalar(0.78);
-  clapper.position.set(-1.4, -1.9, -1.1);
-  clapper.rotation.set(-0.12, 0.32, 0.12);
+  clapper.scale.setScalar(0.85);
+  clapper.position.set(1.2, -0.7, -1.2);
+  clapper.rotation.set(-0.15, 0.55, 0.12);
   group.add(clapper);
 
-  // =====================================================
-  // 2) DIAPHRAGM LENS
-  // =====================================================
-  const lens = new THREE.Group();
-
-  const outer = new THREE.Mesh(
-    new THREE.TorusGeometry(1.15, 0.14, 16, 80),
-    matWarm
-  );
-  outer.rotation.x = Math.PI / 2.2;
-  lens.add(outer);
-
-  const inner = new THREE.Mesh(
-    new THREE.TorusGeometry(0.72, 0.10, 16, 70),
-    matCool
-  );
-  inner.rotation.x = Math.PI / 2.2;
-  lens.add(inner);
-
-  const bladeGeo = new THREE.BoxGeometry(0.62, 0.16, 0.08);
-  const blades = new THREE.Group();
-  const bladeCount = 8;
-
-  for (let i = 0; i < bladeCount; i++) {
-    const b = new THREE.Mesh(bladeGeo, matDark);
-    const a = (i / bladeCount) * Math.PI * 2;
-    b.position.set(Math.cos(a) * 0.38, Math.sin(a) * 0.38, 0);
-    b.rotation.z = a + Math.PI / 4;
-    blades.add(b);
-  }
-  lens.add(blades);
-
-  lens.scale.setScalar(0.78);
-  lens.position.set(2.7, 0.25, -1.8);
-  lens.rotation.set(0.2, 0.85, -0.1);
-  group.add(lens);
-
-  // Motion (light)
+  // Motion (subtle premium)
   let mx = 0, my = 0;
   document.addEventListener("mousemove", (e) => {
     mx = (e.clientX / window.innerWidth - 0.5) * 2;
@@ -136,17 +101,13 @@
   function animate() {
     if (!running) return;
 
-    group.rotation.y += 0.0009;
+    group.rotation.y += 0.00085;
     group.rotation.x += 0.00055;
 
     group.rotation.y += mx * 0.00035;
     group.rotation.x += my * 0.00025;
 
     clapper.rotation.y -= 0.00045;
-    lens.rotation.z += 0.0009;
-
-    const t = performance.now() * 0.001;
-    blades.rotation.z = Math.sin(t * 0.8) * 0.18;
 
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
