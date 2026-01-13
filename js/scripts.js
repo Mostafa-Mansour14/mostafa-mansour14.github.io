@@ -405,4 +405,137 @@ window.addEventListener('DOMContentLoaded', () => {
     altPrefix: "Car Concept"
   });
 });
+(async function () {
+  const DATA_URL = "data/portfolio.json";
+
+  const editGrid = document.getElementById("editGrid");
+  const createGrid = document.getElementById("createGrid");
+
+  const galleryScroller = document.getElementById("galleryScroller");
+  const carsGalleryScroller = document.getElementById("carsGalleryScroller");
+
+  // Helpers
+  const esc = (s = "") =>
+    String(s).replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
+
+  const ytThumb = (id) => `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+
+  function makeVideoCard(item, group) {
+    const kind = item.kind || "short";
+    const title = item.title || "Untitled";
+    const tags = Array.isArray(item.tags) ? item.tags.join(" • ") : "";
+    const videoId = item.video || "";
+
+    // نفس شكل كروتك الحالي (Thumb clickable)
+    return `
+      <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="${esc(kind)}" data-group="${esc(group)}">
+        <div class="video-card">
+          <div class="video-head">
+            <span class="chip ${group === "edit" ? "chip-edit" : "chip-create"}">${group === "edit" ? "Editing" : "Creator"}</span>
+            <span class="chip chip-ghost">${kind === "youtube" ? "YouTube" : "Short"}</span>
+          </div>
+
+          ${
+            kind === "youtube"
+              ? `
+                <div class="ratio ratio-16x9 video-frame">
+                  <iframe
+                    src="https://www.youtube.com/embed/${esc(videoId)}"
+                    title="${esc(title)}"
+                    loading="lazy"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen
+                  ></iframe>
+                </div>
+              `
+              : `
+                <div class="video-thumb" data-video="${esc(videoId)}" style="background-image:url('${ytThumb(videoId)}')">
+                  <span class="play">▶</span>
+                </div>
+              `
+          }
+
+          <div class="video-meta">
+            <div class="video-title">${esc(title)}</div>
+            <div class="video-tags">${esc(tags)}</div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderVideos(list, gridEl, group) {
+    if (!gridEl) return;
+    const safe = Array.isArray(list) ? list : [];
+    gridEl.innerHTML = safe.map((it) => makeVideoCard(it, group)).join("");
+  }
+
+  function makeImageSlide(img) {
+    const url = img.url || "";
+    const title = img.title || "";
+    // slide بسيط داخل scroller
+    return `
+      <div class="g-item">
+        <a href="${esc(url)}" target="_blank" rel="noopener" class="g-link" aria-label="${esc(title || "image")}">
+          <img class="g-img" src="${esc(url)}" alt="${esc(title)}" loading="lazy" />
+        </a>
+      </div>
+    `;
+  }
+
+  function renderGallery(list, scrollerEl) {
+    if (!scrollerEl) return;
+    const safe = Array.isArray(list) ? list : [];
+    scrollerEl.innerHTML = safe.map(makeImageSlide).join("");
+  }
+
+  // Load JSON
+  async function loadData() {
+    const res = await fetch(DATA_URL, { cache: "no-store" });
+    if (!res.ok) throw new Error("Failed to load portfolio.json");
+    return res.json();
+  }
+
+  try {
+    const data = await loadData();
+
+    // Videos
+    renderVideos(data?.videos?.edit, editGrid, "edit");
+    renderVideos(data?.videos?.create, createGrid, "create");
+
+    // Galleries (images by URL)
+    renderGallery(data?.galleries?.concept, galleryScroller);
+    renderGallery(data?.galleries?.cars, carsGalleryScroller);
+
+    // Re-bind your existing modal player logic (Shorts)
+    // نفس فكرتك: أي .video-thumb يفتح modal
+    document.addEventListener("click", (e) => {
+      const t = e.target.closest(".video-thumb");
+      if (!t) return;
+
+      const id = t.getAttribute("data-video");
+      if (!id) return;
+
+      const iframe = document.getElementById("modalPlayer");
+      if (iframe) iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1`;
+
+      const modalEl = document.getElementById("videoModal");
+      if (modalEl && window.bootstrap) {
+        const modal = new bootstrap.Modal(modalEl);
+        modal.show();
+
+        modalEl.addEventListener(
+          "hidden.bs.modal",
+          () => {
+            if (iframe) iframe.src = "";
+          },
+          { once: true }
+        );
+      }
+    });
+  } catch (err) {
+    console.error(err);
+  }
+})();
 
