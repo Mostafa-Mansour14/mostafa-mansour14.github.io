@@ -1,6 +1,6 @@
 window.addEventListener("DOMContentLoaded", () => {
   // =========================
-  // Helper
+  // Helpers
   // =========================
   const qs = (s, el = document) => el.querySelector(s);
   const qsa = (s, el = document) => Array.from(el.querySelectorAll(s));
@@ -25,6 +25,138 @@ window.addEventListener("DOMContentLoaded", () => {
   };
 
   // =========================
+  // Data
+  // =========================
+
+  // New shorts you sent
+  const NEW_SHORTS = [
+    "https://youtube.com/shorts/nJZVmrPypEg",
+    "https://youtube.com/shorts/TjLQyM1boSA",
+    "https://youtube.com/shorts/5rJbLmcfBSE",
+    "https://youtube.com/shorts/5129Esy6WhI",
+  ].map(toYouTubeId);
+
+  // Editing shorts
+  const EDIT_SHORTS = [
+    "GEFvzpgGZmU",
+    "0shWVNJMoVo",
+    "mYQBfzR22TQ",
+    "Juso-cC3Xd4",
+    ...NEW_SHORTS,
+  ];
+
+  // Content Creation shorts
+  const CREATE_SHORTS = [
+    "hwqzvZyO-54",
+    "qcDr3tEWJzE",
+    "5IXdCBKqc-k",
+    "BznO4vpu6oA",
+    ...NEW_SHORTS,
+  ];
+
+  // ✅ YouTube Long-form (ONLY in YouTube section now)
+  const YT_LONGFORM = [
+    "XD0AC8IM47E",
+    "0ZDJulsMbpY",
+    "9UsZ7roRvlk",
+    "Mw-XSyH3xNQ",
+    "SnYlYmBOFgk",
+  ];
+
+  // =========================
+  // Build Cards
+  // =========================
+  function makeShortCard({ group, label, id, tags }) {
+    return `
+      <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="${group}">
+        <div class="video-card">
+          <div class="video-head">
+            <span class="chip ${group === "edit" ? "chip-edit" : "chip-create"}">${label}</span>
+            <span class="chip chip-ghost">Short</span>
+          </div>
+
+          <div class="video-thumb" data-video="${id}">
+            <span class="play">▶</span>
+          </div>
+
+          <div class="video-meta">
+            <div class="video-title">${group === "edit" ? "Short Edit" : "On-camera Short"}</div>
+            <div class="video-tags">${tags}</div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function makeYouTubeCard({ id, tags }) {
+    return `
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="video-card">
+          <div class="video-head">
+            <span class="chip chip-ghost">YouTube</span>
+          </div>
+
+          <div class="ratio ratio-16x9 video-frame">
+            <iframe
+              src="https://www.youtube.com/embed/${id}"
+              title="YouTube Project"
+              loading="lazy"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen></iframe>
+          </div>
+
+          <div class="video-meta">
+            <div class="video-title">YouTube Project</div>
+            <div class="video-tags">${tags}</div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderPortfolio() {
+    const editGrid = qs("#editGrid");
+    const createGrid = qs("#createGrid");
+    if (!editGrid || !createGrid) return;
+
+    // EDIT: Shorts only
+    editGrid.innerHTML = EDIT_SHORTS.map((id) =>
+      makeShortCard({
+        group: "edit",
+        label: "Editing",
+        id,
+        tags: "Pacing • Transitions • Retention",
+      })
+    ).join("");
+
+    // CREATE: Shorts only
+    createGrid.innerHTML = CREATE_SHORTS.map((id) =>
+      makeShortCard({
+        group: "create",
+        label: "Creator",
+        id,
+        tags: "Hook • Delivery • Story",
+      })
+    ).join("");
+  }
+
+  function renderYouTube() {
+    const ytGrid = qs("#youtubeGrid");
+    if (!ytGrid) return;
+
+    ytGrid.innerHTML = YT_LONGFORM.map((id) =>
+      makeYouTubeCard({
+        id,
+        tags: "Storytelling • Widescreen • Delivery",
+      })
+    ).join("");
+  }
+
+  renderPortfolio();
+  renderYouTube();
+
+  // =========================
   // Smooth Scroll + close mobile menu
   // =========================
   const navCollapseEl = qs("#navbarResponsive");
@@ -35,8 +167,7 @@ window.addEventListener("DOMContentLoaded", () => {
     collapse = bootstrap.Collapse.getInstance(navCollapseEl) || new bootstrap.Collapse(navCollapseEl, { toggle: false });
   }
 
-  // ✅ bind to .js-scroll (matches your updated HTML)
-  qsa(".js-scroll").forEach((a) => {
+  qsa(".js-scroll-trigger").forEach((a) => {
     a.addEventListener("click", (e) => {
       const href = a.getAttribute("href");
       if (!href || !href.startsWith("#")) return;
@@ -66,184 +197,38 @@ window.addEventListener("DOMContentLoaded", () => {
   // Reveal animation
   // =========================
   const animated = qsa("[data-animate]");
+  let revealCallbacks = [];
+
+  const runRevealCallbacks = (el) => {
+    revealCallbacks.forEach((fn) => fn(el));
+  };
+
   if ("IntersectionObserver" in window) {
     const io = new IntersectionObserver(
-      (entries) => entries.forEach((entry) => entry.isIntersecting && entry.target.classList.add("is-visible")),
+      (entries) =>
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            runRevealCallbacks(entry.target);
+            io.unobserve(entry.target);
+          }
+        }),
       { threshold: 0.12 }
     );
+
     animated.forEach((el, i) => {
       el.style.setProperty("--d", `${Math.min(i * 60, 600)}ms`);
       io.observe(el);
     });
   } else {
-    animated.forEach((el) => el.classList.add("is-visible"));
-  }
-
-  // =========================
-  // ✅ Counters (Growth Stats)
-  // =========================
-  function animateCount(el, to, suffix = "") {
-    const prefersReduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduce) {
-      el.textContent = `${to.toLocaleString()}${suffix}`;
-      return;
-    }
-
-    const dur = 1200;
-    const start = performance.now();
-    const from = 0;
-
-    function tick(now) {
-      const t = Math.min(1, (now - start) / dur);
-      const eased = 1 - Math.pow(1 - t, 3);
-      const val = Math.floor(from + (to - from) * eased);
-      el.textContent = `${val.toLocaleString()}${suffix}`;
-      if (t < 1) requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
-  }
-
-  const statEls = qsa("[data-count]");
-  if ("IntersectionObserver" in window && statEls.length) {
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          const el = entry.target;
-          const to = parseInt(el.getAttribute("data-count") || "0", 10);
-          const suffix = el.getAttribute("data-suffix") || "";
-          animateCount(el, to, suffix);
-          io.unobserve(el);
-        });
-      },
-      { threshold: 0.35 }
-    );
-    statEls.forEach((el) => io.observe(el));
-  } else {
-    statEls.forEach((el) => {
-      const to = parseInt(el.getAttribute("data-count") || "0", 10);
-      const suffix = el.getAttribute("data-suffix") || "";
-      animateCount(el, to, suffix);
+    animated.forEach((el) => {
+      el.classList.add("is-visible");
+      runRevealCallbacks(el);
     });
   }
 
   // =========================
-  // Videos Data
-  // =========================
-
-  // ✅ New shorts you sent
-  const NEW_SHORTS = [
-    "https://youtube.com/shorts/nJZVmrPypEg",
-    "https://youtube.com/shorts/TjLQyM1boSA",
-    "https://youtube.com/shorts/5rJbLmcfBSE",
-    "https://youtube.com/shorts/5129Esy6WhI",
-  ].map(toYouTubeId);
-
-  // Existing shorts (Editing)
-  const EDIT_SHORTS = ["GEFvzpgGZmU", "0shWVNJMoVo", "mYQBfzR22TQ", "Juso-cC3Xd4", ...NEW_SHORTS];
-
-  // Content Creation shorts
-  const CREATE_SHORTS = ["hwqzvZyO-54", "qcDr3tEWJzE", "5IXdCBKqc-k", "BznO4vpu6oA"];
-
-  // ✅ YouTube Horizontal goes ONLY to YouTube section now
-  const YT_HORIZONTAL = ["XD0AC8IM47E", "0ZDJulsMbpY", "9UsZ7roRvlk", "Mw-XSyH3xNQ", "SnYlYmBOFgk"];
-
-  // =========================
-  // Build Cards
-  // =========================
-  function makeShortCard({ group, label, id, tags = "Shorts • Editing" }) {
-    return `
-      <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="${group}">
-        <div class="video-card">
-          <div class="video-head">
-            <span class="chip ${group === "edit" ? "chip-edit" : "chip-create"}">${label}</span>
-            <span class="chip chip-ghost">Short</span>
-          </div>
-          <div class="video-thumb is-vertical" data-video="${id}">
-            <span class="play">▶</span>
-          </div>
-          <div class="video-meta">
-            <div class="video-title">${group === "edit" ? "Short Edit" : "On-camera Short"}</div>
-            <div class="video-tags">${tags}</div>
-          </div>
-        </div>
-      </div>
-    `;
-  }
-
-  function makeYouTubeCard({ id, tags = "YouTube • Project" }) {
-    return `
-      <div class="col-12 col-md-6 col-lg-4 youtube-item">
-        <div class="video-card">
-          <div class="video-head">
-            <span class="chip chip-ghost">YouTube</span>
-          </div>
-
-          <div class="ratio ratio-16x9 video-frame">
-            <iframe
-              src="https://www.youtube.com/embed/${id}"
-              title="YouTube Project"
-              loading="lazy"
-              referrerpolicy="strict-origin-when-cross-origin"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen></iframe>
-          </div>
-
-          <div class="video-meta">
-            <div class="video-title">YouTube Project</div>
-            <div class="video-tags">${tags}</div>
-          </div>
-        </div>
-      </div>
-    `;
-  }
-
-  // =========================
-  // Render Sections
-  // =========================
-  function renderPortfolio() {
-    const editGrid = qs("#editGrid");
-    const createGrid = qs("#createGrid");
-    if (!editGrid || !createGrid) return;
-
-    const editHTML = [
-      ...EDIT_SHORTS.map((id) =>
-        makeShortCard({
-          group: "edit",
-          label: "Editing",
-          id,
-          tags: "Pacing • Transitions • Retention",
-        })
-      ),
-    ].join("");
-
-    const createHTML = [
-      ...CREATE_SHORTS.map((id) =>
-        makeShortCard({
-          group: "create",
-          label: "Creator",
-          id,
-          tags: "Hook • Delivery • Story",
-        })
-      ),
-    ].join("");
-
-    editGrid.innerHTML = editHTML;
-    createGrid.innerHTML = createHTML;
-  }
-
-  function renderYouTube() {
-    const youtubeGrid = qs("#youtubeGrid");
-    if (!youtubeGrid) return;
-
-    youtubeGrid.innerHTML = YT_HORIZONTAL.map((id) => makeYouTubeCard({ id, tags: "Long-form • Widescreen • Delivery" })).join("");
-  }
-
-  renderPortfolio();
-  renderYouTube();
-
-  // =========================
-  // Filters (shorts only now, but keep ready)
+  // Filters (shorts only)
   // =========================
   function applyFilter(group, kind) {
     const items = qsa(`.portfolio-item[data-group="${group}"]`);
@@ -311,7 +296,42 @@ window.addEventListener("DOMContentLoaded", () => {
   initShortThumbs();
 
   // =========================
-  // ✅ TWO GALLERIES (Fixed IDs + no cropping)
+  // ✅ CountUp (stats) — runs when stats block becomes visible
+  // =========================
+  function formatNumber(n) {
+    return n.toLocaleString("en-US");
+  }
+
+  function animateCount(el) {
+    if (!el || el.dataset.done === "1") return;
+    el.dataset.done = "1";
+
+    const from = Number(el.getAttribute("data-from") || "0");
+    const to = Number(el.getAttribute("data-to") || "0");
+    const suffix = el.getAttribute("data-suffix") || "";
+    const dur = 1100;
+
+    const start = performance.now();
+    const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+
+    function tick(now) {
+      const p = Math.min(1, (now - start) / dur);
+      const v = Math.round(from + (to - from) * easeOut(p));
+      el.textContent = `${formatNumber(v)}${suffix}`;
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  revealCallbacks.push((target) => {
+    // if stats-grid or inside it becomes visible
+    if (target.classList && (target.classList.contains("stats-grid") || target.querySelector?.(".countup"))) {
+      qsa(".countup", target.classList.contains("stats-grid") ? target : document).forEach(animateCount);
+    }
+  });
+
+  // =========================
+  // ✅ TWO GALLERIES
   // =========================
 
   // 1) PRODUCTS: local images (easy add)
@@ -320,7 +340,7 @@ window.addEventListener("DOMContentLoaded", () => {
     prefix: "mostafa-mansour_product_ (",
     suffix: ").png",
     startIndex: 1,
-    count: 13,
+    count: 13, // increase when you add images
   };
 
   function buildProductsList() {
@@ -417,10 +437,7 @@ window.addEventListener("DOMContentLoaded", () => {
       items.forEach((item, i) => {
         const itemCenter = item.offsetLeft + item.offsetWidth / 2;
         const d = Math.abs(itemCenter - center);
-        if (d < bestDist) {
-          bestDist = d;
-          bestIndex = i;
-        }
+        if (d < bestDist) { bestDist = d; bestIndex = i; }
       });
 
       items.forEach((it, i) => it.classList.toggle("is-active", i === bestIndex));
@@ -447,6 +464,7 @@ window.addEventListener("DOMContentLoaded", () => {
     window.addEventListener("resize", setActiveByCenter);
   }
 
+  // init galleries
   initGallery({
     scrollerId: "productsScroller",
     dotsId: "productsDots",
