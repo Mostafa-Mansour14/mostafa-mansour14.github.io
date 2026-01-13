@@ -24,154 +24,6 @@ window.addEventListener("DOMContentLoaded", () => {
     return v;
   };
 
-  // year
-  const y = qs("#year");
-  if (y) y.textContent = String(new Date().getFullYear());
-
-  // =========================
-  // Videos Data (EDIT / CREATE)
-  // =========================
-
-  // ✅ New shorts you sent
-  const NEW_SHORTS = [
-    "https://youtube.com/shorts/nJZVmrPypEg",
-    "https://youtube.com/shorts/TjLQyM1boSA",
-    "https://youtube.com/shorts/5rJbLmcfBSE",
-    "https://youtube.com/shorts/5129Esy6WhI",
-  ].map(toYouTubeId);
-
-  
-  // Existing shorts (from your old code)
-  const EDIT_SHORTS = [
-    "GEFvzpgGZmU",
-    "0shWVNJMoVo",
-    "mYQBfzR22TQ",
-    "Juso-cC3Xd4",
-    // + new ones
-    ...NEW_SHORTS,
-  ];
-
-  const CREATE_SHORTS = [
-    "hwqzvZyO-54",
-    "qcDr3tEWJzE",
-    "5IXdCBKqc-k",
-    "BznO4vpu6oA",
-    // + new ones (لو تحب يكونوا كمان في الكونتنت كرييشن)
-    ...NEW_SHORTS,
-  ];
-
-  // ✅ YouTube 16:9 (horizontal) — will appear in BOTH tabs (as you requested)
-  const YT_HORIZONTAL = [
-    "XD0AC8IM47E",
-    "0ZDJulsMbpY",
-    "9UsZ7roRvlk",
-    "Mw-XSyH3xNQ",
-    "SnYlYmBOFgk",
-  ];
-
-  // =========================
-  // Build Portfolio Cards
-  // =========================
-
-  function makeShortCard({ group, label, id, tags = "Shorts • Editing" }) {
-    return `
-      <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="${group}">
-        <div class="video-card">
-          <div class="video-head">
-            <span class="chip ${group === "edit" ? "chip-edit" : "chip-create"}">${label}</span>
-            <span class="chip chip-ghost">Short</span>
-          </div>
-          <div class="video-thumb" data-video="${id}">
-            <span class="play">▶</span>
-          </div>
-          <div class="video-meta">
-            <div class="video-title">${group === "edit" ? "Short Edit" : "On-camera Short"}</div>
-            <div class="video-tags">${tags}</div>
-          </div>
-        </div>
-      </div>
-    `;
-  }
-
-  function makeYouTubeCard({ group, label, id, tags = "YouTube • Project" }) {
-    return `
-      <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="youtube" data-group="${group}">
-        <div class="video-card">
-          <div class="video-head">
-            <span class="chip ${group === "edit" ? "chip-edit" : "chip-create"}">${label}</span>
-            <span class="chip chip-ghost">YouTube</span>
-          </div>
-
-          <div class="ratio ratio-16x9 video-frame">
-            <iframe
-              src="https://www.youtube.com/embed/${id}"
-              title="YouTube Project"
-              loading="lazy"
-              referrerpolicy="strict-origin-when-cross-origin"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen></iframe>
-          </div>
-
-          <div class="video-meta">
-            <div class="video-title">YouTube Project</div>
-            <div class="video-tags">${tags}</div>
-          </div>
-        </div>
-      </div>
-    `;
-  }
-
-  function renderPortfolio() {
-    const editGrid = qs("#editGrid");
-    const createGrid = qs("#createGrid");
-    if (!editGrid || !createGrid) return;
-
-    // EDIT: Shorts + YouTube Horizontal
-    const editHTML = [
-      ...EDIT_SHORTS.map((id) =>
-        makeShortCard({
-          group: "edit",
-          label: "Editing",
-          id,
-          tags: "Pacing • Transitions • Retention",
-        })
-      ),
-      ...YT_HORIZONTAL.map((id) =>
-        makeYouTubeCard({
-          group: "edit",
-          label: "Editing",
-          id,
-          tags: "Edit • Delivery • Platform ready",
-        })
-      ),
-    ].join("");
-
-    // CREATE: Shorts + YouTube Horizontal
-    const createHTML = [
-      ...CREATE_SHORTS.map((id) =>
-        makeShortCard({
-          group: "create",
-          label: "Creator",
-          id,
-          tags: "Hook • Delivery • Story",
-        })
-      ),
-      ...YT_HORIZONTAL.map((id) =>
-        makeYouTubeCard({
-          group: "create",
-          label: "Creator",
-          id,
-          tags: "Concept • Production • Edit",
-        })
-      ),
-    ].join("");
-
-    editGrid.innerHTML = editHTML;
-    createGrid.innerHTML = createHTML;
-  }
-
-  renderPortfolio();
-
   // =========================
   // Smooth Scroll + close mobile menu
   // =========================
@@ -183,6 +35,7 @@ window.addEventListener("DOMContentLoaded", () => {
     collapse = bootstrap.Collapse.getInstance(navCollapseEl) || new bootstrap.Collapse(navCollapseEl, { toggle: false });
   }
 
+  // ✅ bind to .js-scroll (matches your updated HTML)
   qsa(".js-scroll").forEach((a) => {
     a.addEventListener("click", (e) => {
       const href = a.getAttribute("href");
@@ -227,7 +80,170 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   // =========================
-  // Filters
+  // ✅ Counters (Growth Stats)
+  // =========================
+  function animateCount(el, to, suffix = "") {
+    const prefersReduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduce) {
+      el.textContent = `${to.toLocaleString()}${suffix}`;
+      return;
+    }
+
+    const dur = 1200;
+    const start = performance.now();
+    const from = 0;
+
+    function tick(now) {
+      const t = Math.min(1, (now - start) / dur);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const val = Math.floor(from + (to - from) * eased);
+      el.textContent = `${val.toLocaleString()}${suffix}`;
+      if (t < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  const statEls = qsa("[data-count]");
+  if ("IntersectionObserver" in window && statEls.length) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const el = entry.target;
+          const to = parseInt(el.getAttribute("data-count") || "0", 10);
+          const suffix = el.getAttribute("data-suffix") || "";
+          animateCount(el, to, suffix);
+          io.unobserve(el);
+        });
+      },
+      { threshold: 0.35 }
+    );
+    statEls.forEach((el) => io.observe(el));
+  } else {
+    statEls.forEach((el) => {
+      const to = parseInt(el.getAttribute("data-count") || "0", 10);
+      const suffix = el.getAttribute("data-suffix") || "";
+      animateCount(el, to, suffix);
+    });
+  }
+
+  // =========================
+  // Videos Data
+  // =========================
+
+  // ✅ New shorts you sent
+  const NEW_SHORTS = [
+    "https://youtube.com/shorts/nJZVmrPypEg",
+    "https://youtube.com/shorts/TjLQyM1boSA",
+    "https://youtube.com/shorts/5rJbLmcfBSE",
+    "https://youtube.com/shorts/5129Esy6WhI",
+  ].map(toYouTubeId);
+
+  // Existing shorts (Editing)
+  const EDIT_SHORTS = ["GEFvzpgGZmU", "0shWVNJMoVo", "mYQBfzR22TQ", "Juso-cC3Xd4", ...NEW_SHORTS];
+
+  // Content Creation shorts
+  const CREATE_SHORTS = ["hwqzvZyO-54", "qcDr3tEWJzE", "5IXdCBKqc-k", "BznO4vpu6oA"];
+
+  // ✅ YouTube Horizontal goes ONLY to YouTube section now
+  const YT_HORIZONTAL = ["XD0AC8IM47E", "0ZDJulsMbpY", "9UsZ7roRvlk", "Mw-XSyH3xNQ", "SnYlYmBOFgk"];
+
+  // =========================
+  // Build Cards
+  // =========================
+  function makeShortCard({ group, label, id, tags = "Shorts • Editing" }) {
+    return `
+      <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="${group}">
+        <div class="video-card">
+          <div class="video-head">
+            <span class="chip ${group === "edit" ? "chip-edit" : "chip-create"}">${label}</span>
+            <span class="chip chip-ghost">Short</span>
+          </div>
+          <div class="video-thumb is-vertical" data-video="${id}">
+            <span class="play">▶</span>
+          </div>
+          <div class="video-meta">
+            <div class="video-title">${group === "edit" ? "Short Edit" : "On-camera Short"}</div>
+            <div class="video-tags">${tags}</div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function makeYouTubeCard({ id, tags = "YouTube • Project" }) {
+    return `
+      <div class="col-12 col-md-6 col-lg-4 youtube-item">
+        <div class="video-card">
+          <div class="video-head">
+            <span class="chip chip-ghost">YouTube</span>
+          </div>
+
+          <div class="ratio ratio-16x9 video-frame">
+            <iframe
+              src="https://www.youtube.com/embed/${id}"
+              title="YouTube Project"
+              loading="lazy"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen></iframe>
+          </div>
+
+          <div class="video-meta">
+            <div class="video-title">YouTube Project</div>
+            <div class="video-tags">${tags}</div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // =========================
+  // Render Sections
+  // =========================
+  function renderPortfolio() {
+    const editGrid = qs("#editGrid");
+    const createGrid = qs("#createGrid");
+    if (!editGrid || !createGrid) return;
+
+    const editHTML = [
+      ...EDIT_SHORTS.map((id) =>
+        makeShortCard({
+          group: "edit",
+          label: "Editing",
+          id,
+          tags: "Pacing • Transitions • Retention",
+        })
+      ),
+    ].join("");
+
+    const createHTML = [
+      ...CREATE_SHORTS.map((id) =>
+        makeShortCard({
+          group: "create",
+          label: "Creator",
+          id,
+          tags: "Hook • Delivery • Story",
+        })
+      ),
+    ].join("");
+
+    editGrid.innerHTML = editHTML;
+    createGrid.innerHTML = createHTML;
+  }
+
+  function renderYouTube() {
+    const youtubeGrid = qs("#youtubeGrid");
+    if (!youtubeGrid) return;
+
+    youtubeGrid.innerHTML = YT_HORIZONTAL.map((id) => makeYouTubeCard({ id, tags: "Long-form • Widescreen • Delivery" })).join("");
+  }
+
+  renderPortfolio();
+  renderYouTube();
+
+  // =========================
+  // Filters (shorts only now, but keep ready)
   // =========================
   function applyFilter(group, kind) {
     const items = qsa(`.portfolio-item[data-group="${group}"]`);
@@ -295,9 +311,7 @@ window.addEventListener("DOMContentLoaded", () => {
   initShortThumbs();
 
   // =========================
-  // ✅ TWO GALLERIES
-  // 1) Products (local folder, easy add by count)
-  // 2) Cars (ImageKit URLs you provided)
+  // ✅ TWO GALLERIES (Fixed IDs + no cropping)
   // =========================
 
   // 1) PRODUCTS: local images (easy add)
@@ -306,7 +320,7 @@ window.addEventListener("DOMContentLoaded", () => {
     prefix: "mostafa-mansour_product_ (",
     suffix: ").png",
     startIndex: 1,
-    count: 13, // <-- زوّد الرقم ده لما تزود صور
+    count: 13,
   };
 
   function buildProductsList() {
@@ -317,7 +331,7 @@ window.addEventListener("DOMContentLoaded", () => {
     return arr;
   }
 
-  // 2) CARS: URLs from you (as-is)
+  // 2) CARS: ImageKit URLs
   const CAR_IMAGES = [
     "https://ik.imagekit.io/ygv06l7eo/motoors/IMG_2720.JPG?tr=q-auto,f-auto",
     "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(7).JPG?tr=q-auto,f-auto",
@@ -403,7 +417,10 @@ window.addEventListener("DOMContentLoaded", () => {
       items.forEach((item, i) => {
         const itemCenter = item.offsetLeft + item.offsetWidth / 2;
         const d = Math.abs(itemCenter - center);
-        if (d < bestDist) { bestDist = d; bestIndex = i; }
+        if (d < bestDist) {
+          bestDist = d;
+          bestIndex = i;
+        }
       });
 
       items.forEach((it, i) => it.classList.toggle("is-active", i === bestIndex));
@@ -430,7 +447,6 @@ window.addEventListener("DOMContentLoaded", () => {
     window.addEventListener("resize", setActiveByCenter);
   }
 
-  // Init both galleries
   initGallery({
     scrollerId: "productsScroller",
     dotsId: "productsDots",
