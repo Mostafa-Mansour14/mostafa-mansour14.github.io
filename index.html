@@ -59,7 +59,7 @@
       <!-- About -->
       <section class="resume-section" id="about">
         <div class="resume-section-content">
-          <img class="img-fluid rounded-circle mb-4 d-block d-lg-none mx-auto" src="assets/img/profile.jpg" alt="Mostafa Mansour" data-animate />
+          <img class="img-fluid rounded-circle mb-4 d-block d-lg-none mx-auto img-profile--mobile" src="assets/img/profile.jpg" alt="Mostafa Mansour" data-animate />
 
           <h1 class="mb-0" data-animate>
             Mostafa <span class="text-primary">Mansour</span>
@@ -451,40 +451,68 @@
                     </div>
                   </div>
                 </div>
-
               </div>
+            </div>
+          </div>
+          <!-- ✅ END tab-content -->
 
-              <!-- =========================
-                   GALLERY (after videos)
-                   ========================= -->
-              <div class="mt-4 gallery-zone" data-animate>
-                <div class="smart-card p-3 p-md-4 mb-3">
-                  <div class="d-flex align-items-start justify-content-between flex-wrap gap-2">
-                    <div>
-                      <h3 class="h5 mb-1">Concept Product Visualization</h3>
-                      <div class="text-muted">Branding • Product Design • Visual Direction</div>
-                    </div>
+          <!-- =========================
+               GALLERIES (AFTER ALL VIDEOS)
+               1) Products  2) Cars
+               ========================= -->
 
-                    <div class="d-flex gap-2">
-                      <button class="gallery-btn" type="button" data-gprev aria-label="Previous image">
-                        <i class="fa-solid fa-chevron-left"></i>
-                      </button>
-                      <button class="gallery-btn" type="button" data-gnext aria-label="Next image">
-                        <i class="fa-solid fa-chevron-right"></i>
-                      </button>
-                    </div>
-                  </div>
+          <!-- GALLERY 1: PRODUCTS -->
+          <div class="mt-4 gallery-zone" data-animate>
+            <div class="smart-card p-3 p-md-4 mb-3">
+              <div class="d-flex align-items-start justify-content-between flex-wrap gap-2">
+                <div>
+                  <h3 class="h5 mb-1">Concept Product Visualization</h3>
+                  <div class="text-muted">Branding • Product Design • Visual Direction</div>
+                </div>
 
-                  <div class="gallery-wrap mt-3">
-                    <!-- IMPORTANT: leave it empty, JS will auto-build images -->
-                    <div class="gallery-scroller" id="galleryScroller"></div>
-                    <div class="gallery-dots" id="galleryDots"></div>
-                  </div>
+                <div class="d-flex gap-2">
+                  <button class="gallery-btn" type="button" data-gprev="products" aria-label="Previous image">
+                    <i class="fa-solid fa-chevron-left"></i>
+                  </button>
+                  <button class="gallery-btn" type="button" data-gnext="products" aria-label="Next image">
+                    <i class="fa-solid fa-chevron-right"></i>
+                  </button>
                 </div>
               </div>
 
+              <div class="gallery-wrap mt-3">
+                <div class="gallery-scroller" id="galleryScrollerProducts"></div>
+                <div class="gallery-dots" id="galleryDotsProducts"></div>
+              </div>
             </div>
           </div>
+
+          <!-- GALLERY 2: CARS -->
+          <div class="mt-4 gallery-zone" data-animate>
+            <div class="smart-card p-3 p-md-4 mb-3">
+              <div class="d-flex align-items-start justify-content-between flex-wrap gap-2">
+                <div>
+                  <h3 class="h5 mb-1">Cars Gallery</h3>
+                  <div class="text-muted">Automotive • Shoots • Visual Direction</div>
+                </div>
+
+                <div class="d-flex gap-2">
+                  <button class="gallery-btn" type="button" data-gprev="cars" aria-label="Previous image">
+                    <i class="fa-solid fa-chevron-left"></i>
+                  </button>
+                  <button class="gallery-btn" type="button" data-gnext="cars" aria-label="Next image">
+                    <i class="fa-solid fa-chevron-right"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="gallery-wrap mt-3">
+                <div class="gallery-scroller" id="galleryScrollerCars"></div>
+                <div class="gallery-dots" id="galleryDotsCars"></div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -626,6 +654,7 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
     <!-- Theme JS -->
     <script src="js/scripts.js"></script>
   </body>
