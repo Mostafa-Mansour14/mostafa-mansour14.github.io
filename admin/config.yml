@@ -2,29 +2,62 @@ backend:
   name: git-gateway
   branch: main
 
+publish_mode: editorial_workflow
+
+# مهم عشان الـ schema ما يشتكيش
 media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
 
 collections:
   - name: "portfolio"
-    label: "Portfolio"
+    label: "Portfolio Data"
     files:
       - file: "data/portfolio.json"
-        label: "Videos"
-        name: "videos"
+        label: "Portfolio + Galleries"
+        name: "portfolio_file"
         fields:
-          - label: "Edit Videos"
-            name: "edit"
-            widget: "list"
+          - label: "Videos"
+            name: "videos"
+            widget: "object"
             fields:
-              - { label: "Title", name: "title", widget: "string" }
-              - { label: "YouTube ID", name: "video", widget: "string" }
-              - { label: "Tags", name: "tags", widget: "list", default: [] }
+              - label: "Video Editing"
+                name: "edit"
+                widget: "list"
+                summary: "{{fields.title}}"
+                fields:
+                  - { label: "Title", name: "title", widget: "string" }
+                  - { label: "YouTube ID", name: "video", widget: "string", hint: "مثال: GEFvzpgGZmU" }
+                  - { label: "Kind", name: "kind", widget: "select", options: ["short", "youtube"], default: "short" }
+                  - { label: "Tags", name: "tags", widget: "list", required: false }
 
-          - label: "Create Videos"
-            name: "create"
-            widget: "list"
+              - label: "Content Creation"
+                name: "create"
+                widget: "list"
+                summary: "{{fields.title}}"
+                fields:
+                  - { label: "Title", name: "title", widget: "string" }
+                  - { label: "YouTube ID", name: "video", widget: "string" }
+                  - { label: "Kind", name: "kind", widget: "select", options: ["short", "youtube"], default: "short" }
+                  - { label: "Tags", name: "tags", widget: "list", required: false }
+
+          - label: "Galleries (Images by URL)"
+            name: "galleries"
+            widget: "object"
             fields:
-              - { label: "Title", name: "title", widget: "string" }
-              - { label: "YouTube ID", name: "video", widget: "string" }
-              - { label: "Tags", name: "tags", widget: "list", default: [] }
+              - label: "Concept Product Visualization"
+                name: "concept"
+                widget: "list"
+                summary: "{{fields.title}}"
+                fields:
+                  - { label: "Title", name: "title", widget: "string", required: false }
+                  - { label: "Image URL", name: "url", widget: "string", hint: "لينك مباشر للصورة" }
+                  - { label: "Tags", name: "tags", widget: "list", required: false }
+
+              - label: "Cars — Visual Concepts"
+                name: "cars"
+                widget: "list"
+                summary: "{{fields.title}}"
+                fields:
+                  - { label: "Title", name: "title", widget: "string", required: false }
+                  - { label: "Image URL", name: "url", widget: "string" }
+                  - { label: "Tags", name: "tags", widget: "list", required: false }
