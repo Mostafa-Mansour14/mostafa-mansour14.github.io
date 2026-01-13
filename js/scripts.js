@@ -473,6 +473,7 @@ window.addEventListener("DOMContentLoaded", () => {
     images: buildProductsList(),
     label: "Product",
   });
+  
 
   initGallery({
     scrollerId: "carsScroller",
