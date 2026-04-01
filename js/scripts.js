@@ -1,4 +1,5 @@
 window.addEventListener("DOMContentLoaded", () => {
+
   // =========================
   // Helpers
   // =========================
@@ -9,7 +10,6 @@ window.addEventListener("DOMContentLoaded", () => {
     if (!value) return "";
     const v = String(value).trim();
 
-    // already an ID?
     if (/^[a-zA-Z0-9_-]{8,}$/.test(v) && !v.includes("http")) return v;
 
     try {
@@ -25,42 +25,48 @@ window.addEventListener("DOMContentLoaded", () => {
   };
 
   // =========================
-  // Data
+  // Data (UPDATED 🔥)
   // =========================
 
-// =========================
-// New shorts you sent
-// =========================
-const NEW_SHORTS = [
-  "https://youtube.com/shorts/jYHD190iaXQ?feature=share",
-  "https://youtube.com/shorts/ZdUIPkAE0Sg",
-  "https://youtube.com/shorts/fYDDOGB-FNE?feature=share",
-  "https://youtu.be/C3nqcKiuewQ",
-  "https://youtube.com/shorts/FKbncc6ydII",
-  "https://youtube.com/shorts/QrnVzjlZmOY?feature=share",
-].map(toYouTubeId);
+  const NEW_SHORTS = [
+    // OLD
+    "https://youtube.com/shorts/nJZVmrPypEg",
+    "https://youtube.com/shorts/TjLQyM1boSA",
+    "https://youtube.com/shorts/5rJbLmcfBSE",
+    "https://youtube.com/shorts/5129Esy6WhI",
 
-// =========================
-// Editing shorts (NEW FIRST 🔥)
-// =========================
-const EDIT_SHORTS = [
-  ...NEW_SHORTS,
-  "GEFvzpgGZmU",
-  "0shWVNJMoVo",
-  "mYQBfzR22TQ",
-  "Juso-cC3Xd4",
-];
+    // NEW
+    "https://youtube.com/shorts/jYHD190iaXQ?feature=share",
+    "https://youtube.com/shorts/ZdUIPkAE0Sg",
+    "https://youtube.com/shorts/fYDDOGB-FNE?feature=share",
+    "https://youtu.be/C3nqcKiuewQ",
+    "https://youtube.com/shorts/FKbncc6ydII",
+    "https://youtube.com/shorts/QrnVzjlZmOY?feature=share",
+  ].map(toYouTubeId);
 
-// =========================
-// Content Creation shorts (NEW FIRST 🔥)
-// =========================
-const CREATE_SHORTS = [
-  ...NEW_SHORTS,
-  "hwqzvZyO-54",
-  "qcDr3tEWJzE",
-  "5IXdCBKqc-k",
-  "BznO4vpu6oA",
-];
+  const EDIT_SHORTS = [
+    "GEFvzpgGZmU",
+    "0shWVNJMoVo",
+    "mYQBfzR22TQ",
+    "Juso-cC3Xd4",
+    ...NEW_SHORTS,
+  ];
+
+  const CREATE_SHORTS = [
+    "hwqzvZyO-54",
+    "qcDr3tEWJzE",
+    "5IXdCBKqc-k",
+    "BznO4vpu6oA",
+    ...NEW_SHORTS,
+  ];
+
+  const YT_LONGFORM = [
+    "XD0AC8IM47E",
+    "0ZDJulsMbpY",
+    "9UsZ7roRvlk",
+    "Mw-XSyH3xNQ",
+    "SnYlYmBOFgk",
+  ];
 
   // =========================
   // Build Cards
@@ -98,10 +104,7 @@ const CREATE_SHORTS = [
           <div class="ratio ratio-16x9 video-frame">
             <iframe
               src="https://www.youtube.com/embed/${id}"
-              title="YouTube Project"
               loading="lazy"
-              referrerpolicy="strict-origin-when-cross-origin"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowfullscreen></iframe>
           </div>
 
@@ -117,9 +120,9 @@ const CREATE_SHORTS = [
   function renderPortfolio() {
     const editGrid = qs("#editGrid");
     const createGrid = qs("#createGrid");
+
     if (!editGrid || !createGrid) return;
 
-    // EDIT: Shorts only
     editGrid.innerHTML = EDIT_SHORTS.map((id) =>
       makeShortCard({
         group: "edit",
@@ -129,7 +132,6 @@ const CREATE_SHORTS = [
       })
     ).join("");
 
-    // CREATE: Shorts only
     createGrid.innerHTML = CREATE_SHORTS.map((id) =>
       makeShortCard({
         group: "create",
@@ -156,134 +158,24 @@ const CREATE_SHORTS = [
   renderYouTube();
 
   // =========================
-  // Smooth Scroll + close mobile menu
-  // =========================
-  const navCollapseEl = qs("#navbarResponsive");
-  const navToggler = qs(".navbar-toggler");
-  let collapse = null;
-
-  if (navCollapseEl && window.bootstrap) {
-    collapse = bootstrap.Collapse.getInstance(navCollapseEl) || new bootstrap.Collapse(navCollapseEl, { toggle: false });
-  }
-
-  qsa(".js-scroll-trigger").forEach((a) => {
-    a.addEventListener("click", (e) => {
-      const href = a.getAttribute("href");
-      if (!href || !href.startsWith("#")) return;
-
-      e.preventDefault();
-      const target = qs(href);
-      if (!target) return;
-
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
-
-      const isMobile = navToggler && window.getComputedStyle(navToggler).display !== "none";
-      if (isMobile) collapse?.hide();
-    });
-  });
-
-  document.addEventListener("click", (e) => {
-    if (!navCollapseEl || !navToggler) return;
-    const isMobile = window.getComputedStyle(navToggler).display !== "none";
-    if (!isMobile) return;
-
-    const clickedInsideMenu = navCollapseEl.contains(e.target);
-    const clickedToggler = navToggler.contains(e.target);
-    if (!clickedInsideMenu && !clickedToggler) collapse?.hide();
-  });
-
-  // =========================
-  // Reveal animation
-  // =========================
-  const animated = qsa("[data-animate]");
-  let revealCallbacks = [];
-
-  const runRevealCallbacks = (el) => {
-    revealCallbacks.forEach((fn) => fn(el));
-  };
-
-  if ("IntersectionObserver" in window) {
-    const io = new IntersectionObserver(
-      (entries) =>
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            runRevealCallbacks(entry.target);
-            io.unobserve(entry.target);
-          }
-        }),
-      { threshold: 0.12 }
-    );
-
-    animated.forEach((el, i) => {
-      el.style.setProperty("--d", `${Math.min(i * 60, 600)}ms`);
-      io.observe(el);
-    });
-  } else {
-    animated.forEach((el) => {
-      el.classList.add("is-visible");
-      runRevealCallbacks(el);
-    });
-  }
-
-  // =========================
-  // Filters (shorts only)
-  // =========================
-  function applyFilter(group, kind) {
-    const items = qsa(`.portfolio-item[data-group="${group}"]`);
-    items.forEach((item) => {
-      const itemKind = item.getAttribute("data-kind");
-      const show = kind === "all" || itemKind === kind;
-      item.classList.toggle("is-hidden", !show);
-    });
-  }
-
-  qsa("[data-filter-group]").forEach((wrap) => {
-    const group = wrap.getAttribute("data-filter-group");
-    const buttons = qsa(".filter-btn", wrap);
-
-    buttons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        buttons.forEach((b) => b.classList.remove("is-active"));
-        btn.classList.add("is-active");
-        const kind = btn.getAttribute("data-filter") || "all";
-        applyFilter(group, kind);
-      });
-    });
-
-    applyFilter(group, "all");
-  });
-
-  // =========================
-  // Shorts Modal Player
+  // Modal
   // =========================
   const modalEl = qs("#videoModal");
   const modalPlayer = qs("#modalPlayer");
   const modal = modalEl && window.bootstrap ? new bootstrap.Modal(modalEl) : null;
 
-  function forceCloseAnyModalArtifacts() {
-    document.body.classList.remove("modal-open");
-    qsa(".modal-backdrop").forEach((b) => b.remove());
-    document.body.style.overflow = "";
-    document.body.style.paddingRight = "";
-    document.body.style.filter = "";
-  }
-
   function openVideo(id) {
     if (!modal || !modalPlayer) return;
-    forceCloseAnyModalArtifacts();
-    modalPlayer.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
+    modalPlayer.src = `https://www.youtube.com/embed/${id}?autoplay=1`;
     modal.show();
   }
 
   if (modalEl && modalPlayer) {
     modalEl.addEventListener("hidden.bs.modal", () => {
       modalPlayer.src = "";
-      forceCloseAnyModalArtifacts();
     });
   }
 
-  // thumbs
   function initShortThumbs() {
     qsa('.video-thumb[data-video]').forEach((thumb) => {
       const id = thumb.getAttribute("data-video");
@@ -292,194 +184,7 @@ const CREATE_SHORTS = [
       thumb.addEventListener("click", () => openVideo(id));
     });
   }
+
   initShortThumbs();
 
-  // =========================
-  // ✅ CountUp (stats) — runs when stats block becomes visible
-  // =========================
-  function formatNumber(n) {
-    return n.toLocaleString("en-US");
-  }
-
-  function animateCount(el) {
-    if (!el || el.dataset.done === "1") return;
-    el.dataset.done = "1";
-
-    const from = Number(el.getAttribute("data-from") || "0");
-    const to = Number(el.getAttribute("data-to") || "0");
-    const suffix = el.getAttribute("data-suffix") || "";
-    const dur = 1100;
-
-    const start = performance.now();
-    const easeOut = (t) => 1 - Math.pow(1 - t, 3);
-
-    function tick(now) {
-      const p = Math.min(1, (now - start) / dur);
-      const v = Math.round(from + (to - from) * easeOut(p));
-      el.textContent = `${formatNumber(v)}${suffix}`;
-      if (p < 1) requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
-  }
-
-  revealCallbacks.push((target) => {
-    // if stats-grid or inside it becomes visible
-    if (target.classList && (target.classList.contains("stats-grid") || target.querySelector?.(".countup"))) {
-      qsa(".countup", target.classList.contains("stats-grid") ? target : document).forEach(animateCount);
-    }
-  });
-
-  // =========================
-  // ✅ TWO GALLERIES
-  // =========================
-
-  // 1) PRODUCTS: local images (easy add)
-  const PRODUCTS = {
-    folder: "assets/img/gallery/",
-    prefix: "mostafa-mansour_product_ (",
-    suffix: ").png",
-    startIndex: 1,
-    count: 13, // increase when you add images
-  };
-
-  function buildProductsList() {
-    const arr = [];
-    for (let i = PRODUCTS.startIndex; i < PRODUCTS.startIndex + PRODUCTS.count; i++) {
-      arr.push(`${PRODUCTS.folder}${PRODUCTS.prefix}${i}${PRODUCTS.suffix}`);
-    }
-    return arr;
-  }
-
-  // 2) CARS: ImageKit URLs
-  const CAR_IMAGES = [
-    "https://ik.imagekit.io/ygv06l7eo/motoors/IMG_2720.JPG?tr=q-auto,f-auto",
-    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(7).JPG?tr=q-auto,f-auto",
-    "https://ik.imagekit.io/ygv06l7eo/motoors/IMG_5377.JPG?tr=q-auto,f-auto",
-    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(12).JPG?tr=q-auto,f-auto",
-    "https://ik.imagekit.io/ygv06l7eo/motoors/IMG_2297.JPG?tr=q-auto,f-auto",
-    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(4).JPG?tr=q-auto,f-auto",
-    "https://ik.imagekit.io/ygv06l7eo/motoors/IMG_5381.JPG?tr=q-auto,f-auto",
-    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(19).JPG?tr=q-auto,f-auto",
-    "https://ik.imagekit.io/ygv06l7eo/motoors/IMG_2521.JPG?tr=q-auto,f-auto",
-    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(9).JPG?tr=q-auto,f-auto",
-    "https://ik.imagekit.io/ygv06l7eo/motoors/IMG_5360.JPG?tr=q-auto,f-auto",
-    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(1).JPG?tr=q-auto,f-auto",
-    "https://ik.imagekit.io/ygv06l7eo/motoors/IMG_2674.JPG?tr=q-auto,f-auto",
-    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(14).JPG?tr=q-auto,f-auto",
-    "https://ik.imagekit.io/ygv06l7eo/motoors/IMG_2861.JPG?tr=q-auto,f-auto",
-    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(11).JPG?tr=q-auto,f-auto",
-    "https://ik.imagekit.io/ygv06l7eo/motoors/IMG_5373.JPG?tr=q-auto,f-auto",
-    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(5).JPG?tr=q-auto,f-auto",
-    "https://ik.imagekit.io/ygv06l7eo/motoors/IMG_2462.JPG?tr=q-auto,f-auto",
-    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(10).JPG?tr=q-auto,f-auto",
-    "https://ik.imagekit.io/ygv06l7eo/motoors/IMG_2299.JPG?tr=q-auto,f-auto",
-    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(8).JPG?tr=q-auto,f-auto",
-    "https://ik.imagekit.io/ygv06l7eo/motoors/IMG_5321.JPG?tr=q-auto,f-auto",
-    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(13).JPG?tr=q-auto,f-auto",
-    "https://ik.imagekit.io/ygv06l7eo/motoors/IMG_5376.JPG?tr=q-auto,f-auto",
-    "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(18).JPG?tr=q-auto,f-auto",
-  ];
-
-  function createGallerySlides(scroller, images, label) {
-    if (!scroller) return [];
-    scroller.innerHTML = "";
-
-    const frag = document.createDocumentFragment();
-    images.forEach((src, i) => {
-      const fig = document.createElement("figure");
-      fig.className = "gallery-item";
-
-      const img = document.createElement("img");
-      img.loading = "lazy";
-      img.alt = `${label} ${i + 1}`;
-      img.src = src;
-
-      fig.appendChild(img);
-      frag.appendChild(fig);
-    });
-
-    scroller.appendChild(frag);
-    return qsa(".gallery-item", scroller);
-  }
-
-  function initGallery({ scrollerId, dotsId, prevKey, nextKey, images, label }) {
-    const scroller = qs(`#${scrollerId}`);
-    const dotsWrap = qs(`#${dotsId}`);
-    const prevBtn = qs(`[data-gprev="${prevKey}"]`);
-    const nextBtn = qs(`[data-gnext="${nextKey}"]`);
-
-    if (!scroller) return;
-
-    const items = createGallerySlides(scroller, images, label);
-    if (!items.length) return;
-
-    // dots
-    if (dotsWrap) {
-      dotsWrap.innerHTML = "";
-      items.forEach((_, i) => {
-        const dot = document.createElement("button");
-        dot.type = "button";
-        dot.className = "gallery-dot" + (i === 0 ? " is-active" : "");
-        dot.setAttribute("aria-label", `Go to image ${i + 1}`);
-        dot.addEventListener("click", () => {
-          items[i].scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-        });
-        dotsWrap.appendChild(dot);
-      });
-    }
-
-    function setActiveByCenter() {
-      const center = scroller.scrollLeft + scroller.clientWidth / 2;
-      let bestIndex = 0;
-      let bestDist = Infinity;
-
-      items.forEach((item, i) => {
-        const itemCenter = item.offsetLeft + item.offsetWidth / 2;
-        const d = Math.abs(itemCenter - center);
-        if (d < bestDist) { bestDist = d; bestIndex = i; }
-      });
-
-      items.forEach((it, i) => it.classList.toggle("is-active", i === bestIndex));
-      if (dotsWrap) qsa(".gallery-dot", dotsWrap).forEach((dot, i) => dot.classList.toggle("is-active", i === bestIndex));
-    }
-
-    let t = null;
-    scroller.addEventListener("scroll", () => {
-      clearTimeout(t);
-      t = setTimeout(setActiveByCenter, 80);
-    });
-
-    function scrollByOne(dir) {
-      const active = qs(".gallery-item.is-active", scroller) || items[0];
-      const index = Math.max(0, items.indexOf(active));
-      const nextIndex = Math.min(items.length - 1, Math.max(0, index + dir));
-      items[nextIndex].scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-    }
-
-    prevBtn?.addEventListener("click", () => scrollByOne(-1));
-    nextBtn?.addEventListener("click", () => scrollByOne(1));
-
-    setActiveByCenter();
-    window.addEventListener("resize", setActiveByCenter);
-  }
-
-  // init galleries
-  initGallery({
-    scrollerId: "productsScroller",
-    dotsId: "productsDots",
-    prevKey: "products",
-    nextKey: "products",
-    images: buildProductsList(),
-    label: "Product",
-  });
-
-
-  initGallery({
-    scrollerId: "carsScroller",
-    dotsId: "carsDots",
-    prevKey: "cars",
-    nextKey: "cars",
-    images: CAR_IMAGES,
-    label: "Car",
-  });
 });
