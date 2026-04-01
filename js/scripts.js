@@ -28,40 +28,39 @@ window.addEventListener("DOMContentLoaded", () => {
   // Data
   // =========================
 
-  // New shorts you sent
-  const NEW_SHORTS = [
-    "https://youtube.com/shorts/nJZVmrPypEg",
-    "https://youtube.com/shorts/TjLQyM1boSA",
-    "https://youtube.com/shorts/5rJbLmcfBSE",
-    "https://youtube.com/shorts/5129Esy6WhI",
-  ].map(toYouTubeId);
+// =========================
+// New shorts you sent
+// =========================
+const NEW_SHORTS = [
+  "https://youtube.com/shorts/jYHD190iaXQ?feature=share",
+  "https://youtube.com/shorts/ZdUIPkAE0Sg",
+  "https://youtube.com/shorts/fYDDOGB-FNE?feature=share",
+  "https://youtu.be/C3nqcKiuewQ",
+  "https://youtube.com/shorts/FKbncc6ydII",
+  "https://youtube.com/shorts/QrnVzjlZmOY?feature=share",
+].map(toYouTubeId);
 
-  // Editing shorts
-  const EDIT_SHORTS = [
-    "GEFvzpgGZmU",
-    "0shWVNJMoVo",
-    "mYQBfzR22TQ",
-    "Juso-cC3Xd4",
-    ...NEW_SHORTS,
-  ];
+// =========================
+// Editing shorts (NEW FIRST 🔥)
+// =========================
+const EDIT_SHORTS = [
+  ...NEW_SHORTS,
+  "GEFvzpgGZmU",
+  "0shWVNJMoVo",
+  "mYQBfzR22TQ",
+  "Juso-cC3Xd4",
+];
 
-  // Content Creation shorts
-  const CREATE_SHORTS = [
-    "hwqzvZyO-54",
-    "qcDr3tEWJzE",
-    "5IXdCBKqc-k",
-    "BznO4vpu6oA",
-    ...NEW_SHORTS,
-  ];
-
-  // ✅ YouTube Long-form (ONLY in YouTube section now)
-  const YT_LONGFORM = [
-    "XD0AC8IM47E",
-    "0ZDJulsMbpY",
-    "9UsZ7roRvlk",
-    "Mw-XSyH3xNQ",
-    "SnYlYmBOFgk",
-  ];
+// =========================
+// Content Creation shorts (NEW FIRST 🔥)
+// =========================
+const CREATE_SHORTS = [
+  ...NEW_SHORTS,
+  "hwqzvZyO-54",
+  "qcDr3tEWJzE",
+  "5IXdCBKqc-k",
+  "BznO4vpu6oA",
+];
 
   // =========================
   // Build Cards
