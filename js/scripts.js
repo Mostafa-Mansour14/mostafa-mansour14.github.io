@@ -28,39 +28,38 @@ window.addEventListener("DOMContentLoaded", () => {
   // Data
   // =========================
 
-  // Old + New shorts
+  // NEW shorts first
   const NEW_SHORTS = [
-    // old
-    "https://youtube.com/shorts/nJZVmrPypEg",
-    "https://youtube.com/shorts/TjLQyM1boSA",
-    "https://youtube.com/shorts/5rJbLmcfBSE",
-    "https://youtube.com/shorts/5129Esy6WhI",
-
-    // new
     "https://youtube.com/shorts/jYHD190iaXQ?feature=share",
     "https://youtube.com/shorts/ZdUIPkAE0Sg",
     "https://youtube.com/shorts/fYDDOGB-FNE?feature=share",
     "https://youtu.be/C3nqcKiuewQ",
     "https://youtube.com/shorts/FKbncc6ydII",
     "https://youtube.com/shorts/QrnVzjlZmOY?feature=share",
+
+    // old ones after
+    "https://youtube.com/shorts/nJZVmrPypEg",
+    "https://youtube.com/shorts/TjLQyM1boSA",
+    "https://youtube.com/shorts/5rJbLmcfBSE",
+    "https://youtube.com/shorts/5129Esy6WhI",
   ].map(toYouTubeId);
 
   // Editing shorts
   const EDIT_SHORTS = [
+    ...NEW_SHORTS,
     "GEFvzpgGZmU",
     "0shWVNJMoVo",
     "mYQBfzR22TQ",
     "Juso-cC3Xd4",
-    ...NEW_SHORTS,
   ];
 
   // Content Creation shorts
   const CREATE_SHORTS = [
+    ...NEW_SHORTS,
     "hwqzvZyO-54",
     "qcDr3tEWJzE",
     "5IXdCBKqc-k",
     "BznO4vpu6oA",
-    ...NEW_SHORTS,
   ];
 
   // ✅ YouTube Long-form (ONLY in YouTube section now)
@@ -333,7 +332,6 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   revealCallbacks.push((target) => {
-    // if stats-grid or inside it becomes visible
     if (target.classList && (target.classList.contains("stats-grid") || target.querySelector?.(".countup"))) {
       qsa(".countup", target.classList.contains("stats-grid") ? target : document).forEach(animateCount);
     }
@@ -343,13 +341,12 @@ window.addEventListener("DOMContentLoaded", () => {
   // ✅ TWO GALLERIES
   // =========================
 
-  // 1) PRODUCTS: local images (easy add)
   const PRODUCTS = {
     folder: "assets/img/gallery/",
     prefix: "mostafa-mansour_product_ (",
     suffix: ").png",
     startIndex: 1,
-    count: 13, // increase when you add images
+    count: 13,
   };
 
   function buildProductsList() {
@@ -360,7 +357,6 @@ window.addEventListener("DOMContentLoaded", () => {
     return arr;
   }
 
-  // 2) CARS: ImageKit URLs
   const CAR_IMAGES = [
     "https://ik.imagekit.io/ygv06l7eo/motoors/IMG_2720.JPG?tr=q-auto,f-auto",
     "https://ik.imagekit.io/ygv06l7eo/Cars/My%20event%20(7).JPG?tr=q-auto,f-auto",
@@ -423,7 +419,6 @@ window.addEventListener("DOMContentLoaded", () => {
     const items = createGallerySlides(scroller, images, label);
     if (!items.length) return;
 
-    // dots
     if (dotsWrap) {
       dotsWrap.innerHTML = "";
       items.forEach((_, i) => {
@@ -473,7 +468,6 @@ window.addEventListener("DOMContentLoaded", () => {
     window.addEventListener("resize", setActiveByCenter);
   }
 
-  // init galleries
   initGallery({
     scrollerId: "productsScroller",
     dotsId: "productsDots",
@@ -482,7 +476,6 @@ window.addEventListener("DOMContentLoaded", () => {
     images: buildProductsList(),
     label: "Product",
   });
-
 
   initGallery({
     scrollerId: "carsScroller",
