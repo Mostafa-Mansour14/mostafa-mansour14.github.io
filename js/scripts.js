@@ -193,43 +193,51 @@ window.addEventListener("DOMContentLoaded", () => {
     if (!clickedInsideMenu && !clickedToggler) collapse?.hide();
   });
 
-  const animated = qsa("[data-animate]");
+   const animated = qsa("[data-animate]");
   let revealCallbacks = [];
 
   const runRevealCallbacks = (el) => {
     revealCallbacks.forEach((fn) => fn(el));
   };
 
+  function shouldRevealImmediately(el) {
+    return (
+      el.id === "editGrid" ||
+      el.id === "createGrid" ||
+      el.id === "youtubeGrid"
+    );
+  }
+
   if ("IntersectionObserver" in window) {
     const io = new IntersectionObserver(
       (entries) =>
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
+          if (entry.isIntersecting || entry.intersectionRatio > 0) {
             entry.target.classList.add("is-visible");
             runRevealCallbacks(entry.target);
             io.unobserve(entry.target);
           }
         }),
-      { threshold: 0.12 }
+      {
+        threshold: 0.01,
+        rootMargin: "0px 0px -5% 0px",
+      }
     );
 
     animated.forEach((el, i) => {
       el.style.setProperty("--d", `${Math.min(i * 60, 600)}ms`);
-      io.observe(el);
+
+      if (shouldRevealImmediately(el)) {
+        el.classList.add("is-visible");
+        runRevealCallbacks(el);
+      } else {
+        io.observe(el);
+      }
     });
   } else {
     animated.forEach((el) => {
       el.classList.add("is-visible");
       runRevealCallbacks(el);
-    });
-  }
-
-  function applyFilter(group, kind) {
-    const items = qsa(`.portfolio-item[data-group="${group}"]`);
-    items.forEach((item) => {
-      const itemKind = item.getAttribute("data-kind");
-      const show = kind === "all" || itemKind === kind;
-      item.classList.toggle("is-hidden", !show);
     });
   }
 
