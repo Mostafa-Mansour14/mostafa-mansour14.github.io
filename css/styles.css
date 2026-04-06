@@ -23,11 +23,9 @@ body{
   overflow-x:hidden;
 }
 
-/* ✅ NO BLUE LINKS (Premium) */
 a{ color: inherit; }
 a:hover{ color: #fff; }
 
-/* 3D background container */
 #bg3d{
   position:fixed;
   inset:0;
@@ -45,7 +43,6 @@ a:hover{ color: #fff; }
   z-index:1;
 }
 
-/* Top nav */
 .nav-premium{
   background: rgba(10,11,15,0.55);
   backdrop-filter: blur(14px);
@@ -79,7 +76,6 @@ a:hover{ color: #fff; }
   color: #fff;
 }
 
-/* Layout spacing (because nav fixed top) */
 .page-wrap{ padding-top: 88px; }
 @media (max-width: 992px){
   .page-wrap{ padding-top: 76px; }
@@ -92,7 +88,6 @@ a:hover{ color: #fff; }
 
 .content-container{ max-width: 1120px; }
 
-/* Hero layout */
 .hero{
   display:grid;
   grid-template-columns: 1.1fr 0.9fr;
@@ -103,7 +98,6 @@ a:hover{ color: #fff; }
   .hero{ grid-template-columns: 1fr; }
 }
 
-/* Titles */
 h1{
   font-family:"Saira Extra Condensed", system-ui;
   font-size: clamp(2.7rem, 5vw, 4.4rem);
@@ -132,7 +126,6 @@ h1{
   line-height:1.65;
 }
 
-/* Profile */
 .profile-card{
   position:relative;
   border-radius: 26px;
@@ -155,7 +148,6 @@ h1{
   pointer-events:none;
 }
 
-/* Badges */
 .hero-badges{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 14px; }
 .hero-badge{
   display:inline-flex; align-items:center; gap:8px;
@@ -169,7 +161,6 @@ h1{
 }
 .hero-badge i{ color: var(--accent2); }
 
-/* ✅ Premium Stats */
 .stats-grid{
   display:grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -200,7 +191,6 @@ h1{
   font-size: 0.92rem;
 }
 
-/* Social */
 .social-icons{ display:flex; gap:12px; }
 .social-icon{
   width:44px;height:44px;border-radius:14px;
@@ -217,7 +207,6 @@ h1{
   border-color: rgba(255,106,42,0.28);
 }
 
-/* Track cards */
 .track-grid{
   margin-top: 18px;
   display:grid;
@@ -248,7 +237,6 @@ h1{
   color: rgba(233,234,240,0.80);
 }
 
-/* Cards */
 .smart-card{
   background: var(--card);
   border:1px solid rgba(255,255,255,0.10);
@@ -256,7 +244,6 @@ h1{
   box-shadow: var(--shadow);
 }
 
-/* ✅ Tabs (remove white background completely) */
 .smart-tabs{
   background: rgba(255,255,255,0.05);
   border:1px solid rgba(255,255,255,0.08);
@@ -281,7 +268,6 @@ h1{
   box-shadow: 0 10px 30px rgba(0,0,0,0.35);
 }
 
-/* Badges (type) */
 .type-badge{
   display:inline-flex; align-items:center;
   padding: 8px 12px;
@@ -299,7 +285,6 @@ h1{
   border-color: rgba(43,111,255,0.20);
 }
 
-/* Filters */
 .portfolio-filters{
   display:flex; flex-wrap:wrap; gap:10px;
 }
@@ -320,7 +305,6 @@ h1{
   color:#fff;
 }
 
-/* Video cards */
 .video-card{
   height:100%;
   display:flex;
@@ -348,7 +332,6 @@ h1{
 .chip-create{ background: rgba(43,111,255,0.12); border-color: rgba(43,111,255,0.22); }
 .chip-ghost{ opacity:0.9; }
 
-/* Shorts thumbnail: 9:16 + cover */
 .video-thumb{
   margin: 10px 12px 0;
   border-radius: 18px;
@@ -357,6 +340,7 @@ h1{
   position:relative;
   overflow:hidden;
   aspect-ratio: 9 / 16;
+  min-height: 320px;
   cursor:pointer;
 }
 
@@ -367,7 +351,17 @@ h1{
   height:100%;
   object-fit:cover;
   display:block;
+  opacity:0;
+  transition: opacity .2s ease;
   z-index:0;
+}
+
+.video-thumb-img.is-ready{
+  opacity:1;
+}
+
+.video-thumb-img.thumb-failed{
+  opacity:0;
 }
 
 .video-thumb::after{
@@ -396,7 +390,12 @@ h1{
   border-color: rgba(255,106,42,0.28);
 }
 
-/* YouTube (16:9) card frame */
+@media (max-width: 767.98px){
+  .video-thumb{
+    min-height: 420px;
+  }
+}
+
 .video-frame{
   margin: 10px 12px 0;
   border-radius: 18px;
@@ -415,16 +414,13 @@ h1{
   margin-top: 4px;
 }
 
-/* Hide filtered items */
 .portfolio-item.is-hidden{ display:none; }
 
-/* ✅ YouTube section text */
 .youtube-desc{
   color: rgba(233,234,240,0.78);
   line-height: 1.7;
 }
 
-/* Gallery */
 .gallery-wrap{ position:relative; }
 .gallery-scroller{
   display:flex;
@@ -450,7 +446,6 @@ h1{
   box-shadow: 0 14px 45px rgba(0,0,0,0.35);
 }
 
-/* ✅ IMPORTANT: image NOT cropped + card fits image height */
 .gallery-item img{
   width:100%;
   height:auto;
@@ -459,7 +454,6 @@ h1{
   background: rgba(0,0,0,0.25);
 }
 
-/* ✅ controls under images */
 .gallery-controls{
   display:flex;
   align-items:center;
@@ -493,7 +487,6 @@ h1{
   border-color: rgba(255,106,42,0.26);
 }
 
-/* Modal */
 .video-modal .modal-content{
   background: rgba(10,11,15,0.65);
   border:1px solid rgba(255,255,255,0.12);
@@ -516,11 +509,9 @@ h1{
   border-color: rgba(255,106,42,0.26);
 }
 
-/* Reveal animation */
 [data-animate]{ opacity:0; transform: translateY(14px); transition: 700ms ease; }
 [data-animate].is-visible{ opacity:1; transform:none; }
 
-/* Reduce motion */
 @media (prefers-reduced-motion: reduce){
   [data-animate]{ transition:none !important; }
 }
