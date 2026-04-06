@@ -59,6 +59,8 @@ window.addEventListener("DOMContentLoaded", () => {
   ];
 
   function makeShortCard({ group, label, id, tags }) {
+    const firstThumb = `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+
     return `
       <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="${group}">
         <div class="video-card">
@@ -69,7 +71,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
           <div class="video-thumb" data-video="${id}" role="button" tabindex="0" aria-label="Play video">
             <img
-              class="video-thumb-img"
+              class="video-thumb-img is-ready"
+              src="${firstThumb}"
               alt="Video thumbnail"
               loading="eager"
               decoding="async"
@@ -159,7 +162,9 @@ window.addEventListener("DOMContentLoaded", () => {
   let collapse = null;
 
   if (navCollapseEl && window.bootstrap) {
-    collapse = bootstrap.Collapse.getInstance(navCollapseEl) || new bootstrap.Collapse(navCollapseEl, { toggle: false });
+    collapse =
+      bootstrap.Collapse.getInstance(navCollapseEl) ||
+      new bootstrap.Collapse(navCollapseEl, { toggle: false });
   }
 
   qsa(".js-scroll-trigger").forEach((a) => {
@@ -272,35 +277,13 @@ window.addEventListener("DOMContentLoaded", () => {
 
   function getThumbCandidates(id) {
     return [
-      `https://img.youtube.com/vi/${id}/hqdefault.jpg`,
-      `https://img.youtube.com/vi/${id}/mqdefault.jpg`,
-      `https://img.youtube.com/vi/${id}/default.jpg`,
       `https://i.ytimg.com/vi/${id}/hqdefault.jpg`,
       `https://i.ytimg.com/vi/${id}/mqdefault.jpg`,
       `https://i.ytimg.com/vi/${id}/default.jpg`,
+      `https://img.youtube.com/vi/${id}/hqdefault.jpg`,
+      `https://img.youtube.com/vi/${id}/mqdefault.jpg`,
+      `https://img.youtube.com/vi/${id}/default.jpg`,
     ];
-  }
-
-  function loadFirstWorkingImage(img, urls, index = 0) {
-    if (!img || index >= urls.length) {
-      if (img) img.classList.add("thumb-failed");
-      return;
-    }
-
-    const test = new Image();
-    test.decoding = "async";
-    test.referrerPolicy = "no-referrer";
-
-    test.onload = () => {
-      img.src = urls[index];
-      img.classList.add("is-ready");
-    };
-
-    test.onerror = () => {
-      loadFirstWorkingImage(img, urls, index + 1);
-    };
-
-    test.src = urls[index];
   }
 
   function initShortThumbs() {
@@ -319,10 +302,22 @@ window.addEventListener("DOMContentLoaded", () => {
 
       const img = qs(".video-thumb-img", thumb);
       if (img) {
-        loadFirstWorkingImage(img, getThumbCandidates(id));
+        const candidates = getThumbCandidates(id);
+        let currentIndex = 0;
+
+        img.addEventListener("error", () => {
+          currentIndex += 1;
+
+          if (currentIndex < candidates.length) {
+            img.src = candidates[currentIndex];
+          } else {
+            img.classList.add("thumb-failed");
+          }
+        });
       }
     });
   }
+
   initShortThumbs();
 
   function formatNumber(n) {
