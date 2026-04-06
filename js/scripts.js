@@ -297,7 +297,12 @@ window.addEventListener("DOMContentLoaded", () => {
     qsa('.video-thumb[data-video]').forEach((thumb) => {
       const id = thumb.getAttribute("data-video");
       if (!id) return;
-      thumb.style.setProperty("--thumb", `url('https://i.ytimg.com/vi/${id}/hqdefault.jpg')`);
+
+      thumb.style.backgroundImage = `url("https://i.ytimg.com/vi/${id}/hqdefault.jpg")`;
+      thumb.style.backgroundSize = "cover";
+      thumb.style.backgroundPosition = "center";
+      thumb.style.backgroundRepeat = "no-repeat";
+
       thumb.addEventListener("click", () => openVideo(id));
     });
   }
