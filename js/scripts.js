@@ -193,7 +193,7 @@ window.addEventListener("DOMContentLoaded", () => {
     if (!clickedInsideMenu && !clickedToggler) collapse?.hide();
   });
 
-   const animated = qsa("[data-animate]");
+  const animated = qsa("[data-animate]");
   let revealCallbacks = [];
 
   const runRevealCallbacks = (el) => {
@@ -238,6 +238,15 @@ window.addEventListener("DOMContentLoaded", () => {
     animated.forEach((el) => {
       el.classList.add("is-visible");
       runRevealCallbacks(el);
+    });
+  }
+
+  function applyFilter(group, kind) {
+    const items = qsa(`.portfolio-item[data-group="${group}"]`);
+    items.forEach((item) => {
+      const itemKind = item.getAttribute("data-kind");
+      const show = kind === "all" || itemKind === kind;
+      item.classList.toggle("is-hidden", !show);
     });
   }
 
