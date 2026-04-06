@@ -21,6 +21,7 @@ window.addEventListener("DOMContentLoaded", () => {
       const shortsIndex = parts.indexOf("shorts");
       if (shortsIndex !== -1 && parts[shortsIndex + 1]) return parts[shortsIndex + 1];
     } catch (e) {}
+
     return v;
   };
 
@@ -75,6 +76,8 @@ window.addEventListener("DOMContentLoaded", () => {
   // Build Cards
   // =========================
   function makeShortCard({ group, label, id, tags }) {
+    const thumbUrl = `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+
     return `
       <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="${group}">
         <div class="video-card">
@@ -83,7 +86,13 @@ window.addEventListener("DOMContentLoaded", () => {
             <span class="chip chip-ghost">Short</span>
           </div>
 
-          <div class="video-thumb" data-video="${id}">
+          <div class="video-thumb" data-video="${id}" role="button" tabindex="0" aria-label="Play video">
+            <img
+              src="${thumbUrl}"
+              alt="Video thumbnail"
+              loading="lazy"
+              class="video-thumb-img"
+            />
             <span class="play">▶</span>
           </div>
 
@@ -172,7 +181,9 @@ window.addEventListener("DOMContentLoaded", () => {
   let collapse = null;
 
   if (navCollapseEl && window.bootstrap) {
-    collapse = bootstrap.Collapse.getInstance(navCollapseEl) || new bootstrap.Collapse(navCollapseEl, { toggle: false });
+    collapse =
+      bootstrap.Collapse.getInstance(navCollapseEl) ||
+      new bootstrap.Collapse(navCollapseEl, { toggle: false });
   }
 
   qsa(".js-scroll-trigger").forEach((a) => {
@@ -186,7 +197,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
       target.scrollIntoView({ behavior: "smooth", block: "start" });
 
-      const isMobile = navToggler && window.getComputedStyle(navToggler).display !== "none";
+      const isMobile =
+        navToggler && window.getComputedStyle(navToggler).display !== "none";
       if (isMobile) collapse?.hide();
     });
   });
@@ -294,16 +306,25 @@ window.addEventListener("DOMContentLoaded", () => {
 
   // thumbs
   function initShortThumbs() {
-    qsa('.video-thumb[data-video]').forEach((thumb) => {
+    qsa(".video-thumb[data-video]").forEach((thumb) => {
       const id = thumb.getAttribute("data-video");
       if (!id) return;
 
-      thumb.style.backgroundImage = `url("https://i.ytimg.com/vi/${id}/hqdefault.jpg")`;
-      thumb.style.backgroundSize = "cover";
-      thumb.style.backgroundPosition = "center";
-      thumb.style.backgroundRepeat = "no-repeat";
-
       thumb.addEventListener("click", () => openVideo(id));
+
+      thumb.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          openVideo(id);
+        }
+      });
+
+      const img = qs(".video-thumb-img", thumb);
+      if (img) {
+        img.addEventListener("error", () => {
+          img.src = `https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
+        });
+      }
     });
   }
   initShortThumbs();
@@ -337,8 +358,14 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   revealCallbacks.push((target) => {
-    if (target.classList && (target.classList.contains("stats-grid") || target.querySelector?.(".countup"))) {
-      qsa(".countup", target.classList.contains("stats-grid") ? target : document).forEach(animateCount);
+    if (
+      target.classList &&
+      (target.classList.contains("stats-grid") || target.querySelector?.(".countup"))
+    ) {
+      qsa(
+        ".countup",
+        target.classList.contains("stats-grid") ? target : document
+      ).forEach(animateCount);
     }
   });
 
@@ -356,7 +383,11 @@ window.addEventListener("DOMContentLoaded", () => {
 
   function buildProductsList() {
     const arr = [];
-    for (let i = PRODUCTS.startIndex; i < PRODUCTS.startIndex + PRODUCTS.count; i++) {
+    for (
+      let i = PRODUCTS.startIndex;
+      i < PRODUCTS.startIndex + PRODUCTS.count;
+      i++
+    ) {
       arr.push(`${PRODUCTS.folder}${PRODUCTS.prefix}${i}${PRODUCTS.suffix}`);
     }
     return arr;
@@ -432,7 +463,11 @@ window.addEventListener("DOMContentLoaded", () => {
         dot.className = "gallery-dot" + (i === 0 ? " is-active" : "");
         dot.setAttribute("aria-label", `Go to image ${i + 1}`);
         dot.addEventListener("click", () => {
-          items[i].scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+          items[i].scrollIntoView({
+            behavior: "smooth",
+            inline: "center",
+            block: "nearest",
+          });
         });
         dotsWrap.appendChild(dot);
       });
@@ -446,11 +481,18 @@ window.addEventListener("DOMContentLoaded", () => {
       items.forEach((item, i) => {
         const itemCenter = item.offsetLeft + item.offsetWidth / 2;
         const d = Math.abs(itemCenter - center);
-        if (d < bestDist) { bestDist = d; bestIndex = i; }
+        if (d < bestDist) {
+          bestDist = d;
+          bestIndex = i;
+        }
       });
 
       items.forEach((it, i) => it.classList.toggle("is-active", i === bestIndex));
-      if (dotsWrap) qsa(".gallery-dot", dotsWrap).forEach((dot, i) => dot.classList.toggle("is-active", i === bestIndex));
+      if (dotsWrap) {
+        qsa(".gallery-dot", dotsWrap).forEach((dot, i) =>
+          dot.classList.toggle("is-active", i === bestIndex)
+        );
+      }
     }
 
     let t = null;
@@ -463,7 +505,11 @@ window.addEventListener("DOMContentLoaded", () => {
       const active = qs(".gallery-item.is-active", scroller) || items[0];
       const index = Math.max(0, items.indexOf(active));
       const nextIndex = Math.min(items.length - 1, Math.max(0, index + dir));
-      items[nextIndex].scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+      items[nextIndex].scrollIntoView({
+        behavior: "smooth",
+        inline: "center",
+        block: "nearest",
+      });
     }
 
     prevBtn?.addEventListener("click", () => scrollByOne(-1));
