@@ -88,10 +88,11 @@ window.addEventListener("DOMContentLoaded", () => {
 
           <div class="video-thumb" data-video="${id}" role="button" tabindex="0" aria-label="Play video">
             <img
+              class="video-thumb-img"
               src="${thumbUrl}"
               alt="Video thumbnail"
               loading="lazy"
-              class="video-thumb-img"
+              draggable="false"
             />
             <span class="play">▶</span>
           </div>
@@ -181,9 +182,7 @@ window.addEventListener("DOMContentLoaded", () => {
   let collapse = null;
 
   if (navCollapseEl && window.bootstrap) {
-    collapse =
-      bootstrap.Collapse.getInstance(navCollapseEl) ||
-      new bootstrap.Collapse(navCollapseEl, { toggle: false });
+    collapse = bootstrap.Collapse.getInstance(navCollapseEl) || new bootstrap.Collapse(navCollapseEl, { toggle: false });
   }
 
   qsa(".js-scroll-trigger").forEach((a) => {
@@ -197,8 +196,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
       target.scrollIntoView({ behavior: "smooth", block: "start" });
 
-      const isMobile =
-        navToggler && window.getComputedStyle(navToggler).display !== "none";
+      const isMobile = navToggler && window.getComputedStyle(navToggler).display !== "none";
       if (isMobile) collapse?.hide();
     });
   });
@@ -358,14 +356,8 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   revealCallbacks.push((target) => {
-    if (
-      target.classList &&
-      (target.classList.contains("stats-grid") || target.querySelector?.(".countup"))
-    ) {
-      qsa(
-        ".countup",
-        target.classList.contains("stats-grid") ? target : document
-      ).forEach(animateCount);
+    if (target.classList && (target.classList.contains("stats-grid") || target.querySelector?.(".countup"))) {
+      qsa(".countup", target.classList.contains("stats-grid") ? target : document).forEach(animateCount);
     }
   });
 
@@ -383,11 +375,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   function buildProductsList() {
     const arr = [];
-    for (
-      let i = PRODUCTS.startIndex;
-      i < PRODUCTS.startIndex + PRODUCTS.count;
-      i++
-    ) {
+    for (let i = PRODUCTS.startIndex; i < PRODUCTS.startIndex + PRODUCTS.count; i++) {
       arr.push(`${PRODUCTS.folder}${PRODUCTS.prefix}${i}${PRODUCTS.suffix}`);
     }
     return arr;
@@ -463,11 +451,7 @@ window.addEventListener("DOMContentLoaded", () => {
         dot.className = "gallery-dot" + (i === 0 ? " is-active" : "");
         dot.setAttribute("aria-label", `Go to image ${i + 1}`);
         dot.addEventListener("click", () => {
-          items[i].scrollIntoView({
-            behavior: "smooth",
-            inline: "center",
-            block: "nearest",
-          });
+          items[i].scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
         });
         dotsWrap.appendChild(dot);
       });
@@ -488,11 +472,7 @@ window.addEventListener("DOMContentLoaded", () => {
       });
 
       items.forEach((it, i) => it.classList.toggle("is-active", i === bestIndex));
-      if (dotsWrap) {
-        qsa(".gallery-dot", dotsWrap).forEach((dot, i) =>
-          dot.classList.toggle("is-active", i === bestIndex)
-        );
-      }
+      if (dotsWrap) qsa(".gallery-dot", dotsWrap).forEach((dot, i) => dot.classList.toggle("is-active", i === bestIndex));
     }
 
     let t = null;
@@ -505,11 +485,7 @@ window.addEventListener("DOMContentLoaded", () => {
       const active = qs(".gallery-item.is-active", scroller) || items[0];
       const index = Math.max(0, items.indexOf(active));
       const nextIndex = Math.min(items.length - 1, Math.max(0, index + dir));
-      items[nextIndex].scrollIntoView({
-        behavior: "smooth",
-        inline: "center",
-        block: "nearest",
-      });
+      items[nextIndex].scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
     }
 
     prevBtn?.addEventListener("click", () => scrollByOne(-1));
