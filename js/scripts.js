@@ -1,7 +1,4 @@
 window.addEventListener("DOMContentLoaded", () => {
-  // =========================
-  // Helpers
-  // =========================
   const qs = (s, el = document) => el.querySelector(s);
   const qsa = (s, el = document) => Array.from(el.querySelectorAll(s));
 
@@ -9,7 +6,6 @@ window.addEventListener("DOMContentLoaded", () => {
     if (!value) return "";
     const v = String(value).trim();
 
-    // already an ID?
     if (/^[a-zA-Z0-9_-]{8,}$/.test(v) && !v.includes("http")) return v;
 
     try {
@@ -25,11 +21,6 @@ window.addEventListener("DOMContentLoaded", () => {
     return v;
   };
 
-  // =========================
-  // Data
-  // =========================
-
-  // NEW shorts first
   const NEW_SHORTS = [
     "https://youtube.com/shorts/jYHD190iaXQ?feature=share",
     "https://youtube.com/shorts/ZdUIPkAE0Sg",
@@ -37,15 +28,12 @@ window.addEventListener("DOMContentLoaded", () => {
     "https://youtu.be/C3nqcKiuewQ",
     "https://youtube.com/shorts/FKbncc6ydII",
     "https://youtube.com/shorts/QrnVzjlZmOY?feature=share",
-
-    // old ones after
     "https://youtube.com/shorts/nJZVmrPypEg",
     "https://youtube.com/shorts/TjLQyM1boSA",
     "https://youtube.com/shorts/5rJbLmcfBSE",
     "https://youtube.com/shorts/5129Esy6WhI",
   ].map(toYouTubeId);
 
-  // Editing shorts
   const EDIT_SHORTS = [
     ...NEW_SHORTS,
     "GEFvzpgGZmU",
@@ -54,7 +42,6 @@ window.addEventListener("DOMContentLoaded", () => {
     "Juso-cC3Xd4",
   ];
 
-  // Content Creation shorts
   const CREATE_SHORTS = [
     ...NEW_SHORTS,
     "hwqzvZyO-54",
@@ -63,7 +50,6 @@ window.addEventListener("DOMContentLoaded", () => {
     "BznO4vpu6oA",
   ];
 
-  // ✅ YouTube Long-form (ONLY in YouTube section now)
   const YT_LONGFORM = [
     "XD0AC8IM47E",
     "0ZDJulsMbpY",
@@ -72,12 +58,7 @@ window.addEventListener("DOMContentLoaded", () => {
     "SnYlYmBOFgk",
   ];
 
-  // =========================
-  // Build Cards
-  // =========================
   function makeShortCard({ group, label, id, tags }) {
-    const thumbUrl = `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
-
     return `
       <div class="col-12 col-md-6 col-lg-4 portfolio-item" data-kind="short" data-group="${group}">
         <div class="video-card">
@@ -89,9 +70,10 @@ window.addEventListener("DOMContentLoaded", () => {
           <div class="video-thumb" data-video="${id}" role="button" tabindex="0" aria-label="Play video">
             <img
               class="video-thumb-img"
-              src="${thumbUrl}"
               alt="Video thumbnail"
-              loading="lazy"
+              loading="eager"
+              decoding="async"
+              fetchpriority="high"
               draggable="false"
             />
             <span class="play">▶</span>
@@ -138,7 +120,6 @@ window.addEventListener("DOMContentLoaded", () => {
     const createGrid = qs("#createGrid");
     if (!editGrid || !createGrid) return;
 
-    // EDIT: Shorts only
     editGrid.innerHTML = EDIT_SHORTS.map((id) =>
       makeShortCard({
         group: "edit",
@@ -148,7 +129,6 @@ window.addEventListener("DOMContentLoaded", () => {
       })
     ).join("");
 
-    // CREATE: Shorts only
     createGrid.innerHTML = CREATE_SHORTS.map((id) =>
       makeShortCard({
         group: "create",
@@ -174,9 +154,6 @@ window.addEventListener("DOMContentLoaded", () => {
   renderPortfolio();
   renderYouTube();
 
-  // =========================
-  // Smooth Scroll + close mobile menu
-  // =========================
   const navCollapseEl = qs("#navbarResponsive");
   const navToggler = qs(".navbar-toggler");
   let collapse = null;
@@ -211,9 +188,6 @@ window.addEventListener("DOMContentLoaded", () => {
     if (!clickedInsideMenu && !clickedToggler) collapse?.hide();
   });
 
-  // =========================
-  // Reveal animation
-  // =========================
   const animated = qsa("[data-animate]");
   let revealCallbacks = [];
 
@@ -245,9 +219,6 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // =========================
-  // Filters (shorts only)
-  // =========================
   function applyFilter(group, kind) {
     const items = qsa(`.portfolio-item[data-group="${group}"]`);
     items.forEach((item) => {
@@ -273,9 +244,6 @@ window.addEventListener("DOMContentLoaded", () => {
     applyFilter(group, "all");
   });
 
-  // =========================
-  // Shorts Modal Player
-  // =========================
   const modalEl = qs("#videoModal");
   const modalPlayer = qs("#modalPlayer");
   const modal = modalEl && window.bootstrap ? new bootstrap.Modal(modalEl) : null;
@@ -302,7 +270,39 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // thumbs
+  function getThumbCandidates(id) {
+    return [
+      `https://img.youtube.com/vi/${id}/hqdefault.jpg`,
+      `https://img.youtube.com/vi/${id}/mqdefault.jpg`,
+      `https://img.youtube.com/vi/${id}/default.jpg`,
+      `https://i.ytimg.com/vi/${id}/hqdefault.jpg`,
+      `https://i.ytimg.com/vi/${id}/mqdefault.jpg`,
+      `https://i.ytimg.com/vi/${id}/default.jpg`,
+    ];
+  }
+
+  function loadFirstWorkingImage(img, urls, index = 0) {
+    if (!img || index >= urls.length) {
+      if (img) img.classList.add("thumb-failed");
+      return;
+    }
+
+    const test = new Image();
+    test.decoding = "async";
+    test.referrerPolicy = "no-referrer";
+
+    test.onload = () => {
+      img.src = urls[index];
+      img.classList.add("is-ready");
+    };
+
+    test.onerror = () => {
+      loadFirstWorkingImage(img, urls, index + 1);
+    };
+
+    test.src = urls[index];
+  }
+
   function initShortThumbs() {
     qsa(".video-thumb[data-video]").forEach((thumb) => {
       const id = thumb.getAttribute("data-video");
@@ -319,17 +319,12 @@ window.addEventListener("DOMContentLoaded", () => {
 
       const img = qs(".video-thumb-img", thumb);
       if (img) {
-        img.addEventListener("error", () => {
-          img.src = `https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
-        });
+        loadFirstWorkingImage(img, getThumbCandidates(id));
       }
     });
   }
   initShortThumbs();
 
-  // =========================
-  // ✅ CountUp (stats) — runs when stats block becomes visible
-  // =========================
   function formatNumber(n) {
     return n.toLocaleString("en-US");
   }
@@ -360,10 +355,6 @@ window.addEventListener("DOMContentLoaded", () => {
       qsa(".countup", target.classList.contains("stats-grid") ? target : document).forEach(animateCount);
     }
   });
-
-  // =========================
-  // ✅ TWO GALLERIES
-  // =========================
 
   const PRODUCTS = {
     folder: "assets/img/gallery/",
